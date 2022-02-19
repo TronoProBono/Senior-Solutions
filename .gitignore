@@ -368,4 +368,4 @@ FodyWeavers.xsd
 /.vs/SeniorSolutions/DesignTimeBuild
 /.vs
 
-/bin
+SeniorSolutionsWeb/bin/
