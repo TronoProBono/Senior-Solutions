@@ -1,8 +1,14 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SeniorSolutionsWeb.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<SeniorSolutionsWebContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SeniorSolutionsWebContext")));
 
 var app = builder.Build();
 
