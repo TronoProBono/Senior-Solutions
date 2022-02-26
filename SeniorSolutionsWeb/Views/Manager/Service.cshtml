@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Service Form";
+}
+
+<div id="page" class="container-fluid">
+    <div class="row">
+        <nav id="options" class="col-lg-3 bg-white sidebar">
+            <div class="pos_sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link">Wages & Scheduling</a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li class="nav-item">
+                        <a class="nav-link">See Service Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Manage Resident Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Post Tranportation Information</a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li class="nav-item">
+                        <a class="nav-link">Community Issues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#event-collapse" aria-expanded="true">Events</a>
+                        <div class="collapse show" id="event-collapse" style="">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="nav-link rounded">Review & Approve Events</a></li>
+                                <li><a href="#" class="nav-link rounded">Create Events</a></li>
+                            </ul>      
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#club-collapse" aria-expanded="true">Clubs</a>
+                        <div class="collapse show" id="club-collapse" style="">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="nav-link rounded">Review & Approve Clubs</a></li>
+                                <li><a href="#" class="nav-link rounded">Create Clubs</a></li>
+                            </ul>      
+                        </div>
+                    </li>                       
+                </ul>
+            </div>
+        </nav>
+        <div id="content" class="bg-light col-lg">
+            <div id="request">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Request</th>
+                        <th scope="col">Creation</th>
+                        <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <th scope="row">320</th>
+                        <td>Mark Handel</td>
+                        <td>Broken Bed</td>
+                        <td>02/02/2022</td>
+                        <td>Not Completed</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">555</th>
+                        <td>Gray Dall</td>
+                        <td>Broken TV</td>
+                        <td>02/22/2022</td>
+                        <td>Completed</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">20</th>
+                        <td>Mark Handel</td>
+                        <td>I'm sending this request to tell you that I'm no longer going to need service</td>
+                        <td>02/12/2022</td>
+                        <td>Discarded</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form>
+                            
+                </form>
+            </div>
+        </div>
+    </div>
+                 
+</div>
+

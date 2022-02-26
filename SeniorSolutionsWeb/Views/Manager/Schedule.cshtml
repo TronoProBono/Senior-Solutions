@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Service Form";
+}
+
+<div id="page" class="container-fluid">
+    <div class="row">
+        <nav id="options" class="col-lg-3 bg-white sidebar">
+            <div class="pos_sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link">Wages & Scheduling</a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li class="nav-item">
+                        <a class="nav-link">See Service Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="Service">Manage Resident Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Post Tranportation Information</a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li class="nav-item">
+                        <a class="nav-link">Community Issues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#event-collapse" aria-expanded="true">Events</a>
+                        <div class="collapse show" id="event-collapse" style="">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="nav-link rounded">Review & Approve Events</a></li>
+                                <li><a href="#" class="nav-link rounded">Create Events</a></li>
+                            </ul>      
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#club-collapse" aria-expanded="true">Clubs</a>
+                        <div class="collapse show" id="club-collapse" style="">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="nav-link rounded">Review & Approve Clubs</a></li>
+                                <li><a href="#" class="nav-link rounded">Create Clubs</a></li>
+                            </ul>      
+                        </div>
+                    </li>                       
+                </ul>
+            </div>
+        </nav>
+        <div id="content" class="bg-light col-lg">
+            <div id="wage">
+                         
+            </div>
+        </div>
+    </div>
+                 
+</div>
