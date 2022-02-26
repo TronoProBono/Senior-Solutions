@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Service Form";
+}
+
+<div id="page" class="container-fluid">
+    <div class="row">
+        <nav id="options" class="col-lg-3 bg-white sidebar">
+            <div class="pos_sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="Index">Overview</a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="Schedule">Wages & Scheduling</a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="Service">See Service Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="Manage_Accounts">Manage Resident Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="Transportation">Post Tranportation Information</a>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manager" asp-action="post">Community Issues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#event-collapse" aria-expanded="true">Events</a>
+                        <div class="collapse show" id="event-collapse" style="">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a class="nav-link rounded" asp-controller="Manager" asp-action="events">Review & Approve Events</a></li>
+                                <li><a class="nav-link rounded" asp-controller="Manager" asp-action="create_events">Create Events</a></li>
+                            </ul>      
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#club-collapse" aria-expanded="true">Clubs</a>
+                        <div class="collapse show" id="club-collapse" style="">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a class="nav-link rounded" asp-controller="Manager" asp-action="clubs">Review & Approve Clubs</a></li>
+                                <li><a class="nav-link rounded" asp-controller="Manager" asp-action="create_clubs">Create Clubs</a></li>
+                            </ul>      
+                        </div>
+                    </li>                       
+                </ul>
+            </div>
+        </nav>
+        <div id="content" class="bg-light col-lg">
+            <div id="wage">
+                         
+            </div>
+        </div>
+    </div>
+                 
+</div>
