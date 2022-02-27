@@ -19,10 +19,6 @@ namespace SeniorSolutionsWeb.Models
         //[DataType(DataType.DateTime)] Uneccessary assignment with DataAnnotation
         [Display(Name = "Date Account Created")]
         public DateTime DateAccountCreated { get; set; } = DateTime.Now;
-        
-        
-
-
 
     }
 }
