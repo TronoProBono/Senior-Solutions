@@ -16,3 +16,10 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.bg-image {
+    background-image: url(/Images/background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

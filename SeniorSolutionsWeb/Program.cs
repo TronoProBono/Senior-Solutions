@@ -9,7 +9,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
-options.LoginPath = "/Login/";
+//options.LoginPath = "/Account/Login";
+//options.AccessDeniedPath = "/Account/Denied";
+//options.LogoutPath = "Account/Logout";
 options.Events = new CookieAuthenticationEvents()
   {
         OnSigningIn = async context =>
