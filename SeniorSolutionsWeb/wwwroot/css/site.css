@@ -18,7 +18,7 @@ body {
 }
 
 .bg-image {
-    background-image: url(/Images/background.jpg);
+    background-image: url(/Images/background_blur.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
