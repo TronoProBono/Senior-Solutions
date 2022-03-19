@@ -32,20 +32,37 @@
                             <a class="nav-link" asp-controller="Manager" asp-action="Index">Manager's Page</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Clubs" asp-action="Index">Clubs</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Secured">Secure Page</a>
                         </li>
                     </ul>
                 </div>
                 <div>
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link">Login</a>
-                        </li>
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>  
+                        } else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="LogoutUser">Logout</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+    <div class="container-fluid">
+        <div class="row">
+            <environment exclude="Development">
+                <div class="col-12">
+                    <p class="text-danger fw-bold">Current Environment: Development</p>
+                </div> 
+            </environment>
+        </div>
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
