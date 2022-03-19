@@ -24,8 +24,8 @@ namespace SeniorSolutionsWeb.Controllers
         public async Task<IActionResult> Index(int? id)
         {
             var listOfRequests = await _context.ServiceRequest.ToListAsync();
-            var serviceRequest = listOfRequests.FindAll(m => m.RequestorId == id);
-            return View(serviceRequest);
+            //var serviceRequest = listOfRequests.FindAll(m => m.RequestorId == id);
+            return View(listOfRequests);
             //return View(await _context.ServiceRequest.ToListAsync());
         }
 
