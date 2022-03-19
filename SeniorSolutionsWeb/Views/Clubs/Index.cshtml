@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Discover Clubs";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-3">
+        <div class="card">
+            <div class="card-header">
+                <h6>Targeted Search</h6>
+            </div>
+            <div class="card-body">
+                <form>
+                      <div class="form-group">
+                        <label for="InputClubID">Input the <b>Club ID</b></label>
+                        <input type="text" class="form-control" id="InputClubID" aria-describedby="ClubDescribe" placeholder="C-###-###">
+                        <small id="ClubDescribe" class="form-text text-muted">A <b>Club ID</b> is unique to a single Club</small>
+                      </div>
+                </form>
+                <hr>
+                <form>
+                      <div class="form-group">
+                        <label for="InputClubID">Input the <b>Club Name</b></label>
+                        <input type="text" class="form-control" id="InputClubID" aria-describedby="ClubDescribe" placeholder="Enter a Club Name">
+                        <small id="ClubDescribe" class="form-text text-muted">A <b>Club Name</b> can belong to multiple clubs</small>
+                      </div>
+                </form>
+                <hr>
+                <form>
+                      <div class="form-group">
+                        <label for="InputClubID">Enter the Club <b>Creation Date</b></label>
+                        <input type="date" class="form-control" id="InputClubID" aria-describedby="ClubDescribe">
+                        <small id="ClubDescribe" class="form-text text-muted">May be used along with <b>Club Name</b></small>
+                      </div>
+                </form>
+            </div>
+            <div class="card-header">
+                <h6>Search by Meetings</h6>
+            </div>
+            <div class="card-body">
+                <form>
+                      <div class="form-group">
+                          <select class="form-select" aria-label="Default select example">
+                              <option selected>Select a Day</option>
+                              <option value="1">Sunday</option>
+                              <option value="2">Tuesday</option>
+                              <option value="3">Wednesday</option>
+                              <option value="4">Thursday</option>
+                              <option value="5">Friday</option>
+                              <option value="6">Saturday</option>
+                          </select>
+                      </div>
+                </form>
+                <hr>
+                <form>
+                      <div class="form-group">
+                          <input type="button" id="AddMeetingField" value="Add a Filter">
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <ul></ul>
+    </div>
+</div>
