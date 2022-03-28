@@ -12,6 +12,33 @@ namespace SeniorSolutionsWeb.Controllers
         {
             _context = context;
         }
+        /*
+        public async Task<IActionResult> Index()
+        {
+            var demi_Club = from Meet in _context.ClubMeeting
+                            join Location in _context.Locations on Meet.MeetingPlace equals Location.LocationId
+                            select new
+                            {
+                                ClubId = Meet.ClubId,
+                                LocationName = Location.LocationName,
+                                MeetingDay = Meet.MeetingDay,
+                                StartTime = Meet.StartTime,
+                                EndTime = Meet.EndTime
+                            };
+            var club = from Club in _context.Club
+                       join Meet in demi_Club on Club.ClubId equals Meet.ClubId
+                       select new
+                       {
+                           ClubId = Club.ClubId,
+                           ClubName = Club.ClubName,
+                           DateClubCreated = Club.DateClubCreated,
+                           LocationName = Meet.LocationName,
+                           MeetingDay = Meet.MeetingDay,
+                           StartTime = Meet.StartTime,
+                           EndTime = Meet.EndTime
+                       };
+            return View(club);
+        }
 
         public async Task<IActionResult> Index(int clubID)
         {
@@ -31,7 +58,7 @@ namespace SeniorSolutionsWeb.Controllers
 
             //return View(await _context.Club.ToListAsync());
         }
-
+        */
         public async Task<IActionResult> Index(string club_name, int location, string meeting_day, int start_time, int end_time)
         {
 
@@ -65,7 +92,7 @@ namespace SeniorSolutionsWeb.Controllers
 
             if (!(location < 0))
             {
-                club = club.Where(s => s.!.Contains(location));
+                //club = club.Where(s => s.!.Contains(location));
             }
 
             if (!String.IsNullOrEmpty(meeting_day))
@@ -75,7 +102,7 @@ namespace SeniorSolutionsWeb.Controllers
                         
             if (!(start_time < 0) && !(end_time < 0))
             {
-                club = club.Where(s => s.);
+                //club = club.Where(s => s.);
             }
 
             return View(await _context.Club.ToListAsync());
