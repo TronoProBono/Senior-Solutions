@@ -17,6 +17,11 @@ namespace SeniorSolutionsWeb.Data
 
         public DbSet<SeniorSolutionsWeb.Models.Resident> Resident { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.ServiceRequest> ServiceRequest { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.Club> Club { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.ClubMembership> ClubMembership { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.ClubMeeting> ClubMeeting { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.ClubRoles> ClubRoles { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.Locations> Locations { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.ResidentPostResponse> ResidentPostResponse { get; set; }
     }
 }
