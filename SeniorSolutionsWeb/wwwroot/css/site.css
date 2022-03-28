@@ -23,3 +23,10 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.carousel-image {
+    height: 25em;
+    width: 100%;
+    object-fit: contain;
+    overflow: hidden;
+}

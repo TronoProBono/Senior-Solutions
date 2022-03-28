@@ -17,5 +17,6 @@ namespace SeniorSolutionsWeb.Data
 
         public DbSet<SeniorSolutionsWeb.Models.Resident> Resident { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.ServiceRequest> ServiceRequest { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.ResidentPostResponse> ResidentPostResponse { get; set; }
     }
 }
