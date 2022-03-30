@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SeniorSolutionsWeb.styles.css" asp-append-version="true" />
 </head>
-<body>
+@{string? backgroundName = (string?)ViewData["Background"];}
+<body class="@backgroundName">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -35,8 +36,6 @@
                             <a class="nav-link" asp-controller="Account" asp-action="Secured">Secure Page</a>
                         </li>
                     </ul>
-                </div>
-                <div>
                     <ul class="navbar-nav ms-auto">
                         @if (!User.Identity.IsAuthenticated)
                         {
@@ -69,7 +68,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted bg-white">
         <div class="container">
             &copy; 2022 - SeniorSolutionsWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

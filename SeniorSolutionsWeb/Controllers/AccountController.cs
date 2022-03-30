@@ -13,6 +13,13 @@ namespace SeniorSolutionsWeb.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+        [HttpGet]
+        public IActionResult Register(string returnUrl)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+        
 
         /// <summary>
         /// Pulls user login data from the database and allows the login form
