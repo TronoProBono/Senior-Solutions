@@ -60,7 +60,7 @@ namespace SeniorSolutionsWeb.Controllers
         }
         */
         public async Task<IActionResult> Index(int clubID, string? club_name, int location, string meeting_day, 
-            int start_time_begin, int start_time_end, int end_time_begin, int end_time_end, int page_size,int? page, int )
+            int start_time_begin, int start_time_end, int end_time_begin, int end_time_end, int page_size,int? page)
         {
 
             var demi_Club = from Meet in _context.ClubMeeting
