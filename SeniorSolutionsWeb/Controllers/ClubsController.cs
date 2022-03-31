@@ -59,14 +59,16 @@ namespace SeniorSolutionsWeb.Controllers
             //return View(await _context.Club.ToListAsync());
         }
         */
-        public async Task<IActionResult> Index(string club_name, int location, string meeting_day, int start_time, int end_time)
+        public async Task<IActionResult> Index(int clubID, string? club_name, int location, string meeting_day, 
+            int start_time_begin, int start_time_end, int end_time_begin, int end_time_end, int page_size,int? page, int )
         {
 
             var demi_Club = from Meet in _context.ClubMeeting
                                  join Location in _context.Locations on Meet.MeetingPlace equals Location.LocationId
                                  select new 
                                  { 
-                                     ClubId = Meet.ClubId, 
+                                     ClubId = Meet.ClubId,
+                                     LocationId = Location.LocationId,
                                      LocationName = Location.LocationName, 
                                      MeetingDay = Meet.MeetingDay, 
                                      StartTime = Meet.StartTime, 
@@ -79,11 +81,22 @@ namespace SeniorSolutionsWeb.Controllers
                                 ClubId = Club.ClubId,
                                 ClubName = Club.ClubName,
                                 DateClubCreated = Club.DateClubCreated,
+                                LocationID = Meet.LocationId,
                                 LocationName = Meet.LocationName,
                                 MeetingDay = Meet.MeetingDay,
                                 StartTime = Meet.StartTime,
                                 EndTime = Meet.EndTime
                             };
+
+            if (!(clubID < 0))
+            {
+                club = club = club.Where(s => s.ClubId!.Equals(clubID));
+                if (club.Count() == 0)
+                {
+                    TempData["Error"] = "Club ID Not Valid";
+                    return Redirect("/Clubs");
+                }
+            }
 
             if (!String.IsNullOrEmpty(club_name))
             {
@@ -92,7 +105,7 @@ namespace SeniorSolutionsWeb.Controllers
 
             if (!(location < 0))
             {
-                //club = club.Where(s => s.!.Contains(location));
+                club = club.Where(s => s.LocationID!.Equals(location));
             }
 
             if (!String.IsNullOrEmpty(meeting_day))
@@ -100,12 +113,61 @@ namespace SeniorSolutionsWeb.Controllers
                 club = club.Where(s => s.ClubName!.Contains(meeting_day));
             }
                         
-            if (!(start_time < 0) && !(end_time < 0))
+            if (!(start_time_begin < 0) && !(end_time_begin < 0) && !(start_time_end < 0) && !(end_time_end < 0))
             {
-                //club = club.Where(s => s.);
+                club = from cl in club
+                       where (cl.StartTime >= start_time_begin && cl.StartTime <= start_time_end && cl.EndTime >= end_time_begin && cl.EndTime <= end_time_end)
+                       select cl;
             }
 
-            return View(await _context.Club.ToListAsync());
+            //Counts the amount of objects avalible in club
+            var club_size = club.Count();
+            //Controls how many clubs are displayed on a single page
+            switch(page_size)
+            {
+                case 5:
+                    page_size = 5;
+                    break;
+                case 10:
+                    page_size = 10;
+                    break;
+                case 20:
+                    page_size = 20;
+                    break;
+                case 25:
+                    page_size = 25;
+                    break;
+                case 50:
+                    page_size = 50;
+                    break;
+                default:
+                    page_size = 25;
+                    break;
+            }
+            if(page == null)
+            {
+                page = 0;
+            }
+            //Automaticly set the current page to the last page if the input is above the amount of objects or is set to -2
+            if((page > Math.Abs(club_size-1)/page_size) || page == -2)
+            {
+                page = club_size / page_size;
+                /*if (!((page-1 == club_size / page_size) && (club_size % page_size == 0)))
+                {
+                    page = club_size / page_size;
+                }*/
+            }
+            /*if ((page == club_size / page_size) && (club_size % page_size == 0))
+            {
+                page--;
+            }*/
+            if(page < 0)
+            { page = 0; }
+
+            var startIndex = (int)(page*page_size);
+
+            club = club.Skip(startIndex).Take(page_size);
+            return View(await club.ToListAsync());
         }
     }
 }
