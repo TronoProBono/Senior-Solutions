@@ -3,11 +3,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using SeniorSolutionsWeb.Data;
+using Microsoft.EntityFrameworkCore;
+using SeniorSolutionsWeb.Models;
 
 namespace SeniorSolutionsWeb.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly SeniorSolutionsWebContext _context;
+
+        public AccountController(SeniorSolutionsWebContext context)
+        {
+            _context = context;
+        }
         public IActionResult Login(string returnUrl)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -34,24 +43,41 @@ namespace SeniorSolutionsWeb.Controllers
         public async Task<IActionResult> ValidateUser(string username, string password, string? returnUrl)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (username == "admin" && password == "adminDEVenv")
+            var resident = await _context.Resident.FirstOrDefaultAsync(m => m.Email == username);
+            var employee = await _context.Employee.FirstOrDefaultAsync(m => m.Email == username);
+            var claims = new List<Claim>();
+            if (resident == null)
             {
-                var claims = new List<Claim>();
-                claims.Add(new Claim("username", username));
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, username));
-                claims.Add(new Claim(ClaimTypes.Name, "John Doe"));
-                claims.Add(new Claim(ClaimTypes.Role, "SuperAdmin"));
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                await HttpContext.SignInAsync(claimsPrincipal);
-                if (returnUrl != null)
-                {
-                    return Redirect(returnUrl);
-                } else
-                {
-                    return Redirect("/Home");
-                }
+                TempData["Error"] = "Username or password is invalid.";
+                return View("Login");
+            }
+            if (username == resident.Email && resident.HashPassword(password) == resident.Password)
+            {
                 
+                claims.Add(new Claim("username", resident.Email));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, resident.Email));
+                claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + resident.LastName));
+                //claims.Add(new Claim(ClaimTypes.Role, "SuperAdmin")); This should be for staff only
+            }
+            //if (username == employee.Email && employee.HashPassword(password) == employee.Password) //Should be for staff
+            //{
+
+            //    claims.Add(new Claim("username", employee.Email));
+            //    claims.Add(new Claim(ClaimTypes.NameIdentifier, employee.Email));
+            //    claims.Add(new Claim(ClaimTypes.Name, employee.FirstName + employee.LastName));
+            //    //claims.Add(new Claim(ClaimTypes.Role, "SuperAdmin")); This should be for staff only
+            //}
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            await HttpContext.SignInAsync(claimsPrincipal);
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return Redirect("/Home");
             }
             TempData["Error"] = "Username or password is invalid.";
             return View("Login");

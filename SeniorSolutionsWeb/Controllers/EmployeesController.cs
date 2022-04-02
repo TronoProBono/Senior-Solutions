@@ -3,32 +3,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeniorSolutionsWeb.Data;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using SeniorSolutionsWeb.Models;
 
-namespace SeniorSolutionsWeb.Models
+namespace SeniorSolutionsWeb.Controllers
 {
-    [Authorize(Roles="SuperAdmin")]
-    public class ResidentsController : Controller
+    public class EmployeesController : Controller
     {
         private readonly SeniorSolutionsWebContext _context;
 
-        public ResidentsController(SeniorSolutionsWebContext context)
+        public EmployeesController(SeniorSolutionsWebContext context)
         {
             _context = context;
         }
 
-        // GET: Residents
+        // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Resident.ToListAsync());
+            return View(await _context.Employee.ToListAsync());
         }
 
-        // GET: Residents/Details/5
+        // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,40 +34,39 @@ namespace SeniorSolutionsWeb.Models
                 return NotFound();
             }
 
-            var resident = await _context.Resident
+            var employee = await _context.Employee
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resident == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(resident);
+            return View(employee);
         }
 
-        // GET: Residents/Create
+        // GET: Employees/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Residents/Create
+        // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,Password,FirstName,MiddleName,LastName,ResidencyStatus,ResidentLeaseNumber,DateAccountCreated")] Resident resident)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,DateHired")] Employee employee)
         {
-            resident.Password = resident.HashPassword(resident.Password);
             if (ModelState.IsValid)
             {
-                _context.Add(resident);
+                _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(resident);
+            return View(employee);
         }
 
-        // GET: Residents/Edit/5
+        // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,22 +74,22 @@ namespace SeniorSolutionsWeb.Models
                 return NotFound();
             }
 
-            var resident = await _context.Resident.FindAsync(id);
-            if (resident == null)
+            var employee = await _context.Employee.FindAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            return View(resident);
+            return View(employee);
         }
 
-        // POST: Residents/Edit/5
+        // POST: Employees/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,ResidencyStatus,ResidentLeaseNumber,DateAccountCreated")] Resident resident)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Email,DateHired")] Employee employee)
         {
-            if (id != resident.Id)
+            if (id != employee.Id)
             {
                 return NotFound();
             }
@@ -101,12 +98,12 @@ namespace SeniorSolutionsWeb.Models
             {
                 try
                 {
-                    _context.Update(resident);
+                    _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResidentExists(resident.Id))
+                    if (!EmployeeExists(employee.Id))
                     {
                         return NotFound();
                     }
@@ -117,10 +114,10 @@ namespace SeniorSolutionsWeb.Models
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(resident);
+            return View(employee);
         }
 
-        // GET: Residents/Delete/5
+        // GET: Employees/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,41 +125,30 @@ namespace SeniorSolutionsWeb.Models
                 return NotFound();
             }
 
-            var resident = await _context.Resident
+            var employee = await _context.Employee
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resident == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(resident);
+            return View(employee);
         }
 
-        // POST: Residents/Delete/5
+        // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var resident = await _context.Resident.FindAsync(id);
-            _context.Resident.Remove(resident);
+            var employee = await _context.Employee.FindAsync(id);
+            _context.Employee.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResidentExists(int id)
+        private bool EmployeeExists(int id)
         {
-            return _context.Resident.Any(e => e.Id == id);
-        }
-        public static string HashPassword(string password)
-        {
-            byte[] salt = new byte[128 / 8];
-            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-            return hashedPassword;
+            return _context.Employee.Any(e => e.Id == id);
         }
     }
 }

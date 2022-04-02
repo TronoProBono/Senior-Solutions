@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220331174510_hash")]
+    partial class hash
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("Club", (string)null);
+                    b.ToTable("Club");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMeeting", b =>
@@ -68,7 +70,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("MeetId");
 
-                    b.ToTable("ClubMeeting", (string)null);
+                    b.ToTable("ClubMeeting");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMembership", b =>
@@ -88,7 +90,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("ClubMembership", (string)null);
+                    b.ToTable("ClubMembership");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubRoles", b =>
@@ -114,7 +116,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("ClubRoles", (string)null);
+                    b.ToTable("ClubRoles");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Locations", b =>
@@ -131,7 +133,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -173,7 +175,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resident", (string)null);
+                    b.ToTable("Resident");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
@@ -201,7 +203,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResidentPostResponse", (string)null);
+                    b.ToTable("ResidentPostResponse");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
@@ -235,7 +237,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceRequest", (string)null);
+                    b.ToTable("ServiceRequest");
                 });
 #pragma warning restore 612, 618
         }

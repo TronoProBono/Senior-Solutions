@@ -5,9 +5,14 @@
     var error = TempData["Error"] as string;
     Layout = "_Layout";
 }
-<h3>@error</h3>
 <div class="col-12 d-flex justify-content-center align-items-center vh-100">
     <div class="col-sm-4 p-5 bg-white border border-5 rounded">
+        @if (error != null)
+        {
+        <div class="col-12 text-center text-danger">
+            <h6 class="pb-2">@error</h6>
+        </div>
+        }
         <div class="col-12 text-center">
             <h4 class="border-bottom pb-2">Senior Solutions</h4>
             <h5>Login</h5>

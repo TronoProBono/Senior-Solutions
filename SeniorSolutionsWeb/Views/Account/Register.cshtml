@@ -13,7 +13,7 @@
             <h4 class="border-bottom pb-2">Senior Solutions</h4>
             <h5>Register Account</h5>
         </div>
-        <form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+        <form action="/Account/Create?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label fw-bold">Username</label>
                 <input type="text" class="form-control" id="username" name="username">
@@ -22,7 +22,19 @@
                 <label for="password" class="form-label fw-bold">Password</label>
                 <input type="password" class="form-control" id="password" name="password">
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="mb-3">
+                <label for="repassword" class="form-label fw-bold">Confirm Password</label>
+                <input type="password" class="form-control" id="repassword" name="repassword">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold">E-mail</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+            <div class="mb-3">
+                <label for="licensekey" class="form-label fw-bold">License Key</label>
+                <input type="text" class="form-control" id="licensekey" name="licensekey">
+            </div>
+            <button type="submit" class="btn btn-primary">Create!</button>
             <a href="/Account/Register?returnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" class="btn btn-primary">Register</a>
         </form>
     </div> 
