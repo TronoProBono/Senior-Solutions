@@ -59,7 +59,7 @@ namespace SeniorSolutionsWeb.Controllers
             //return View(await _context.Club.ToListAsync());
         }
         */
-        public async Task<IActionResult> Index(int clubID, string? club_name, int location, string meeting_day, 
+        public async Task<IActionResult> Index(int? clubID, string? club_name, int location, string meeting_day, 
             int start_time_begin, int start_time_end, int end_time_begin, int end_time_end, int page_size,int? page)
         {
 
@@ -88,7 +88,7 @@ namespace SeniorSolutionsWeb.Controllers
                                 EndTime = Meet.EndTime
                             };
 
-            if (!(clubID < 0))
+            if (!(clubID < 0) && clubID != null)
             {
                 club = club = club.Where(s => s.ClubId!.Equals(clubID));
                 if (club.Count() == 0)
@@ -148,7 +148,7 @@ namespace SeniorSolutionsWeb.Controllers
             {
                 page = 0;
             }
-            //Automaticly set the current page to the last page if the input is above the amount of objects or is set to -2
+            //Automaticly set the current page to the last page if the input is above the amount of objects or of page is set to -2
             if((page > Math.Abs(club_size-1)/page_size) || page == -2)
             {
                 page = club_size / page_size;
@@ -161,6 +161,8 @@ namespace SeniorSolutionsWeb.Controllers
             {
                 page--;
             }*/
+
+            //Any page input below 0 (but not -2) will be set to the first page
             if(page < 0)
             { page = 0; }
 
