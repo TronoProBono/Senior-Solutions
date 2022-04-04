@@ -55,8 +55,9 @@ namespace SeniorSolutionsWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,DateHired")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Password,DateHired,Position")] Employee employee)
         {
+            employee.Password = AccountController.HashPassword(employee.Password);
             if (ModelState.IsValid)
             {
                 _context.Add(employee);

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SeniorSolutionsWeb.Models
 {
@@ -27,16 +26,5 @@ namespace SeniorSolutionsWeb.Models
         //[DataType(DataType.DateTime)] Uneccessary assignment with DataAnnotation
         [Display(Name = "Date Account Created")]
         public DateTime DateAccountCreated { get; set; } = DateTime.Now;
-        public string HashPassword(string password)
-        {
-            byte[] salt = new byte[128 / 8];
-            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-            return hashedPassword;
-        }
     }
 }

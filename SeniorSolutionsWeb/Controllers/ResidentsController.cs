@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeniorSolutionsWeb.Data;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using SeniorSolutionsWeb.Controllers;
 
 namespace SeniorSolutionsWeb.Models
 {
@@ -59,7 +60,7 @@ namespace SeniorSolutionsWeb.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Email,Password,FirstName,MiddleName,LastName,ResidencyStatus,ResidentLeaseNumber,DateAccountCreated")] Resident resident)
         {
-            resident.Password = resident.HashPassword(resident.Password);
+            resident.Password = AccountController.HashPassword(resident.Password);
             if (ModelState.IsValid)
             {
                 _context.Add(resident);

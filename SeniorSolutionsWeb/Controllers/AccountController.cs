@@ -6,6 +6,7 @@ using System.Security.Claims;
 using SeniorSolutionsWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using SeniorSolutionsWeb.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace SeniorSolutionsWeb.Controllers
 {
@@ -43,31 +44,41 @@ namespace SeniorSolutionsWeb.Controllers
         public async Task<IActionResult> ValidateUser(string username, string password, string? returnUrl)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            var resident = await _context.Resident.FirstOrDefaultAsync(m => m.Email == username);
-            var employee = await _context.Employee.FirstOrDefaultAsync(m => m.Email == username);
+            Resident? resident = await _context.Resident.FirstOrDefaultAsync(m => m.Email == username);
+            Employee? employee = await _context.Employee.FirstOrDefaultAsync(m => m.Email == username);
             var claims = new List<Claim>();
-            if (resident == null)
+
+            if (resident == null && employee == null) // Username entered doesn't exist in any database
             {
                 TempData["Error"] = "Username or password is invalid.";
                 return View("Login");
             }
-            if (username == resident.Email && resident.HashPassword(password) == resident.Password)
+            if(resident != null) //Username does exist in resident DB
             {
-                
-                claims.Add(new Claim("username", resident.Email));
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, resident.Email));
-                claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + resident.LastName));
-                //claims.Add(new Claim(ClaimTypes.Role, "SuperAdmin")); This should be for staff only
+                if (username == resident.Email && HashPassword(password) == resident.Password)
+                {
+                    claims.Add(new Claim("username", resident.Email));
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, resident.Email));
+                    claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + resident.LastName));
+                }
+            } 
+            else //Username exists in employee DB
+            {
+                if (username == employee.Email && HashPassword(password) == employee.Password)
+                {
+                    claims.Add(new Claim("username", employee.Email));
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, employee.Email));
+                    claims.Add(new Claim(ClaimTypes.Name, employee.FirstName + employee.LastName));
+                    if (employee.Position != null) claims.Add(new Claim(ClaimTypes.Role, employee.Position));
+                }
             }
-            //if (username == employee.Email && employee.HashPassword(password) == employee.Password) //Should be for staff
-            //{
 
-            //    claims.Add(new Claim("username", employee.Email));
-            //    claims.Add(new Claim(ClaimTypes.NameIdentifier, employee.Email));
-            //    claims.Add(new Claim(ClaimTypes.Name, employee.FirstName + employee.LastName));
-            //    //claims.Add(new Claim(ClaimTypes.Role, "SuperAdmin")); This should be for staff only
-            //}
-
+            if (claims.Count == 0) //Password was not correct, make sure NOT to sign them in
+            {
+                claims = null;
+                TempData["Error"] = "Username or password is invalid.";
+                return View("Login");
+            }
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await HttpContext.SignInAsync(claimsPrincipal);
@@ -79,8 +90,7 @@ namespace SeniorSolutionsWeb.Controllers
             {
                 return Redirect("/Home");
             }
-            TempData["Error"] = "Username or password is invalid.";
-            return View("Login");
+            
         }
 
         [Authorize] 
@@ -99,6 +109,18 @@ namespace SeniorSolutionsWeb.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        public static string HashPassword(string password)
+        {
+            byte[] salt = new byte[128 / 8];
+            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+            return hashedPassword;
         }
     }
 }

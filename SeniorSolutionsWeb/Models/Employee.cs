@@ -15,5 +15,6 @@ namespace SeniorSolutionsWeb.Models
         public string Password { get; set; }
         [Display(Name = "Date Hired")]
         public DateTime DateHired { get; set; } = DateTime.Now;
+        public string? Position { get; set; }
     }
 }
