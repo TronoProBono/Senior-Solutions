@@ -39,7 +39,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("Club");
+                    b.ToTable("Club", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMeeting", b =>
@@ -68,7 +68,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("MeetId");
 
-                    b.ToTable("ClubMeeting");
+                    b.ToTable("ClubMeeting", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMembership", b =>
@@ -88,7 +88,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("ClubMembership");
+                    b.ToTable("ClubMembership", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubRoles", b =>
@@ -114,7 +114,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("ClubRoles");
+                    b.ToTable("ClubRoles", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -149,7 +149,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employee", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Locations", b =>
@@ -166,7 +166,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -208,7 +208,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resident");
+                    b.ToTable("Resident", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
@@ -236,7 +236,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResidentPostResponse");
+                    b.ToTable("ResidentPostResponse", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
@@ -270,7 +270,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceRequest");
+                    b.ToTable("ServiceRequest", (string)null);
                 });
 #pragma warning restore 612, 618
         }

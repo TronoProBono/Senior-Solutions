@@ -59,8 +59,8 @@ namespace SeniorSolutionsWeb.Controllers
             //return View(await _context.Club.ToListAsync());
         }
         */
-        public async Task<IActionResult> Index(int? clubID, string? club_name, int location, string meeting_day, 
-            int start_time_begin, int start_time_end, int end_time_begin, int end_time_end, int page_size,int? page)
+        public async Task<IActionResult> Index(int? clubID, string? club_name, int? location, string? meeting_day, 
+            int? start_time_begin, int? start_time_end, int? end_time_begin, int? end_time_end, int? page_size,int? page)
         {
 
             var demi_Club = from Meet in _context.ClubMeeting
@@ -75,19 +75,22 @@ namespace SeniorSolutionsWeb.Controllers
                                      EndTime = Meet.EndTime
                                  };
             var club = from Club in _context.Club
-                            join Meet in demi_Club on Club.ClubId equals Meet.ClubId
-                            select new
-                            {
-                                ClubId = Club.ClubId,
-                                ClubName = Club.ClubName,
-                                DateClubCreated = Club.DateClubCreated,
-                                LocationID = Meet.LocationId,
-                                LocationName = Meet.LocationName,
-                                MeetingDay = Meet.MeetingDay,
-                                StartTime = Meet.StartTime,
-                                EndTime = Meet.EndTime
-                            };
+                       join Meet in demi_Club on Club.ClubId equals Meet.ClubId into full_club
+                       from Meet in full_club.DefaultIfEmpty()
+                       select new
+                       {
+                           ClubId = /*Club == null ? -1 : */(Club.ClubId),
+                           ClubName = /*Club == null ? string.Empty : */(Club.ClubName),
+                           DateClubCreated = /*Club == null ? new DateTime(2020,5,1,0,0,0) :*/(Club.DateClubCreated),
+                           LocationID = Meet.LocationId == null ? -1 : (Meet.LocationId),
+                           LocationName = Meet.LocationName == null ? "" : (Meet.LocationName),
+                           MeetingDay = Meet.MeetingDay == null ? "" : (Meet.MeetingDay),
+                           StartTime = Meet.StartTime == null ? -1 : (Meet.StartTime),
+                           EndTime = Meet.EndTime == null ? -1 : (Meet.EndTime)
 
+                       };
+
+            /*
             if (!(clubID < 0) && clubID != null)
             {
                 club = club = club.Where(s => s.ClubId!.Equals(clubID));
@@ -103,7 +106,7 @@ namespace SeniorSolutionsWeb.Controllers
                 club = club.Where(s => s.ClubName!.Contains(club_name));
             }
 
-            if (!(location < 0))
+            if ((location != null) && (location >= 0))
             {
                 club = club.Where(s => s.LocationID!.Equals(location));
             }
@@ -113,13 +116,13 @@ namespace SeniorSolutionsWeb.Controllers
                 club = club.Where(s => s.ClubName!.Contains(meeting_day));
             }
                         
-            if (!(start_time_begin < 0) && !(end_time_begin < 0) && !(start_time_end < 0) && !(end_time_end < 0))
+            if ((start_time_begin != null) && (end_time_begin != null) && (start_time_end != null) && (end_time_end != null) && !(start_time_begin < 0) && !(end_time_begin < 0) && !(start_time_end < 0) && !(end_time_end < 0))
             {
                 club = from cl in club
                        where (cl.StartTime >= start_time_begin && cl.StartTime <= start_time_end && cl.EndTime >= end_time_begin && cl.EndTime <= end_time_end)
                        select cl;
             }
-
+            */
             //Counts the amount of objects avalible in club
             var club_size = club.Count();
             //Controls how many clubs are displayed on a single page
@@ -166,10 +169,34 @@ namespace SeniorSolutionsWeb.Controllers
             if(page < 0)
             { page = 0; }
 
+            var filter_club = from orgin in club
+                              select new
+                              {
+                                  clubID = orgin.ClubId
+                              };
+
+            filter_club = filter_club.Distinct();
             var startIndex = (int)(page*page_size);
 
-            club = club.Skip(startIndex).Take(page_size);
-            return View(await club.ToListAsync());
+            //club = club.Skip(startIndex).Take((int)page_size);
+            filter_club = filter_club.Skip(startIndex).Take((int)page_size);
+            club = from c1 in club
+                   from c2 in filter_club
+                   where c1.ClubId == c2.clubID
+                   select c1;
+
+            var exit_club = from prev in club
+                            select new Models.ClubViewModel
+                            {
+                                ClubId = prev.ClubId,
+                                ClubName = prev.ClubName,
+                                DateClubCreated = prev.DateClubCreated,
+                                LocationName = prev.LocationName,
+                                MeetingDay = prev.MeetingDay,
+                                StartTime = prev.StartTime,
+                                EndTime = prev.EndTime,
+                            };
+            return View(await exit_club.ToListAsync());
         }
     }
 }

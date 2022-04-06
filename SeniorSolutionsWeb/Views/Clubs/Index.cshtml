@@ -1,9 +1,14 @@
-﻿@model IEnumerable<SeniorSolutionsWeb.Models.Club>
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.ClubViewModel>
 
 @{
     ViewData["Title"] = "Discover Clubs";
     Layout = "_Layout";
 }
+@{
+    List<int> Searched_Club = new List<int>();
+    Console.WriteLine("The Current Capacity of the List is:{0}", Searched_Club.Capacity);
+}
+
 
 <div class="row">
     <div class="col-3">
@@ -67,5 +72,221 @@
         <div class="card">
             <div></div>
         </div>
+</div>
+<div>
+    @foreach(var mod in Model)
+        {
+            @Html.DisplayFor(modelItem => mod.ClubId)
+        }
+</div>
+
+<div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Sunday</li>
+        <li class="list-group-item">Monday</li>
+        <li class="list-group-item">Tuesday</li>
+        <li class="list-group-item">Wednesday</li>
+        <li class="list-group-item">Thursday</li>
+        <li class="list-group-item">Friday</li>
+        <li class="list-group-item">Saturday</li>
+    </ul>
+
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+              </div>
+            </div>
+            <div class="col-md-4">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Day</th>
+                      <th scope="col">Start Time</th>
+                      <th scope="col">End Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td colspan="2">Larry the Bird</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            <div class="card-footer text-muted">
+                Date Created:
+            </div>
+        </div>
     </div>
 </div>
+
+@foreach(var mod in Model)
+{
+    if(!Searched_Club.Contains(mod.ClubId))
+    {
+        Console.WriteLine("If this is true, something is very wrong: {0}\n", Searched_Club.Contains(mod.ClubId));
+        Console.WriteLine("Current ID:{0}\n",(mod.ClubId));
+        int[] CountClubs = new int[7];
+        for(int i = 0; i< 7; i++)
+        {
+            CountClubs[i] = 0;
+        }
+        foreach(var meet in Model)
+        {
+            if(mod.ClubId == meet.ClubId)
+                {
+                    var eval = meet.MeetingDay;
+                    switch (eval)
+                    {
+                        case "Sunday":
+                            CountClubs[0] = CountClubs[0] + 1;
+                            break;
+
+                        case "Monday":
+                            CountClubs[1] = CountClubs[1] + 1;
+                            break;
+
+                        case "Tuesday":
+                            CountClubs[2] = CountClubs[2] + 1;
+                            break;
+
+                        case "Wednesday":
+                            CountClubs[3] = CountClubs[3] + 1;
+                            break;
+
+                        case "Thursday":
+                            CountClubs[4] = CountClubs[4] + 1;
+                            break;
+
+                        case "Friday":
+                            CountClubs[5] = CountClubs[5] + 1;
+                            break;
+
+                        case "Saturday":
+                            CountClubs[6] = CountClubs[6] + 1;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+        }
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => mod.ClubName)</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Day</th>
+                                <th scope="col">Start Time</th>
+                                <th scope="col">End Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for(int i = 0; i<7;i++)
+                            {
+                                int day_span = CountClubs[i];
+                                if(day_span == 0)
+                                {
+                                    day_span++;
+                                }
+                                String str = day_span.ToString();
+                                String meet_day = "";
+                                @switch (i)
+                                {
+                                    case 0:
+                                        meet_day = "Sunday";
+                                        break;
+                                    case 1:
+                                        meet_day = "Monday";
+                                        break;
+                                    case 2:
+                                        meet_day = "Tuesday";
+                                        break;
+                                    case 3:
+                                        meet_day = "Wednesday";
+                                        break;
+                                    case 4:
+                                        meet_day = "Thursday";
+                                        break;
+                                    case 5:
+                                        meet_day = "Friday";
+                                        break;
+                                    case 6:
+                                        meet_day = "Saturday";
+                                        break;
+                                    default:
+                                        meet_day = "";
+                                        break;
+                                }
+                                int Continue = CountClubs[i];
+                                @foreach(var time in Model)
+                                {
+                                    @if (CountClubs[i] == 0)
+                                    {
+                                        <tr>
+                                            <th scope="row" rowspan="@str">@(meet_day)</th>;
+                                            <td colspan="2">"Not Meeting"</td>;
+                                        </tr>
+                                        break;
+                                    }
+                                    @if (time.ClubId == mod.ClubId && time.MeetingDay == meet_day)
+                                    {
+                                        <tr>
+                                            @if (@Continue == CountClubs[i])
+                                            {
+                                                <th scope="row" rowspan="@str">@(meet_day)</th>;
+                                            }
+                                            @if (CountClubs[i] == 0)
+                                            {
+                                                <td colspan="2">"Not Meeting"</td>;
+                                            }
+                                            else
+                                            {
+                                                <td>@Html.DisplayFor(modelItem => time.StartTime)</td>;
+                                                <td>@Html.DisplayFor(modelItem => time.EndTime)</td>;
+                                            }
+                                        </tr>
+                                        Continue--;
+                                        if(Continue <= 0)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer text-muted">
+                    Date Created: @Html.DisplayFor(modelItem => mod.DateClubCreated)
+                </div>
+            </div>
+        </div>
+        Searched_Club.Add(mod.ClubId);
+        Searched_Club.ForEach(p => Console.WriteLine(p));
+        Console.WriteLine("\n");
+        Console.WriteLine("The Current Capacity of the List is:{0}", Searched_Club.Capacity);
+    }
+}

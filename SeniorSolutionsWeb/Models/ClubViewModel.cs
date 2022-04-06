@@ -3,20 +3,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SeniorSolutionsWeb.Models
 {
-    public class ClubMeeting
+    public class ClubViewModel
     {
-        [Key]
-        [Display(Name = "Meeting ID")]
-        [DefaultValue(-1)]
-        public int MeetId { get; set; } = -1;
-
         [Display(Name = "Club ID")]
         [DefaultValue(-1)]
         public int ClubId { get; set; } = -1;
 
+        [Display(Name = "Meeting Day")]
+        [DefaultValue("")]
+        public String ClubName { get; set; } = "";
+
+        [Display(Name = "Date Account Created")]
+        [DefaultValue("")]
+        public DateTime DateClubCreated { get; set; } = DateTime.Now;
+
         [Display(Name = "Meeting Place")]
-        [DefaultValue(-1)]
-        public int MeetingPlace { get; set; } = -1;
+        [DefaultValue("")]
+        public String LocationName { get; set; } = "";
 
         [Display(Name = "Meeting Day")]
         [DefaultValue("")]
@@ -29,5 +32,6 @@ namespace SeniorSolutionsWeb.Models
         [Display(Name = "Meeting End Time")]
         [DefaultValue(-1)]
         public int? EndTime { get; set; } = -1;
+
     }
 }
