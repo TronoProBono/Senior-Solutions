@@ -186,7 +186,20 @@ namespace SeniorSolutionsWeb.Controllers
                        where (cl.StartTime >= start_time_begin && cl.StartTime <= start_time_end && cl.EndTime >= end_time_begin && cl.EndTime <= end_time_end)
                        select cl;
             }
-            
+            else if (start_time_begin != null && start_time_end != null && start_time_begin >= 0 && start_time_end >= 0)
+            {
+                club = from cl in club
+                       where (cl.StartTime >= start_time_begin && cl.StartTime <= start_time_end)
+                       select cl;
+            }
+            else if (end_time_begin != null && end_time_end != null && end_time_begin >= 0 && end_time_end >= 0)
+            {
+                club = from cl in club
+                       where (cl.StartTime >= start_time_begin && cl.StartTime <= start_time_end)
+                       select cl;
+            }
+
+
             //Counts the amount of objects avalible in club
             var club_size = club.Count();
             //Controls how many clubs are displayed on a single page
