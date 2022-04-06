@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220405200715_Inheritance")]
+    partial class Inheritance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("Club", (string)null);
+                    b.ToTable("Club");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMeeting", b =>
@@ -68,7 +70,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("MeetId");
 
-                    b.ToTable("ClubMeeting", (string)null);
+                    b.ToTable("ClubMeeting");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMembership", b =>
@@ -88,7 +90,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("ClubMembership", (string)null);
+                    b.ToTable("ClubMembership");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubRoles", b =>
@@ -114,37 +116,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("ClubRoles", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DownVotes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpVotes")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CommunityIssue");
+                    b.ToTable("ClubRoles");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -185,7 +157,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employee", (string)null);
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Locations", b =>
@@ -202,7 +174,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -244,7 +216,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resident", (string)null);
+                    b.ToTable("Resident");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
@@ -254,9 +226,6 @@ namespace SeniorSolutionsWeb.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CommunityIssueId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateResponse")
                         .HasColumnType("datetime2");
@@ -274,10 +243,6 @@ namespace SeniorSolutionsWeb.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CommunityIssueId");
-
-                    b.HasIndex("ResidentID");
 
                     b.ToTable("ResidentPostResponse");
                 });
@@ -313,26 +278,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceRequest", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
-                {
-                    b.HasOne("SeniorSolutionsWeb.Models.CommunityIssue", "CommunityIssue")
-                        .WithMany()
-                        .HasForeignKey("CommunityIssueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
-                        .WithMany()
-                        .HasForeignKey("ResidentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CommunityIssue");
-
-                    b.Navigation("Resident");
+                    b.ToTable("ServiceRequest");
                 });
 #pragma warning restore 612, 618
         }

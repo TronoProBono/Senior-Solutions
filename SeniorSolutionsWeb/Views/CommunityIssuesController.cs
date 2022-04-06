@@ -3,33 +3,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeniorSolutionsWeb.Data;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using SeniorSolutionsWeb.Controllers;
+using SeniorSolutionsWeb.Models;
 
-namespace SeniorSolutionsWeb.Models
+namespace SeniorSolutionsWeb.Views
 {
-    [Authorize(Roles="Manager")]
-    public class ResidentsController : Controller
+    public class CommunityIssuesController : Controller
     {
         private readonly SeniorSolutionsWebContext _context;
 
-        public ResidentsController(SeniorSolutionsWebContext context)
+        public CommunityIssuesController(SeniorSolutionsWebContext context)
         {
             _context = context;
         }
 
-        // GET: Residents
+        // GET: CommunityIssues
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Resident.ToListAsync());
+            return View(await _context.CommunityIssue.ToListAsync());
         }
 
-        // GET: Residents/Details/5
+        // GET: CommunityIssues/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,40 +34,39 @@ namespace SeniorSolutionsWeb.Models
                 return NotFound();
             }
 
-            var resident = await _context.Resident
+            var communityIssue = await _context.CommunityIssue
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resident == null)
+            if (communityIssue == null)
             {
                 return NotFound();
             }
 
-            return View(resident);
+            return View(communityIssue);
         }
 
-        // GET: Residents/Create
+        // GET: CommunityIssues/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Residents/Create
+        // POST: CommunityIssues/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,Password,FirstName,MiddleName,LastName,ResidencyStatus,ResidentLeaseNumber,DateAccountCreated")] Resident resident)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,CreatedDate,UpVotes,DownVotes")] CommunityIssue communityIssue)
         {
-            resident.Password = AccountController.HashPassword(resident.Password);
             if (ModelState.IsValid)
             {
-                _context.Add(resident);
+                _context.Add(communityIssue);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(resident);
+            return View(communityIssue);
         }
 
-        // GET: Residents/Edit/5
+        // GET: CommunityIssues/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,22 +74,22 @@ namespace SeniorSolutionsWeb.Models
                 return NotFound();
             }
 
-            var resident = await _context.Resident.FindAsync(id);
-            if (resident == null)
+            var communityIssue = await _context.CommunityIssue.FindAsync(id);
+            if (communityIssue == null)
             {
                 return NotFound();
             }
-            return View(resident);
+            return View(communityIssue);
         }
 
-        // POST: Residents/Edit/5
+        // POST: CommunityIssues/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,ResidencyStatus,ResidentLeaseNumber,DateAccountCreated")] Resident resident)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedDate,UpVotes,DownVotes")] CommunityIssue communityIssue)
         {
-            if (id != resident.Id)
+            if (id != communityIssue.Id)
             {
                 return NotFound();
             }
@@ -102,12 +98,12 @@ namespace SeniorSolutionsWeb.Models
             {
                 try
                 {
-                    _context.Update(resident);
+                    _context.Update(communityIssue);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResidentExists(resident.Id))
+                    if (!CommunityIssueExists(communityIssue.Id))
                     {
                         return NotFound();
                     }
@@ -118,10 +114,10 @@ namespace SeniorSolutionsWeb.Models
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(resident);
+            return View(communityIssue);
         }
 
-        // GET: Residents/Delete/5
+        // GET: CommunityIssues/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,41 +125,30 @@ namespace SeniorSolutionsWeb.Models
                 return NotFound();
             }
 
-            var resident = await _context.Resident
+            var communityIssue = await _context.CommunityIssue
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resident == null)
+            if (communityIssue == null)
             {
                 return NotFound();
             }
 
-            return View(resident);
+            return View(communityIssue);
         }
 
-        // POST: Residents/Delete/5
+        // POST: CommunityIssues/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var resident = await _context.Resident.FindAsync(id);
-            _context.Resident.Remove(resident);
+            var communityIssue = await _context.CommunityIssue.FindAsync(id);
+            _context.CommunityIssue.Remove(communityIssue);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResidentExists(int id)
+        private bool CommunityIssueExists(int id)
         {
-            return _context.Resident.Any(e => e.Id == id);
-        }
-        public static string HashPassword(string password)
-        {
-            byte[] salt = new byte[128 / 8];
-            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
-            return hashedPassword;
+            return _context.CommunityIssue.Any(e => e.Id == id);
         }
     }
 }
