@@ -12,7 +12,7 @@
 
 <div class="row">
     <div class="col-3">
-        <div class="card">
+        <div class="card sticky-top">
             <div class="card-header">
                 <h6>Targeted Search</h6>
             </div>
@@ -69,71 +69,6 @@
         </div>
     </div>
     <div class="col-9">
-        <div class="card">
-            <div></div>
-        </div>
-</div>
-<div>
-    @foreach(var mod in Model)
-        {
-            @Html.DisplayFor(modelItem => mod.ClubId)
-        }
-</div>
-
-<div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Sunday</li>
-        <li class="list-group-item">Monday</li>
-        <li class="list-group-item">Tuesday</li>
-        <li class="list-group-item">Wednesday</li>
-        <li class="list-group-item">Thursday</li>
-        <li class="list-group-item">Friday</li>
-        <li class="list-group-item">Saturday</li>
-    </ul>
-
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-              </div>
-            </div>
-            <div class="col-md-4">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Day</th>
-                      <th scope="col">Start Time</th>
-                      <th scope="col">End Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td colspan="2">Larry the Bird</td>
-                    </tr>
-                  </tbody>
-                </table>
-            </div>
-            <div class="card-footer text-muted">
-                Date Created:
-            </div>
-        </div>
-    </div>
-</div>
-
 @foreach(var mod in Model)
 {
     if(!Searched_Club.Contains(mod.ClubId))
@@ -186,21 +121,24 @@
                 }
         }
         <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title text-center">@Html.DisplayFor(modelItem => mod.ClubName)</h5>
+            </div>
             <div class="row g-0">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => mod.ClubName)</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Club ID: @Html.DisplayFor(modelItem => mod.ClubId)</small></p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Day</th>
+                                <th scope="col"></th>
                                 <th scope="col">Start Time</th>
                                 <th scope="col">End Time</th>
+                                <th scope="col">Location</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -246,8 +184,8 @@
                                     @if (CountClubs[i] == 0)
                                     {
                                         <tr>
-                                            <th scope="row" rowspan="@str">@(meet_day)</th>;
-                                            <td colspan="2">"Not Meeting"</td>;
+                                            <th scope="row" rowspan="@str">@(meet_day)</th>
+                                            <td colspan="3" class="text-center"><i>Not Meeting</i></td>
                                         </tr>
                                         break;
                                     }
@@ -256,16 +194,17 @@
                                         <tr>
                                             @if (@Continue == CountClubs[i])
                                             {
-                                                <th scope="row" rowspan="@str">@(meet_day)</th>;
+                                                <th scope="row" rowspan="@str">@(meet_day)</th>
                                             }
                                             @if (CountClubs[i] == 0)
                                             {
-                                                <td colspan="2">"Not Meeting"</td>;
+                                                <td colspan="3">"Not Meeting"</td>
                                             }
                                             else
                                             {
                                                 <td>@Html.DisplayFor(modelItem => time.StartTime)</td>;
                                                 <td>@Html.DisplayFor(modelItem => time.EndTime)</td>;
+                                                <td>@Html.DisplayFor(modelItem => time.LocationName)</td>;
                                             }
                                         </tr>
                                         Continue--;
@@ -290,3 +229,5 @@
         Console.WriteLine("The Current Capacity of the List is:{0}", Searched_Club.Capacity);
     }
 }
+    </div>
+</div>

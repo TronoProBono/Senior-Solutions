@@ -8,6 +8,71 @@ namespace SeniorSolutionsWeb.Controllers
     {
         private readonly SeniorSolutionsWebContext _context;
 
+        public static String AdditionByFour_15Min(int Initial, int Current, int Max, int Iteration, int Min)
+        {
+            if (Current == Initial)
+            {
+                Console.WriteLine("Initial:{0}\n", Initial);
+                Console.WriteLine("Current:{0}\n", Current);
+                Console.WriteLine("Max:{0}\n", Max);
+                Console.WriteLine("Iteration:{0}\n", Iteration);
+                Console.WriteLine("Min:{0}\n",Min);
+                var AMPM = "AM";
+                if (Current > 48)
+                {
+                    AMPM = "PM";
+        }
+                var hour = Iteration;
+                if (Iteration > 13)
+                {
+                    hour = hour - 12;
+                }
+                switch (Iteration)
+                {
+                    case 0:
+                        hour = 12;
+                        break;
+                    default:
+                        break;
+                }
+                var Min_Correction = "00";
+                if (Min != 0)
+                {
+                    Min_Correction = Min.ToString();
+                }
+                return hour + ":" + Min_Correction + " " + AMPM;
+            }
+            else if (Initial + 4 <= Max)
+            {
+                var result = AdditionByFour_15Min(Initial + 4, Current, Max, Iteration + 1, Min);
+                if (result != "0")
+                {
+                    return result;
+                }
+            }
+            return "0";
+}
+
+        public static String ConvertTime(int? Time)
+        {
+            if (Time == null)
+            {
+                throw new ArgumentNullException(nameof(Time));
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    var intro = AdditionByFour_15Min(i + 1, (int)Time, i + 93, 0, i * 15);
+                    if (intro != "0")
+                    {
+                        return intro;
+                    }
+                }
+            }
+            return "Unknown";
+        }
+
         public ClubsController(SeniorSolutionsWebContext context)
         {
             _context = context;
@@ -62,7 +127,6 @@ namespace SeniorSolutionsWeb.Controllers
         public async Task<IActionResult> Index(int? clubID, string? club_name, int? location, string? meeting_day, 
             int? start_time_begin, int? start_time_end, int? end_time_begin, int? end_time_end, int? page_size,int? page)
         {
-
             var demi_Club = from Meet in _context.ClubMeeting
                                  join Location in _context.Locations on Meet.MeetingPlace equals Location.LocationId
                                  select new 
@@ -90,7 +154,7 @@ namespace SeniorSolutionsWeb.Controllers
 
                        };
 
-            /*
+            
             if (!(clubID < 0) && clubID != null)
             {
                 club = club = club.Where(s => s.ClubId!.Equals(clubID));
@@ -122,7 +186,7 @@ namespace SeniorSolutionsWeb.Controllers
                        where (cl.StartTime >= start_time_begin && cl.StartTime <= start_time_end && cl.EndTime >= end_time_begin && cl.EndTime <= end_time_end)
                        select cl;
             }
-            */
+            
             //Counts the amount of objects avalible in club
             var club_size = club.Count();
             //Controls how many clubs are displayed on a single page
@@ -193,8 +257,8 @@ namespace SeniorSolutionsWeb.Controllers
                                 DateClubCreated = prev.DateClubCreated,
                                 LocationName = prev.LocationName,
                                 MeetingDay = prev.MeetingDay,
-                                StartTime = prev.StartTime,
-                                EndTime = prev.EndTime,
+                                StartTime = ConvertTime(prev.StartTime),
+                                EndTime = ConvertTime(prev.EndTime),
                             };
             return View(await exit_club.ToListAsync());
         }

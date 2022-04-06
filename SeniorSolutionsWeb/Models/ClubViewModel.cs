@@ -27,11 +27,11 @@ namespace SeniorSolutionsWeb.Models
 
         [Display(Name = "Meeting Start Time")]
         [DefaultValue(-1)]
-        public int? StartTime { get; set; } = -1;
+        public String? StartTime { get; set; } = "-1";
 
         [Display(Name = "Meeting End Time")]
         [DefaultValue(-1)]
-        public int? EndTime { get; set; } = -1;
+        public String? EndTime { get; set; } = "-1";
 
     }
 }
