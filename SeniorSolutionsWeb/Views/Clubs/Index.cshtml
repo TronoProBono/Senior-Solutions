@@ -8,7 +8,9 @@
     List<int> Searched_Club = new List<int>();
     Console.WriteLine("The Current Capacity of the List is:{0}", Searched_Club.Capacity);
 }
-
+<script src="~/js/jquery-3.6.0.js"></script>
+<link href="~/css/select2.css" rel="stylesheet" />
+<script src="~/js/select2.full.min.js" defer></script>
 
 <div class="row">
     <div class="col-3">
@@ -60,10 +62,56 @@
                       </div>
                 </form>
                 <hr>
+                @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                {
+                    //@Html.DropDownList("ddlCustomers")
+                    @Html.DropDownList("PopulateLocals", new SelectList((System.Collections.IEnumerable) ViewData["Loc_Name"])
+                    , "Any Location", new SelectList((System.Collections.IEnumerable) ViewData["Loc_Val"]))                    
+                    <br/>
+                    <br/>
+                    <input type="submit" value="Submit"/>
+                }
+
+            </div>
+            <div class="card-header">
+                <h6>Search by Time</h6>
+            </div>
+            <div class="card-body">
+                <div class="wrapper_filter">
+                    <div class="container_filter">
+                        <div class="slider-track" id="track-A"></div>
+                            <input type="range" min="1" max="96" value="1" id="slider-1">
+                            <input type="range" min="1" max="96" value="96" id="slider-2">
+                    </div>
+                    <div class="input-filter">
+                        <label for="start_top">Start: </label>
+                        <input type="text" id="start_top"readonly>
+                        <label for="start_bottom">-</label>
+                        <input type="text" id="start_bottom" value="" readonly>
+                    </div>
+                </div>
+                <div class="wrapper_filter">
+                    <div class="container_filter">
+                        <div class="slider-track" id="track-B"></div>
+                            <input type="range" min="1" max="96" value="1" id="slider-3">
+                            <input type="range" min="1" max="96" value="96" id="slider-4">
+                    </div>
+                    <div class="input-filter">
+                        <label for="start_top">End: </label>
+                        <input type="text" id="end_top"readonly>
+                        <label for="start_bottom">-</label>
+                        <input type="text" id="end_bottom" value="" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="card-header">
+                Finished?
+            </div>
+            <div class="card-body">
                 <form>
-                      <div class="form-group">
-                          <input type="button" id="AddMeetingField" value="Add a Filter">
-                      </div>
+                    <div class="form-group">
+                        <input type="button" id="AddMeetingField" value="Add a Filter">
+                    </div>
                 </form>
             </div>
         </div>
@@ -231,3 +279,5 @@
 }
     </div>
 </div>
+
+<script type="text/javascript" src="~/js/filter.js"></script>

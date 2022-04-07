@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeniorSolutionsWeb.Data;
 
@@ -273,7 +274,50 @@ namespace SeniorSolutionsWeb.Controllers
                                 StartTime = ConvertTime(prev.StartTime),
                                 EndTime = ConvertTime(prev.EndTime),
                             };
+
+            List <String> Send_Locals = new List<String>();
+            List <int> Val_Locals = new List<int>();
+            var Local = from loc in _context.Locations
+                        select new Models.Locations
+                        {
+                            LocationName = loc.LocationName,
+                            LocationId = loc.LocationId
+                        };
+            foreach (var local in Local)
+            {
+                Send_Locals.Add(local.LocationName);
+                Val_Locals.Add(local.LocationId);
+            }
+
+            ViewData["Loc_Name"] = Send_Locals;
+            ViewData["Loc_Val"] = Val_Locals;
             return View(await exit_club.ToListAsync());
+        }
+        
+        [HttpPost]
+        public ActionResult Index(string PopulateLocals)
+        {
+            List<SelectListItem> customerList = GetLocations(_context);
+            if (!string.IsNullOrEmpty(PopulateLocals))
+            {
+                SelectListItem selectedItem = customerList.Find(p => p.Value == PopulateLocals);
+            }
+            return View(customerList);
+        }
+
+        private static List<SelectListItem> GetLocations(SeniorSolutionsWebContext context)
+        {
+            List<SelectListItem> customerList = (from p in context.Locations
+                                                 select new SelectListItem
+                                                 {
+                                                     Text = p.LocationName,
+                                                     Value = p.LocationId.ToString()
+                                                 }).ToList();
+
+            //Add Default Item at First Position.
+            customerList.Insert(0, new SelectListItem { Text = "--Select Location--", Value = "" });
+
+            return customerList;
         }
     }
 }
