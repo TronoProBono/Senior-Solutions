@@ -1,7 +1,7 @@
-﻿@{
-    @model IEnumerable<SeniorSolutionsWeb.Models.CommunityIssue>    
+﻿@model HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
-    var posts = from Model in Model orderby Model.CreatedDate descending select Model;
+    var posts = from CommunityIssue in Model.CommunityIssues orderby CommunityIssue.CreatedDate descending select CommunityIssue;
     var recentPosts = posts.Take(3);
 }
 
@@ -12,17 +12,17 @@
             <div class="card-header">
                 Balance Due
             </div>
-
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Deposit:</li>
-                    <li class="list-group-item">Lease:</li>
-                    <li class="list-group-item">Utilities:</li>
-                    <li class="list-group-item">Total:</li>
-                </ul>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Deposit:</li>
+                <li class="list-group-item">Lease:</li>
+                <li class="list-group-item">Utilities:</li>
+                <li class="list-group-item">Total:</li>
+            </ul>
 
             <div class="card-footer d-flex justify-content-center">
                 <button class="btn btn-primary">Pay Bill</button>
             </div>
+
         </div>
     </div>
     <div class="col-md-6">

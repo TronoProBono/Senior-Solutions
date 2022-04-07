@@ -20,7 +20,10 @@ namespace SeniorSolutionsWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CommunityIssue.ToListAsync());
+            HomeViewModel modelCollection = new HomeViewModel();
+            modelCollection.CommunityIssues = await _context.CommunityIssue.ToListAsync();
+            modelCollection.Polls = await _context.Poll.ToListAsync();
+            return View(modelCollection);
         }
 
         public IActionResult Privacy()

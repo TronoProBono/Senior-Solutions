@@ -144,7 +144,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommunityIssue");
+                    b.ToTable("CommunityIssue", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -202,7 +202,8 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
+
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Poll", b =>
@@ -252,7 +253,8 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Poll");
+                    b.ToTable("Poll", (string)null);
+
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
@@ -279,7 +281,9 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("PollVote");
+
+                    b.ToTable("PollVote", (string)null);
+
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -356,7 +360,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentID");
 
-                    b.ToTable("ResidentPostResponse");
+                    b.ToTable("ResidentPostResponse", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
@@ -390,7 +394,9 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceRequest");
+
+                    b.ToTable("ServiceRequest", (string)null);
+
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
@@ -410,6 +416,7 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Navigation("Poll");
 
                     b.Navigation("Resident");
+
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
