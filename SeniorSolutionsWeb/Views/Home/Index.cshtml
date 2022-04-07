@@ -12,24 +12,17 @@
             <div class="card-header">
                 Balance Due
             </div>
-<<<<<<< Updated upstream
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Deposit:</li>
                 <li class="list-group-item">Lease:</li>
                 <li class="list-group-item">Utilities:</li>
                 <li class="list-group-item">Total:</li>
             </ul>
-=======
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Deposit:</li>
-                    <li class="list-group-item">Lease:</li>
-                    <li class="list-group-item">Utilities:</li>
-                    <li class="list-group-item">Total:</li>
-                </ul>
+
             <div class="card-footer d-flex justify-content-center">
                 <button class="btn btn-primary">Pay Bill</button>
             </div>
->>>>>>> Stashed changes
+
         </div>
     </div>
     <div class="col-md-6">
@@ -74,8 +67,32 @@
                 <span class="visually-hidden">Next</span>
               </button>
             </div>
-        <div class="col-md-3">
-
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <form asp-controller="CommunityPoll">
+            <div class="card-header">
+                Community Poll
+            </div>
+            <div class="card-body">
+                <p>Would you like to see a pool added to the community?</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                    Default radio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                    <label class="form-check-label" for="flexRadioDefault2">
+                    Default checked radio
+                    </label>
+                </div>
+            </div>
+            <div class="card-footer justify-content-center d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Submit Vote</button>
+            </div>
+            </form>
         </div>
     </div>
     <div class="row">

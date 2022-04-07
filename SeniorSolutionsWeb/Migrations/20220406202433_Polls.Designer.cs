@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220406202433_Polls")]
+    partial class Polls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,7 +146,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommunityIssue", (string)null);
+                    b.ToTable("CommunityIssue");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -202,8 +204,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations", (string)null);
-
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Poll", b =>
@@ -253,8 +254,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Poll", (string)null);
-
+                    b.ToTable("Poll");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
@@ -281,9 +281,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-
-                    b.ToTable("PollVote", (string)null);
-
+                    b.ToTable("PollVote");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -360,7 +358,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentID");
 
-                    b.ToTable("ResidentPostResponse", (string)null);
+                    b.ToTable("ResidentPostResponse");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
@@ -394,9 +392,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-
-                    b.ToTable("ServiceRequest", (string)null);
-
+                    b.ToTable("ServiceRequest");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
@@ -416,7 +412,6 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Navigation("Poll");
 
                     b.Navigation("Resident");
-
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
