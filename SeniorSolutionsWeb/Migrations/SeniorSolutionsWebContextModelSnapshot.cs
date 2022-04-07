@@ -144,7 +144,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommunityIssue");
+                    b.ToTable("CommunityIssue", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -203,6 +203,86 @@ namespace SeniorSolutionsWeb.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("Locations", (string)null);
+<<<<<<< Updated upstream
+=======
+                });
+
+            modelBuilder.Entity("SeniorSolutionsWeb.Models.Poll", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Answer1Votes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Answer2")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Answer2Votes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Answer3")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Answer3Votes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Answer4")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Answer4Votes")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Poll", (string)null);
+                });
+
+            modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PollId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResidentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VotedFor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PollId");
+
+                    b.HasIndex("ResidentId");
+
+                    b.ToTable("PollVote", (string)null);
+>>>>>>> Stashed changes
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -279,7 +359,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentID");
 
-                    b.ToTable("ResidentPostResponse");
+                    b.ToTable("ResidentPostResponse", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
@@ -314,6 +394,28 @@ namespace SeniorSolutionsWeb.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServiceRequest", (string)null);
+<<<<<<< Updated upstream
+=======
+                });
+
+            modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
+                {
+                    b.HasOne("SeniorSolutionsWeb.Models.Poll", "Poll")
+                        .WithMany("Votes")
+                        .HasForeignKey("PollId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
+                        .WithMany()
+                        .HasForeignKey("ResidentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Poll");
+
+                    b.Navigation("Resident");
+>>>>>>> Stashed changes
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
