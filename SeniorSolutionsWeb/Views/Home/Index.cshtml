@@ -3,6 +3,9 @@
     ViewData["Title"] = "Home Page";
     var posts = from CommunityIssue in Model.CommunityIssues orderby CommunityIssue.CreatedDate descending select CommunityIssue;
     var recentPosts = posts.Take(3);
+    var mostRecentPoll = (from Poll in Model.Polls orderby Poll.DateCreated descending select Poll).First();
+    var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
+    var hasVoted = from PollVote in Model.Votes where PollVote.ResidentId.ToString() == residentId select PollVote;
 }
 
 
@@ -70,27 +73,61 @@
     </div>
     <div class="col-md-3">
         <div class="card">
-            <form asp-controller="CommunityPoll">
+            <form asp-action="Poll">
             <div class="card-header">
                 Community Poll
             </div>
             <div class="card-body">
-                <p>Would you like to see a pool added to the community?</p>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1">
-                    Default radio
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                    <label class="form-check-label" for="flexRadioDefault2">
-                    Default checked radio
-                    </label>
-                </div>
+                <p>@mostRecentPoll.Question</p>
+                    @{
+                        
+                        <div class="form-check">
+                                <input type="hidden" name="Id" asp-for="@mostRecentPoll.Id">
+                                <input type="hidden" name="residentId" value="@residentId">
+                                <input class="form-check-input" type="radio" name="vote" id="Answer1" value="@mostRecentPoll.Answer">
+                                <label class="form-check-label" for="Answer1">
+                                @mostRecentPoll.Answer
+                                </label>
+                            </div>
+                        <div class="form-check">
+                                <input class="form-check-input" type="radio" name="vote" id="Answer2" value="@mostRecentPoll.Answer2">
+                                <label class="form-check-label" for="Answer2">
+                                @mostRecentPoll.Answer2
+                                </label>
+                            </div>
+                        if (mostRecentPoll.Answer3 != null)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="vote" id="Answer3" value="@mostRecentPoll.Answer3">
+                                <label class="form-check-label" for="Answer3">
+                                @mostRecentPoll.Answer3
+                                </label>
+                            </div>
+                        }
+                        if (mostRecentPoll.Answer4 != null)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="vote" id="Answer4" value="@mostRecentPoll.Answer4">
+                                <label class="form-check-label" for="Answer4">
+                                @mostRecentPoll.Answer4
+                                </label>
+                            </div>
+                        }
+                    }
             </div>
             <div class="card-footer justify-content-center d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">Submit Vote</button>
+                @{
+                    if (residentId != "-1" && hasVoted == null) {
+                            <button type="submit" class="btn btn-primary">Submit Vote</button>
+                        } else {
+                            var buttonMessage = "Unavailable for Staff";
+                            //if user is a resident and already voted then disable the button
+                            if (hasVoted != null) {
+                                buttonMessage = "Already Voted";
+                            }
+                        <button type="submit" class="btn btn-primary" disabled>@buttonMessage</button>
+                        }
+                }
             </div>
             </form>
         </div>

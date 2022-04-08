@@ -58,6 +58,7 @@ namespace SeniorSolutionsWeb.Controllers
                 if (username == resident.Email && HashPassword(password) == resident.Password)
                 {
                     claims.Add(new Claim("username", resident.Email));
+                    claims.Add(new Claim("residentId", resident.Id.ToString()));
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, resident.Email));
                     claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + resident.LastName));
                 }
@@ -67,6 +68,8 @@ namespace SeniorSolutionsWeb.Controllers
                 if (username == employee.Email && HashPassword(password) == employee.Password)
                 {
                     claims.Add(new Claim("username", employee.Email));
+                    claims.Add(new Claim("residentId", (-1).ToString())); // Unusual way, but this will work for checking if user
+                                                                          // is an employee since, residentId is PK and never negative
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, employee.Email));
                     claims.Add(new Claim(ClaimTypes.Name, employee.FirstName + employee.LastName));
                     if (employee.Position != null) claims.Add(new Claim(ClaimTypes.Role, employee.Position));
@@ -100,7 +103,7 @@ namespace SeniorSolutionsWeb.Controllers
             return RedirectToAction("Login");
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Manager")]
         public IActionResult Secured()
         {
             return View();

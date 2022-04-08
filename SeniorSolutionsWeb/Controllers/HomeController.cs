@@ -23,6 +23,7 @@ namespace SeniorSolutionsWeb.Controllers
             HomeViewModel modelCollection = new HomeViewModel();
             modelCollection.CommunityIssues = await _context.CommunityIssue.ToListAsync();
             modelCollection.Polls = await _context.Poll.ToListAsync();
+            modelCollection.Votes = await _context.PollVote.ToListAsync();
             return View(modelCollection);
         }
 
@@ -35,6 +36,40 @@ namespace SeniorSolutionsWeb.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //[HttpPost("Poll")]
+        public async Task<IActionResult> Poll(string id, string vote, int residentId)
+        {
+            int ID = int.Parse(id);
+            Poll? poll = await _context.Poll.FindAsync(ID);
+            PollVote? pollVote = await _context.PollVote.SingleOrDefaultAsync(p => p.ResidentId == residentId);
+
+            if(pollVote == null)
+            {
+                if (vote == poll.Answer)
+                {
+                    poll.Answer1Votes++;
+                }else if (vote == poll.Answer2)
+                {
+                    poll.Answer2Votes++;
+                }else if (vote == poll.Answer3)
+                {
+                    poll.Answer3Votes++;
+                }else if (vote == poll.Answer4)
+                {
+                    poll.Answer4Votes++;
+                }
+                pollVote = new PollVote();
+                pollVote.VotedFor = vote;
+                pollVote.PollId = ID;
+                pollVote.ResidentId = residentId; 
+                _context.PollVote.Add(pollVote);
+                _context.Poll.Update(poll);
+
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
