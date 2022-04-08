@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220407182955_PollsEnhanced")]
+    partial class PollsEnhanced
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,7 +220,7 @@ namespace SeniorSolutionsWeb.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Answer1Votes")
+                    b.Property<int?>("Answer1Votes")
                         .HasColumnType("int");
 
                     b.Property<string>("Answer2")
@@ -226,21 +228,21 @@ namespace SeniorSolutionsWeb.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Answer2Votes")
+                    b.Property<int?>("Answer2Votes")
                         .HasColumnType("int");
 
                     b.Property<string>("Answer3")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Answer3Votes")
+                    b.Property<int?>("Answer3Votes")
                         .HasColumnType("int");
 
                     b.Property<string>("Answer4")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Answer4Votes")
+                    b.Property<int?>("Answer4Votes")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")

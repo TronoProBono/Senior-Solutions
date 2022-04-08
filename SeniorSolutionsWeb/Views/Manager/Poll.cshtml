@@ -1,0 +1,47 @@
+﻿@model SeniorSolutionsWeb.Models.Poll
+<div class="row">
+    <partial name="_ManagerSidebar"></partial>
+    <div class="col-lg bg-light">
+        <h2>Create Poll</h2>
+        <p class="text-danger">At least 2 answers are required for the poll to be created. It will replace the current active poll.</p>
+        <form asp-controller="Manager" asp-action="CreatePoll">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Question" class="control-label"></label>
+                <input asp-for="Question" class="form-control" />
+                <span asp-validation-for="Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Answer" class="control-label"></label>
+                <input asp-for="Answer" class="form-control" />
+                <span asp-validation-for="Answer" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Answer2" class="control-label"></label>
+                <input asp-for="Answer2" class="form-control" />
+                <span asp-validation-for="Answer2" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Answer3" class="control-label"></label>
+                <input asp-for="Answer3" class="form-control" />
+                <span asp-validation-for="Answer3" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Answer4" class="control-label"></label>
+                <input asp-for="Answer4" class="form-control" />
+                <span asp-validation-for="Answer4" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
