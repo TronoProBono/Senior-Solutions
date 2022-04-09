@@ -39,7 +39,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("Club");
+                    b.ToTable("Club", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMeeting", b =>
@@ -68,7 +68,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("MeetId");
 
-                    b.ToTable("ClubMeeting");
+                    b.ToTable("ClubMeeting", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMembership", b =>
@@ -88,7 +88,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("ClubMembership");
+                    b.ToTable("ClubMembership", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubRoles", b =>
@@ -114,7 +114,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("ClubRoles");
+                    b.ToTable("ClubRoles", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssue", b =>
@@ -144,7 +144,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommunityIssue");
+                    b.ToTable("CommunityIssue", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -185,7 +185,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employee");
+                    b.ToTable("Employee", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Locations", b =>
@@ -202,7 +202,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Poll", b =>
@@ -253,7 +253,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Poll");
+                    b.ToTable("Poll", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
@@ -280,7 +280,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("PollVote");
+                    b.ToTable("PollVote", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -322,7 +322,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resident");
+                    b.ToTable("Resident", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
@@ -357,7 +357,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentID");
 
-                    b.ToTable("ResidentPostResponse");
+                    b.ToTable("ResidentPostResponse", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
@@ -391,7 +391,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceRequest");
+                    b.ToTable("ServiceRequest", (string)null);
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>

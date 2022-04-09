@@ -1,16 +1,12 @@
 ﻿@model SeniorSolutionsWeb.Models.Resident
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CreateResidents";
 }
-
-<h1>Create</h1>
-
-<h4>Resident</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <partial name="_ManagerSidebar.cshtml"></partial>
+    <div class="col-lg bg-light">
+        <form asp-action="CreateResidents">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -38,19 +34,9 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ResidencyStatus" class="control-label"></label>
-                <input asp-for="ResidencyStatus" class="form-control" />
-                <span asp-validation-for="ResidencyStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ResidentLeaseNumber" class="control-label"></label>
                 <input asp-for="ResidentLeaseNumber" class="form-control" />
                 <span asp-validation-for="ResidentLeaseNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateAccountCreated" class="control-label"></label>
-                <input asp-for="DateAccountCreated" class="form-control" />
-                <span asp-validation-for="DateAccountCreated" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace SeniorSolutionsWeb.Models
 {
@@ -11,6 +12,7 @@ namespace SeniorSolutionsWeb.Models
         public string Email { get; set; }
 
         [ScaffoldColumn(false)]
+        [ValidateNever]
         [Required]
         public string Password { get; set; }
 

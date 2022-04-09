@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.Resident>
+@{
+    ViewData["Title"] = "Manage Accounts";
+}
+
+<div id="page" class="container-fluid">
+    <div class="row">
+        <partial name="_ManagerSidebar.cshtml"></partial>
+        <div id="content" class="bg-light col-lg">
+            <p>
+                <a asp-action="CreateResidents" class="btn btn-primary mt-2">Create New</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ResidencyStatus)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ResidentLeaseNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MiddleName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateAccountCreated)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ResidencyStatus)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ResidentLeaseNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MiddleName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAccountCreated)
+                        </td>
+                        <td>
+                            <a asp-action="EditResidents" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="DetailsResidents" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="DeleteResidents" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>         
+</div>
