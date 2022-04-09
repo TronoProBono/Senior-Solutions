@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SeniorSolutionsWeb.Data;
 using SeniorSolutionsWeb.Models;
+using System.Net;
+using System.Net.Mail;
 
 namespace SeniorSolutionsWeb.Controllers
 {
@@ -77,5 +79,46 @@ namespace SeniorSolutionsWeb.Controllers
             return View();
         }
 
+
+        // This is a test for submitting a key to a user || System.Net
+        [HttpPost]
+        public ActionResult SendEmail(string receiver, string subject, string message)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var senderEmail = new MailAddress("", "Community");
+                    var receiverEmail = new MailAddress(receiver, "Receiver");
+                    var password = "";
+                    var sub = "Your Account is Ready";
+                    var body = "Your Community Account is ready for creation using the following:\n Username:" + receiver 
+                        + "Key:"+ message;
+                    var smtp = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(senderEmail.Address, password)
+                    };
+                    using (var mess = new MailMessage(senderEmail, receiverEmail)
+                    {
+                        Subject = sub,
+                        Body = body
+                    })
+                    {
+                        smtp.Send(mess);
+                    }
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Some Error";
+            }
+            return View();
+        }
     }
 }

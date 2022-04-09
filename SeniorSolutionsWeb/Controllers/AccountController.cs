@@ -43,6 +43,8 @@ namespace SeniorSolutionsWeb.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> ValidateUser(string username, string password, string? returnUrl)
         {
+            var help = HashPassword("1324");
+            Console.WriteLine("---------------------------Pass:{0} ||\n\n", help);
             ViewData["ReturnUrl"] = returnUrl;
             Resident? resident = await _context.Resident.FirstOrDefaultAsync(m => m.Email == username);
             Employee? employee = await _context.Employee.FirstOrDefaultAsync(m => m.Email == username);
@@ -65,6 +67,8 @@ namespace SeniorSolutionsWeb.Controllers
             } 
             else //Username exists in employee DB
             {
+                var mail = employee.Email;
+                Console.WriteLine("---------------------------Email:{0}\n\n", mail);
                 if (username == employee.Email && HashPassword(password) == employee.Password)
                 {
                     claims.Add(new Claim("username", employee.Email));
