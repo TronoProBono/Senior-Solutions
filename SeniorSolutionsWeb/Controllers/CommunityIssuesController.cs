@@ -26,6 +26,31 @@ namespace SeniorSolutionsWeb.Views
             return View(await _context.CommunityIssue.ToListAsync());
         }
 
+        public async Task<IActionResult> Vote(int id, int residentId, string opinion)
+        {
+            if(ModelState.IsValid)
+            {
+                var hasVoted = _context.CommunityIssueVote.FirstOrDefault(vote => vote.CommunityIssueId == id && vote.ResidentId == residentId);
+                if (hasVoted != null) return RedirectToAction(nameof(Index));
+                //Find out if resident has voted on this before, if they have then kick them outta here
+                var communityIssue = await _context.CommunityIssue.FindAsync(id);
+                
+                if(opinion == "positive")
+                {
+                    communityIssue.UpVotes++;
+                } else
+                {
+                    communityIssue.UpVotes--;
+                }
+                var newVote = new CommunityIssueVote();
+                newVote.CommunityIssueId = id;
+                newVote.ResidentId = residentId;
+                _context.CommunityIssueVote.Add(newVote);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
+        }
+
         // GET: CommunityIssues/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -40,7 +65,7 @@ namespace SeniorSolutionsWeb.Views
             {
                 return NotFound();
             }
-
+            ViewData["listOfReplies"] = _context.CommunityIssueReplies.Where(reply => reply.CommunityIssueID == id).ToList();
             return View(communityIssue);
         }
 
@@ -55,7 +80,7 @@ namespace SeniorSolutionsWeb.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,CreatedDate,UpVotes,DownVotes")] CommunityIssue communityIssue)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,CreatedDate,UpVotes,DownVotes,ResidentId")] CommunityIssue communityIssue)
         {
             if (ModelState.IsValid)
             {
@@ -149,6 +174,19 @@ namespace SeniorSolutionsWeb.Views
         private bool CommunityIssueExists(int id)
         {
             return _context.CommunityIssue.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> ResidentResponse(int IssueID, int residentID,string residentName, string response)
+        {
+            var reply = new CommunityIssueReply();
+            reply.CommunityIssueID = IssueID;
+            reply.ResidentID = residentID;
+            reply.Response = response;
+            reply.ResidentName = residentName;
+            _context.CommunityIssueReplies.Add(reply);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
         }
     }
 }

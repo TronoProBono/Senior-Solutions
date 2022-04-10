@@ -62,7 +62,7 @@ namespace SeniorSolutionsWeb.Controllers
                     claims.Add(new Claim("username", resident.Email));
                     claims.Add(new Claim("residentId", resident.Id.ToString()));
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, resident.Email));
-                    claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + resident.LastName));
+                    claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + " " + resident.LastName));
                 }
             } 
             else //Username exists in employee DB

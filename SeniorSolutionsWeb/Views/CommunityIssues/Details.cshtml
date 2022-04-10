@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Details";
+    var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
+    var listOfReplies = ViewData["listOfReplies"] as List<CommunityIssueReply>;
 }
 
 <h1>Details</h1>
@@ -41,8 +43,33 @@
             @Html.DisplayFor(model => model.DownVotes)
         </dd>
     </dl>
+    <form>
+        <input asp-for="Id" name="IssueID" hidden/>
+        <input name="residentID" value="@residentId" hidden/>
+        <input name="residentName" value="@User.Identity.Name" hidden/>
+        <div class="input-group mt-3">
+          <textarea name="response" id="response" class="form-control"></textarea>
+        </div>
+        <button type="submit" asp-action="ResidentResponse" class="btn btn-primary mt-2">Reply</button>
+    </form>
+    @{
+        if(listOfReplies != null)
+        {
+            foreach(var reply in listOfReplies)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            @reply.ResidentName
+                            @reply.DateResponse
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@reply.Response</p>
+                        </div>
+                    </div>
+                }
+        }
+    }
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

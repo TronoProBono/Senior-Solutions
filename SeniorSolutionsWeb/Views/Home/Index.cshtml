@@ -1,6 +1,7 @@
 ﻿@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
+    string? orientationReminder = "The next orientation is scheduled on " + ViewData["NextOrientationDate"].ToString();
     var posts = from CommunityIssue in Model.CommunityIssues orderby CommunityIssue.CreatedDate descending select CommunityIssue;
     var recentPosts = posts.Take(3);
     var mostRecentPoll = (from Poll in Model.Polls orderby Poll.DateCreated descending select Poll).First();
@@ -8,7 +9,13 @@
     var hasVoted = from PollVote in Model.Votes where PollVote.ResidentId.ToString() == residentId select PollVote;
 }
 
-
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="alert alert-warning text-center">
+            @orientationReminder
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-3">
         <div class="card">
@@ -143,11 +150,11 @@
                     <div class="card">
                         <div class="p-2">
                             <i class="fa-solid fa-arrow-up"></i>
-                            <i class="fa-solid fa-arrow-down"><span class="ps-2">@(post.UpVotes - post.DownVotes)</span></i>
+                            <i class="fa-solid fa-arrow-down"><span class="ps-2">@((int)(post.UpVotes - post.DownVotes))</span></i>
                         </div>
                         
                         <div class="card-body">
-                            <h5 class="card-title">@Html.DisplayFor(modelItem => post.Title)</h5>
+                            <a asp-controller="CommunityIssues" asp-action="Details" asp-route-id="@post.Id"><h5 class="card-title">@Html.DisplayFor(modelItem => post.Title)</h5></a>
                             <p class="card-text">@post.Description.Substring(0,24)...</p>
                         </div>
                         <div class="card-footer">

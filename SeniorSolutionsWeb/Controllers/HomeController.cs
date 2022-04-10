@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SeniorSolutionsWeb.Data;
 using SeniorSolutionsWeb.Models;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 
 namespace SeniorSolutionsWeb.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -24,6 +26,9 @@ namespace SeniorSolutionsWeb.Controllers
             modelCollection.CommunityIssues = await _context.CommunityIssue.ToListAsync();
             modelCollection.Polls = await _context.Poll.ToListAsync();
             modelCollection.Votes = await _context.PollVote.ToListAsync();
+            var orientations = _context.Orientations.ToList();
+            var oDate = (from orientation in orientations where orientation.Date >= DateTime.Now orderby orientation.Date select orientation).Take(1).First();
+            ViewData["NextOrientationDate"] = oDate.Date;
             return View(modelCollection);
         }
 

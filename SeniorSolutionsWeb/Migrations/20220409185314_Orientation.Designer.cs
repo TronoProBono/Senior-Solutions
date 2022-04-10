@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220409185314_Orientation")]
+    partial class Orientation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,80 +134,19 @@ namespace SeniorSolutionsWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("DownVotes")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("ResidentId")
+                    b.Property<int>("DownVotes")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UpVotes")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UpVotes")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ResidentId");
 
                     b.ToTable("CommunityIssue");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssueReply", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CommunityIssueID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateResponse")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ResidentID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ResidentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Response")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommunityIssueID");
-
-                    b.HasIndex("ResidentID");
-
-                    b.ToTable("CommunityIssueReplies");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssueVote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CommunityIssueId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResidentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommunityIssueId");
-
-                    b.HasIndex("ResidentId");
-
-                    b.ToTable("CommunityIssueVote");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -436,6 +377,41 @@ namespace SeniorSolutionsWeb.Migrations
                     b.ToTable("Resident");
                 });
 
+            modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CommunityIssueId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateResponse")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IssueID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResidentID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Vote")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommunityIssueId");
+
+                    b.HasIndex("ResidentID");
+
+                    b.ToTable("ResidentPostResponse");
+                });
+
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -468,53 +444,6 @@ namespace SeniorSolutionsWeb.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ServiceRequest");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssue", b =>
-                {
-                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
-                        .WithMany("CommunityIssueList")
-                        .HasForeignKey("ResidentId");
-
-                    b.Navigation("Resident");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssueReply", b =>
-                {
-                    b.HasOne("SeniorSolutionsWeb.Models.CommunityIssue", "CommunityIssue")
-                        .WithMany("CommunityIssueReplies")
-                        .HasForeignKey("CommunityIssueID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
-                        .WithMany("CommunityIssueReplies")
-                        .HasForeignKey("ResidentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CommunityIssue");
-
-                    b.Navigation("Resident");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssueVote", b =>
-                {
-                    b.HasOne("SeniorSolutionsWeb.Models.CommunityIssue", "CommunityIssue")
-                        .WithMany("CommunityIssueVotes")
-                        .HasForeignKey("CommunityIssueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
-                        .WithMany("CommunityIssueVotes")
-                        .HasForeignKey("ResidentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CommunityIssue");
-
-                    b.Navigation("Resident");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.OrientationAttendee", b =>
@@ -555,11 +484,23 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Navigation("Resident");
                 });
 
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssue", b =>
+            modelBuilder.Entity("SeniorSolutionsWeb.Models.ResidentPostResponse", b =>
                 {
-                    b.Navigation("CommunityIssueReplies");
+                    b.HasOne("SeniorSolutionsWeb.Models.CommunityIssue", "CommunityIssue")
+                        .WithMany()
+                        .HasForeignKey("CommunityIssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("CommunityIssueVotes");
+                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
+                        .WithMany()
+                        .HasForeignKey("ResidentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CommunityIssue");
+
+                    b.Navigation("Resident");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Orientation", b =>
@@ -570,15 +511,6 @@ namespace SeniorSolutionsWeb.Migrations
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Poll", b =>
                 {
                     b.Navigation("Votes");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
-                {
-                    b.Navigation("CommunityIssueList");
-
-                    b.Navigation("CommunityIssueReplies");
-
-                    b.Navigation("CommunityIssueVotes");
                 });
 #pragma warning restore 612, 618
         }

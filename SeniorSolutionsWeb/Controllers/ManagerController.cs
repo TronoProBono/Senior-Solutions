@@ -77,30 +77,21 @@ namespace SeniorSolutionsWeb.Controllers
             return View("Poll", poll);
         }
 
-        //public async Task<IActionResult> ListResidents() //Initial view
-        //{
-        //    return View(await _context.Resident.ToListAsync());
-        //}
+        public IActionResult CreateOrientation()
+        {
+            return View();
+        }
 
-        //public async Task<IActionResult> EditResidents(int id) //Clicked edit button on resident
-        //{
-            
-        //    return View("EditResidents", await _context.Resident.FindAsync(id));
-        //}
-
-
-
-
-        //[HttpPost, ActionName("Edit")]
-        //public async Task<IActionResult> EditResidents(int id, [Bind("Id,FirstName,MiddleName,LastName,ResidencyStatus,ResidentLeaseNumber,DateAccountCreated")] Resident resident)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _context.Resident.Update(resident);
-        //    }
-        //    return View("Index");
-        //}
-
+        [HttpPost]
+        public async Task<IActionResult> CreateOrientation(int id, [Bind("Id, Date")] Orientation orientation)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(orientation);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
         // GET: Residents
         public async Task<IActionResult> ListResidents()
