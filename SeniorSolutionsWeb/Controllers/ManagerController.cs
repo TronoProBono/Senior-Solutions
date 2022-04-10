@@ -162,10 +162,6 @@ namespace SeniorSolutionsWeb.Controllers
                 ViewData["Man-Club_ID"] = club.ClubId;
             } 
 
-            /*List<String> FindEval_Name = new List<String>();
-            List<int> FindEval_Val = new List<int>();
-            List<int> FindEval_ID = new List<int>();*/
-
             var FindEval = from Club in _context.ClubRoles
                            where Club.ClubId == ClubID
                            select Club;
@@ -178,16 +174,6 @@ namespace SeniorSolutionsWeb.Controllers
                               };
             var NewFindEval = give.AsNoTracking().ToList();
 
-            /*foreach (var club in FindEval)
-            {
-                FindEval_Name.Add(club.RoleName);
-                FindEval_Val.Add(club.RoleEval);
-                FindEval_ID.Add(club.RoleID);
-            }
-            ViewData["Man-Role_Name"] = FindEval_Name;
-            ViewData["Man-Role_Val"] = FindEval_Val;
-            ViewData["Man-Role_ID"] = FindEval_ID;*/
-
             //This view has a readonly input box
             //containing the Club Name, a
             //select box containg all the roles
@@ -199,23 +185,6 @@ namespace SeniorSolutionsWeb.Controllers
             //except the remove button
             return PartialView("_AddRole", FindEval);
         }
-        //[HttpPost]
-        /*public IActionResult GetRoles()
-        {
-            var ClubID = (int)ViewData["Man-Club_ID"];
-            var FindEval = from Club in _context.ClubRoles
-                           where Club.ClubId == ClubID
-                           select Club;
-            ViewData["Man-Role-1"] = from a in FindEval
-                        select new SelectListItem
-                        {
-                            Text = a.RoleName,
-                            Value = a.RoleID.ToString(),
-                            Selected = false
-                        };
-            return PartialView();
-        }*/
-
 
         // POST: Residents/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

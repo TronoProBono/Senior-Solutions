@@ -16,28 +16,10 @@
         eval.Add(local.RoleEval);
     }
 }
+<script src="~/js/classes.js"></script>
 <script type="text/javascript">
     var key = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(key));
     var eval = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(eval));
-    class Tuple {
-        constructor(key,perm)
-        {
-            this.key = key;
-            this.perm = perm;
-        }
-        getEval(num)
-        {
-            var i = 0;
-            for(;i < key.length;i++)
-            {
-                if(num == key[i])
-                {
-                    console.log("Tuple:",eval[i],"\n");
-                    return eval[i];
-                }
-            }
-        }
-    }
     function fixTable(Jq,num)
     {
         console.log(Jq);
@@ -167,7 +149,7 @@
                 }
         }
     }
-    var uniqueSort = new Tuple(key,eval);
+    uniqueSort = new Tuple(key,eval);
     $(document).on( 'change', '#Pain', function (e) {
         console.log(($(this).val()));
         console.log(uniqueSort.getEval($(this).val()));
@@ -180,7 +162,7 @@
     <div class="col-3">
 	    <input type="text" readonly value="@ViewData["Man-Club_Name"]" class="form-control">
     </div>
-    <div class="col-3">
+    <div class="col-3" id="_role_selection">
         @Html.DropDownList("Pain",/*new SelectList((System.Collections.IEnumerable) Model,"RoleName","RoleName")*/ @list,"--Select Role--", new {@class="select2_demo_4 form-select"})
     </div>
     <div class="col-6">
@@ -226,10 +208,10 @@
     </div>
     <div class="row">
         <div class="col">
-            <a class="btn btn-primary mt-2">Submit</a>
+            <a class="btn btn-primary mt-2" id="club_role_submit">Submit</a>
         </div>
         <div class="col">
-	        <a class="btn btn-primary mt-2">Remove Entry</a>
+	        <a class="btn btn-primary mt-2"id="club_role_remove">Remove Entry</a>
         </div>
 
     </div>
