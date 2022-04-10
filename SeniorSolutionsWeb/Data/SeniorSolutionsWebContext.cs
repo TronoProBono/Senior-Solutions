@@ -22,10 +22,13 @@ namespace SeniorSolutionsWeb.Data
         public DbSet<SeniorSolutionsWeb.Models.ClubMeeting> ClubMeeting { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.ClubRoles> ClubRoles { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.CommunityIssue> CommunityIssue { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.CommunityIssueReply> CommunityIssueReplies { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.CommunityIssueVote> CommunityIssueVote { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Locations> Locations { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.Orientation> Orientations { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.OrientationAttendee> OrientationAttendees { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Poll> Poll { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.PollVote> PollVote { get; set; }
-        public DbSet<SeniorSolutionsWeb.Models.ResidentPostResponse> ResidentPostResponse { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Employee> Employee { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Employee> User { get; set; }
     }

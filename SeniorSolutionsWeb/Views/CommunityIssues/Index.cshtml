@@ -1,59 +1,50 @@
 ﻿@model IEnumerable<SeniorSolutionsWeb.Models.CommunityIssue>
-
 @{
     ViewData["Title"] = "Index";
+    var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
 }
 
-<h1>Index</h1>
+<h1>Community Issues</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpVotes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DownVotes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpVotes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DownVotes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@{
+    foreach (var post in Model)
+    {
+        var voteCount = (int)(post.UpVotes - post.DownVotes);
+        string numColor = "";
+        if (voteCount < 0)
+        {
+            numColor = "text-danger";   
+        }else if (voteCount > 0)
+        {
+            numColor = "text-success";
+        }
+        <div class="card-group">
+        <div class="card">
+            <div class="p-2">
+                <a asp-action="Vote" asp-route-id="@(post.Id)" asp-route-opinion="positive" asp-route-residentId="@residentId" class="text-dark"><i class="fa-solid fa-arrow-up"></i></a>
+                <a asp-action="Vote" asp-route-id="@(post.Id)" asp-route-opinion="negative" asp-route-residentId="@residentId" class="text-dark"><i class="fa-solid fa-arrow-down"><span class="ps-2 @numColor">@voteCount</span></i></a>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@post.Title</h5>
+                <p class="card-text">@post.Description</p>
+                @{
+                    if (residentId == post.ResidentId.ToString() || residentId == "-1"){
+                        <a asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                    }
+                }
+                <a asp-action="Details" asp-route-id="@post.Id">Details</a>
+                
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Last updated @post.CreatedDate)</small>
+            </div>
+        </div>
+    </div>
+
+    }
 }
-    </tbody>
-</table>
+

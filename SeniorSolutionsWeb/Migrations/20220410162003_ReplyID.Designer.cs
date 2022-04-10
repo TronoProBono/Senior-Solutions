@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220410162003_ReplyID")]
+    partial class ReplyID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,25 +162,24 @@ namespace SeniorSolutionsWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CommunityIssueID")
+                    b.Property<int>("CommunityIssueId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateResponse")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ResidentID")
+                    b.Property<int>("IssueID")
                         .HasColumnType("int");
 
-                    b.Property<string>("ResidentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ResidentID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Response")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunityIssueID");
+                    b.HasIndex("CommunityIssueId");
 
                     b.HasIndex("ResidentID");
 
@@ -482,8 +483,8 @@ namespace SeniorSolutionsWeb.Migrations
             modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssueReply", b =>
                 {
                     b.HasOne("SeniorSolutionsWeb.Models.CommunityIssue", "CommunityIssue")
-                        .WithMany("CommunityIssueReplies")
-                        .HasForeignKey("CommunityIssueID")
+                        .WithMany("ResidentPostResponses")
+                        .HasForeignKey("CommunityIssueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -557,9 +558,9 @@ namespace SeniorSolutionsWeb.Migrations
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssue", b =>
                 {
-                    b.Navigation("CommunityIssueReplies");
-
                     b.Navigation("CommunityIssueVotes");
+
+                    b.Navigation("ResidentPostResponses");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Orientation", b =>
