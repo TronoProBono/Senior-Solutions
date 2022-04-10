@@ -1,0 +1,236 @@
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.ClubRoles>
+@{
+    List<SelectListItem> list = new List<SelectListItem>();
+    List<Tuple<int, int>> jq = new List<Tuple<int, int>>();
+
+    List<int> key = new List<int>();
+    List<int> eval = new List<int>();
+
+    foreach(var local in Model)
+    {
+        var let = new SelectListItem { Text = local.RoleName, Value = local.RoleID.ToString()};
+        list.Add(let);
+        var tup = new Tuple<int, int>(local.RoleID, local.RoleEval);
+        jq.Add(tup);
+        key.Add(local.RoleID);
+        eval.Add(local.RoleEval);
+    }
+}
+<script type="text/javascript">
+    var key = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(key));
+    var eval = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(eval));
+    class Tuple {
+        constructor(key,perm)
+        {
+            this.key = key;
+            this.perm = perm;
+        }
+        getEval(num)
+        {
+            var i = 0;
+            for(;i < key.length;i++)
+            {
+                if(num == key[i])
+                {
+                    console.log("Tuple:",eval[i],"\n");
+                    return eval[i];
+                }
+            }
+        }
+    }
+    function fixTable(Jq,num)
+    {
+        console.log(Jq);
+        console.log(num);
+        for(var i = 0; i < 10; i++)
+        {
+		        var power = Math.pow(10,i);
+                var get_int = parseInt(num / (power))
+		        var get = ((get_int) % 2);
+                console.log("Case " + i + ":");
+                console.log("Current Eval:" + get)
+                console.log("Current Power:" + power)
+                switch(i)
+                {
+                    case 0:
+                        if(get == 0)
+                        {
+                            console.log("DDDD")
+                            Jq.children('#_1').hide();
+                        }
+                        else
+                        {
+                            console.log("YYYYY")
+                            Jq.children('#_1').show();
+                        }
+                        break;
+                    case 1:
+                        if(get == 0)
+                        {
+                            Jq.children('#_2').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_2').show();
+                        }
+                        break;
+                    case 2:
+                        if(get == 0)
+                        {
+                            Jq.children('#_3').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_3').show();
+                        }
+                        break;
+
+                    case 3:
+                        if(get == 0)
+                        {
+                            Jq.children('#_4').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_4').show();
+                        }
+                        break;
+
+                    case 4:
+                        if(get == 0)
+                        {
+                            Jq.children('#_5').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_5').show();
+                        }
+                        break;
+
+                    case 5:
+                        if(get == 0)
+                        {
+                            Jq.children('#_6').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_6').show();
+                        }
+                        break;
+
+                    case 6:
+                        if(get == 0)
+                        {
+                            Jq.children('#_7').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_7').show();
+                        }
+                        break;
+
+                    case 7:
+                        if(get == 0)
+                        {
+                            Jq.children('#_8').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_8').show();
+                        }
+                        break;
+
+                    case 8:
+                        if(get == 0)
+                        {
+                            Jq.children('#_9').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_9').show();
+                        }
+                        break;
+
+                    case 9:
+                        if(get == 0)
+                        {
+                            Jq.children('#_10').hide();
+                        }
+                        else
+                        {
+                            Jq.children('#_10').show();
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+        }
+    }
+    var uniqueSort = new Tuple(key,eval);
+    $(document).on( 'change', '#Pain', function (e) {
+        console.log(($(this).val()));
+        console.log(uniqueSort.getEval($(this).val()));
+        var selected = $(this).parent().parent().children(".col-6").children('#_great_eval').children("tbody")
+        fixTable(selected,uniqueSort.getEval($(this).val()))
+        //$(this).parent().remove();
+    });
+</script>
+<div class="form-group input_club row">
+    <div class="col-3">
+	    <input type="text" readonly value="@ViewData["Man-Club_Name"]" class="form-control">
+    </div>
+    <div class="col-3">
+        @Html.DropDownList("Pain",/*new SelectList((System.Collections.IEnumerable) Model,"RoleName","RoleName")*/ @list,"--Select Role--", new {@class="select2_demo_4 form-select"})
+    </div>
+    <div class="col-6">
+	    <table class="table" id="_great_eval">
+          <thead>
+            <tr>
+              <th scope="col">Authority </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="_1">
+              <td>Ability to Invite new users</td>
+            </tr>
+            <tr id="_2">
+              <td>Ability to kick users</td>
+            </tr>
+            <tr id="_3">
+              <td>Ability to change some club info</td>
+            </tr>
+            <tr id="_4">
+              <td>Ability to set meeting times</td>
+            </tr>
+            <tr id="_5">
+              <td>Ability to change a user to a higher rank (up to the user’s role)</td>
+            </tr>
+            <tr id="_6">
+              <td>Ability to demote a user’s rank (must be below the user)</td>
+            </tr>
+            <tr id="_7">
+              <td>Ability to Set & Control Polls</td>
+            </tr>
+            <tr id="_8">
+              <td>Ability to Set & Control Events</td>
+            </tr>
+            <tr id="_9">
+              <td>Ability to create roles at a rank lower than the user</td>
+            </tr>
+            <tr id="_10">
+              <td>Ability to change rank permissions at every level & Delete the Club</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary mt-2">Submit</a>
+        </div>
+        <div class="col">
+	        <a class="btn btn-primary mt-2">Remove Entry</a>
+        </div>
+
+    </div>
+</div>

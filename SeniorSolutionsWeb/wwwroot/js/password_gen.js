@@ -51,4 +51,31 @@ $(document).ready(function () {
         return result;
     };
 
+    $(document).on('click', '#man_add_club', function (e) {
+        $.ajax({
+            url: '/Manager/CheckClub',
+            success: function (partialView) {
+                $('.club-input').append(partialView);
+            }
+        });
+    });
+
+    $(document).on('click', '#man_remove_club', function (e) {
+        $(this).parent().remove();
+    });
+
+    
+    $(document).on('click', '#man_search_club', function (e) {
+        var ClubID = parseInt($(this).parent().children('#input_club_number').val())
+        var current = $(this).parent();
+        //console.log(ClubID);
+        $.ajax({
+            url: '/Manager/PopulateRoles?ClubID=' + ClubID,
+            success: function (partialView) {
+                current.remove();
+                $('.club-input').append(partialView);
+            }
+        });
+    });
+
 });

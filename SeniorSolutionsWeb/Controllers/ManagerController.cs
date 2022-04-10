@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeniorSolutionsWeb.Data;
 using SeniorSolutionsWeb.Models;
@@ -130,6 +131,91 @@ namespace SeniorSolutionsWeb.Controllers
         {
             return View();
         }
+        public IActionResult AdvancedCreateResident()
+        {
+            return View();
+        }
+        public IActionResult CheckClub()
+        {
+            //Once the Add Club Button is pressed,
+            //a partial view asking for the Club ID
+            //will be given.
+            //If the ID is valid, the Manager may press
+            //the search button and a new partial
+            //view will poulate this view.
+            //The remove button will remove the 
+            //input
+            return PartialView("_AddClub");
+        }
+        public IActionResult PopulateRoles(int ClubID)
+        {
+            Console.WriteLine("--------------------------\n");
+            var FindClub = _context.Club.Where(m => m.ClubId == ClubID);
+            if (!FindClub.Any())
+            {
+                this.ControllerContext.HttpContext.Response.StatusCode = 404;
+                return new EmptyResult();
+            }
+            foreach(var club in FindClub)
+            {
+                ViewData["Man-Club_Name"] = club.ClubName;
+                ViewData["Man-Club_ID"] = club.ClubId;
+            } 
+
+            /*List<String> FindEval_Name = new List<String>();
+            List<int> FindEval_Val = new List<int>();
+            List<int> FindEval_ID = new List<int>();*/
+
+            var FindEval = from Club in _context.ClubRoles
+                           where Club.ClubId == ClubID
+                           select Club;
+            var give = from a in FindEval
+                              select new SelectListItem
+                              {
+                                  Text = a.RoleName,
+                                  Value = a.RoleID.ToString(),
+                                  Selected = false
+                              };
+            var NewFindEval = give.AsNoTracking().ToList();
+
+            /*foreach (var club in FindEval)
+            {
+                FindEval_Name.Add(club.RoleName);
+                FindEval_Val.Add(club.RoleEval);
+                FindEval_ID.Add(club.RoleID);
+            }
+            ViewData["Man-Role_Name"] = FindEval_Name;
+            ViewData["Man-Role_Val"] = FindEval_Val;
+            ViewData["Man-Role_ID"] = FindEval_ID;*/
+
+            //This view has a readonly input box
+            //containing the Club Name, a
+            //select box containg all the roles
+            //for the given Club,
+            //and a table with the permisions
+            //associated with it.
+            //The submit button will remove 
+            //the table and make all elements readonly
+            //except the remove button
+            return PartialView("_AddRole", FindEval);
+        }
+        //[HttpPost]
+        /*public IActionResult GetRoles()
+        {
+            var ClubID = (int)ViewData["Man-Club_ID"];
+            var FindEval = from Club in _context.ClubRoles
+                           where Club.ClubId == ClubID
+                           select Club;
+            ViewData["Man-Role-1"] = from a in FindEval
+                        select new SelectListItem
+                        {
+                            Text = a.RoleName,
+                            Value = a.RoleID.ToString(),
+                            Selected = false
+                        };
+            return PartialView();
+        }*/
+
 
         // POST: Residents/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
