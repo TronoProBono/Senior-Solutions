@@ -28,5 +28,6 @@ namespace SeniorSolutionsWeb.Models
 
         [Display(Name = "Date Account Created")]
         public DateTime DateAccountCreated { get; set; } = DateTime.Now;
+        
     }
 }

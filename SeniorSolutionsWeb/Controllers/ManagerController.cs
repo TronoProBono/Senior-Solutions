@@ -331,5 +331,88 @@ namespace SeniorSolutionsWeb.Controllers
             }
             return View();
         }
+
+        public IActionResult CreateEvent()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateEvent([Bind("Id, Title, Description, Date, Residents")] Event newEvent)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Events.Add(newEvent);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ListEvents));
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> ListEvents()
+        {
+            return View(await _context.Events.ToListAsync());
+        }
+
+        public async Task<IActionResult> EditEvent(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var oldEvent = await _context.Events.FindAsync(id);
+            if (oldEvent == null)
+            {
+                return NotFound();
+            }
+            return View(oldEvent);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditEvent(int? id, [Bind("Id, Title, Description, Date, Residents")] Event updatedEvent)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                _context.Events.Update(updatedEvent);
+                await _context.SaveChangesAsync();
+                return View(nameof(Index));
+            }
+            return NotFound();
+        }
+        public async Task<IActionResult> DeleteEvent(int? id)
+        {
+            return View(await _context.Events.FindAsync(id));
+        }
+        [HttpPost,ActionName("DeleteEvent")]
+        public async Task<IActionResult> DeleteEventConfirmed(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var eventToDelete = await _context.Events.FindAsync(id);
+            if(eventToDelete == null)
+            {
+                return NotFound();
+            }
+            _context.Events.Remove(eventToDelete);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ListEvents));
+        }
+
+        public async Task<IActionResult> EventAttendees(int? id)
+        {
+            var currentEvent = await _context.Events.FindAsync(id);
+            var eventAttendees = _context.Events
+                .Where(ev => ev.Id == id)
+                .Include(ev => ev.Residents)
+                .FirstOrDefault();
+            return View("AttendeesEvent", currentEvent.Residents);
+        }
     }
 }
