@@ -1,15 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace SeniorSolutionsWeb.Models
 {
     public class ClubMembership
     {
         [Key]
-        [Display(Name = "Club ID")]
+        [Display(Name = "Meet ID")]
+        public int MeetId { get; set; }
+
+        [Display(Name = "Meet ID")]
         public int ClubId { get; set; }
 
         [Display(Name = "Resident Name")]
-        public string ResidentID { get; set; }
+        public int ResidentID { get; set; }
 
         [Display(Name = "Role Privileges")]
         public int RoleID { get; set; }

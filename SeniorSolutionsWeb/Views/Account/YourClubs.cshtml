@@ -1,0 +1,32 @@
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.ClubRoleViewModel>
+<div class="row">
+    <div class="col-3">
+        <partial name="_ResidentSideBar.cshtml" />
+    </div>
+    <div class="col-9">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Club Name</th>
+                    <th scope="col">Role</th>
+                </tr>
+            </thead>
+        @if(Model == null)
+        {
+            <tr>
+              <td scope="row" rowspan="2">Not Part of Any Clubs</td>
+            </tr>        
+        }
+        else
+        {
+            @foreach(var mod in Model)
+            {
+                <tr>
+                    <th scope="row">@mod.ClubName</th>
+                    <td>@mod.RoleName</td>
+                </tr>
+            }
+        }
+        </table>
+    </div>
+</div>

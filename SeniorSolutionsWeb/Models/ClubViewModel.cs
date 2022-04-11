@@ -9,7 +9,7 @@ namespace SeniorSolutionsWeb.Models
         [DefaultValue(-1)]
         public int ClubId { get; set; } = -1;
 
-        [Display(Name = "Meeting Day")]
+        [Display(Name = "Club Name")]
         [DefaultValue("")]
         public String ClubName { get; set; } = "";
 

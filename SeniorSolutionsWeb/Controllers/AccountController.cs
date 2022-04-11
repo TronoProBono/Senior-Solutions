@@ -30,6 +30,65 @@ namespace SeniorSolutionsWeb.Controllers
             return View();
         }
         
+        public IActionResult YourClubs()
+        {
+            ClaimsPrincipal _claim = User;
+            var ID = 0;
+            if (_claim != null)
+            {
+                foreach (Claim claim in _claim.Claims)
+                {
+                    Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
+                    if(claim.Type == "residentId")
+                    {
+                        ID = Int32.Parse(claim.Value);
+                        break;
+                    }
+                }
+                var club = from found in _context.ClubMembership
+                           where found.ResidentID == ID
+                           select new
+                           { 
+                               RID = ID, 
+                               CID = found.ClubId, 
+                               RoleID = found.RoleID
+                           };
+                var _club = from c1 in club
+                                 from c2 in _context.Club
+                                 where c1.CID == c2.ClubId
+                                 select new
+                                 {
+                                     RID = c1.RID,
+                                     CID = c1.CID,
+                                     RoleID = c1.RoleID,
+                                     CName = c2.ClubName
+                                 };
+                var exit_club = from prev in _context.ClubRoles
+                                from unite in club
+                                where prev.RoleID == unite.RoleID
+                                select new Models.ClubRoles
+                                {
+                                    RoleID = unite.RoleID,
+                                    ClubId = prev.ClubId,
+                                    RoleRank = prev.RoleRank,
+                                    RoleEval = prev.RoleEval,
+                                    RoleName = prev.RoleName
+                                };
+                var view_model = from c1 in _club
+                                 from _exit in exit_club
+                                 where c1.RoleID == _exit.RoleID
+                                 select new Models.ClubRoleViewModel
+                                 {
+                                     ClubId = _exit.ClubId,
+                                     ClubName = c1.CName,
+                                     RoleName = _exit.RoleName,
+                                     RolePerms = _exit.RoleEval
+                                 };
+                return View(view_model);
+            }
+            return View();
+        }
+        
 
         /// <summary>
         /// Pulls user login data from the database and allows the login form
@@ -60,9 +119,11 @@ namespace SeniorSolutionsWeb.Controllers
                 if (username == resident.Email && HashPassword(password) == resident.Password)
                 {
                     claims.Add(new Claim("username", resident.Email));
+                    //claims.Add(new Claim("residentId", resident.Id.ToString()));
                     claims.Add(new Claim("residentId", resident.Id.ToString()));
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, resident.Email));
                     claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + " " + resident.LastName));
+                    claims.Add(new Claim(ClaimTypes.Role, "Resident"));
                 }
             } 
             else //Username exists in employee DB
@@ -75,7 +136,7 @@ namespace SeniorSolutionsWeb.Controllers
                     claims.Add(new Claim("residentId", (-1).ToString())); // Unusual way, but this will work for checking if user
                                                                           // is an employee since, residentId is PK and never negative
                     claims.Add(new Claim(ClaimTypes.NameIdentifier, employee.Email));
-                    claims.Add(new Claim(ClaimTypes.Name, employee.FirstName + employee.LastName));
+                    claims.Add(new Claim(ClaimTypes.Name, employee.FirstName + " " + employee.LastName));
                     if (employee.Position != null) claims.Add(new Claim(ClaimTypes.Role, employee.Position));
                 }
             }
@@ -107,7 +168,7 @@ namespace SeniorSolutionsWeb.Controllers
             return RedirectToAction("Login");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Resident")]
         public IActionResult Secured()
         {
             return View();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220411220452_ClubMembership-Fix1")]
+    partial class ClubMembershipFix1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
