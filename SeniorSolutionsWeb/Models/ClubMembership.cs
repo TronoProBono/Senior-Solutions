@@ -7,9 +7,6 @@ namespace SeniorSolutionsWeb.Models
     {
         [Key]
         [Display(Name = "Meet ID")]
-        public int MeetId { get; set; }
-
-        [Display(Name = "Meet ID")]
         public int ClubId { get; set; }
 
         [Display(Name = "Resident Name")]
@@ -17,6 +14,10 @@ namespace SeniorSolutionsWeb.Models
 
         [Display(Name = "Role Privileges")]
         public int RoleID { get; set; }
+
+        [Display(Name = "Club ID")]
+        public int CID { get; set; }
+
 
     }
 }
