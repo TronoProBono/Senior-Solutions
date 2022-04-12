@@ -28,6 +28,10 @@ namespace SeniorSolutionsWeb.Views
 
         public async Task<IActionResult> Vote(int id, int residentId, string opinion)
         {
+            if (residentId.ToString() == "-1")
+            {
+                return RedirectToAction(nameof(Index));
+            }
             if(ModelState.IsValid)
             {
                 var hasVoted = _context.CommunityIssueVote.FirstOrDefault(vote => vote.CommunityIssueId == id && vote.ResidentId == residentId);

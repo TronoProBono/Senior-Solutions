@@ -414,5 +414,22 @@ namespace SeniorSolutionsWeb.Controllers
                 .FirstOrDefault();
             return View("AttendeesEvent", currentEvent.Residents);
         }
+
+        public IActionResult CreateQuestionnaire()
+        {
+            return View();
+        }
+        public IActionResult ListQuestionnaire()
+        {
+            return View();
+        }
+        public IActionResult EditQuestionnaire()
+        {
+            return View();
+        }
+        public IActionResult DeleteQuestionnaire()
+        {
+            return View();
+        }
     }
 }

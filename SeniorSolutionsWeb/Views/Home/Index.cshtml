@@ -1,7 +1,15 @@
 ﻿@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
-    string? orientationReminder = "The next orientation is scheduled on " + ViewData["NextOrientationDate"].ToString();
+    string? orientationReminder;
+    if (ViewData["NextOrientationDate"] != null)
+    {
+        orientationReminder = "The next orientation is scheduled on " + ViewData["NextOrientationDate"].ToString();
+    } else
+    {
+        orientationReminder = "No orientation is currently on the schedule.";
+    }
+
     var posts = from CommunityIssue in Model.CommunityIssues orderby CommunityIssue.CreatedDate descending select CommunityIssue;
     var recentPosts = posts.Take(3);
     var recentEvents = (from communityEvent in Model.Events orderby communityEvent.Date select communityEvent).Take(10);

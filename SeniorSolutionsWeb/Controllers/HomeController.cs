@@ -29,8 +29,12 @@ namespace SeniorSolutionsWeb.Controllers
             _context.Events.Include(ev => ev.Residents).ToList();
             modelCollection.Events = await _context.Events.ToListAsync();
             var orientations = _context.Orientations.ToList();
-            var oDate = (from orientation in orientations where orientation.Date >= DateTime.Now orderby orientation.Date select orientation).Take(1).First();
-            ViewData["NextOrientationDate"] = oDate.Date;
+            if (orientations.Count > 0)
+            {
+                var oDate = (from orientation in orientations where orientation.Date >= DateTime.Now orderby orientation.Date select orientation).Take(1).First();
+                ViewData["NextOrientationDate"] = oDate.Date;
+            }
+            
             return View(modelCollection);
         }
 
