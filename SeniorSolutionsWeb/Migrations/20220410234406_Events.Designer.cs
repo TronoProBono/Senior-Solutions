@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220410234406_Events")]
+    partial class Events
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,11 +96,9 @@ namespace SeniorSolutionsWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClubId"), 1L, 1);
 
-                    b.Property<int>("CID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResidentID")
-                        .HasColumnType("int");
+                    b.Property<string>("ResidentID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
@@ -266,34 +266,6 @@ namespace SeniorSolutionsWeb.Migrations
                     b.ToTable("Employee");
                 });
 
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.Invite", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int?>("ClubID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EventID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EventRoleID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResidentID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RoleID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Invite");
-                });
-
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Event", b =>
                 {
                     b.Property<int>("Id")
@@ -315,7 +287,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Event");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Locations", b =>

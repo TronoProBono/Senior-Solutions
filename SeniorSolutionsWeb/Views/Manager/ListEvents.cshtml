@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.Event>
+
+@{
+    ViewData["Title"] = "CreateResidents";
+}
+<div class="row">
+    <partial name="_ManagerSidebar.cshtml"></partial>
+    <div class="col-lg bg-light">
+        <p>
+            <a asp-action="CreateEvent">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        <a asp-action="EditEvent" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="EventAttendees" asp-route-id="@item.Id">Attendees</a> |
+                        <a asp-action="DeleteEvent" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

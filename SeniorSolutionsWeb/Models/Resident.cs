@@ -12,6 +12,6 @@ namespace SeniorSolutionsWeb.Models
         public List<CommunityIssue>? CommunityIssueList { get; set; }
         public List<CommunityIssueReply> CommunityIssueReplies { get; set; }
         public List<CommunityIssueVote>? CommunityIssueVotes { get; set; }
-        //[DataType(DataType.DateTime)] Uneccessary assignment with DataAnnotation
+        public List<Event>? Events { get; set; }
     }
 }

@@ -26,6 +26,8 @@ namespace SeniorSolutionsWeb.Controllers
             modelCollection.CommunityIssues = await _context.CommunityIssue.ToListAsync();
             modelCollection.Polls = await _context.Poll.ToListAsync();
             modelCollection.Votes = await _context.PollVote.ToListAsync();
+            _context.Events.Include(ev => ev.Residents).ToList();
+            modelCollection.Events = await _context.Events.ToListAsync();
             var orientations = _context.Orientations.ToList();
             var oDate = (from orientation in orientations where orientation.Date >= DateTime.Now orderby orientation.Date select orientation).Take(1).First();
             ViewData["NextOrientationDate"] = oDate.Date;
@@ -74,6 +76,35 @@ namespace SeniorSolutionsWeb.Controllers
 
                 await _context.SaveChangesAsync();
             }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpGet, ActionName("EventSignup")]
+        public async Task<IActionResult> EventSignup(int? residentId,int? eventId)
+        {
+            if(residentId == null || eventId == null)
+            {
+                return NotFound();
+            }
+            var eventToJoin = await _context.Events.FindAsync(eventId);
+            var residentToJoin = await _context.Resident.FindAsync(residentId);
+            //var timesRegistered = _context.Events
+            //    .Include(ev => ev.Residents)
+            //    .Where(ev => ev.Id == eventId && ev.Residents.Contains(residentToJoin))
+            //    .ToList()
+            //    .Count();
+            //if (timesRegistered > 0)
+            //{
+            //    RedirectToAction(nameof(Index));
+            //}
+            if (eventToJoin == null || residentToJoin == null)
+            {
+                return NotFound();
+            }
+            residentToJoin.Events = new List<Event>();
+            residentToJoin.Events.Add(eventToJoin);
+            eventToJoin.Residents = new List<Resident>();
+            eventToJoin.Residents.Add(residentToJoin);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }
