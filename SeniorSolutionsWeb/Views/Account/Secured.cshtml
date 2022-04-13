@@ -1,7 +1,4 @@
-﻿<h1>This is a secure page.</h1>
-<h2>Welcome @User.Identity.Name</h2>
-
-<div class="row">
+﻿<div class="row">
     <div class="col-3">
         <partial name="_ResidentSideBar.cshtml" />
     </div>
@@ -10,10 +7,14 @@
     </div>
 </div>
 
-<ul>
-    @foreach (var i in @User.Claims)
-    {
-        <li>@i.Type @i.Value</li>
-    }
-</ul>
+@{
+//<h1>This is a secure page.</h1>
+//<h2>Welcome @User.Identity.Name</h2>
 
+//<ul>
+    //@foreach (var i in @User.Claims)
+    //{
+        //<li>@i.Type @i.Value</li>
+    //}
+//</ul>
+}

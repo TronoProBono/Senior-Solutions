@@ -10,7 +10,7 @@ namespace SeniorSolutionsWeb.Models
         [Display(Name = "Resident Lease Number")]
         public int ResidentLeaseNumber { get; set; }
         public List<CommunityIssue>? CommunityIssueList { get; set; }
-        public List<CommunityIssueReply> CommunityIssueReplies { get; set; }
+        public List<CommunityIssueReply>? CommunityIssueReplies { get; set; }
         public List<CommunityIssueVote>? CommunityIssueVotes { get; set; }
         public List<Event>? Events { get; set; }
     }

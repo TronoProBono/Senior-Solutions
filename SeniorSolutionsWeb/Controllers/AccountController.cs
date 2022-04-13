@@ -29,7 +29,7 @@ namespace SeniorSolutionsWeb.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-        
+
         public IActionResult YourClubs()
         {
             ClaimsPrincipal _claim = User;
@@ -39,7 +39,7 @@ namespace SeniorSolutionsWeb.Controllers
                 foreach (Claim claim in _claim.Claims)
                 {
                     Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
-                    if(claim.Type == "residentId")
+                    if (claim.Type == "residentId")
                     {
                         ID = Int32.Parse(claim.Value);
                         break;
@@ -48,21 +48,21 @@ namespace SeniorSolutionsWeb.Controllers
                 var club = from found in _context.ClubMembership
                            where found.ResidentID == ID
                            select new
-                           { 
-                               RID = ID, 
-                               CID = found.ClubId, 
+                           {
+                               RID = ID,
+                               CID = found.ClubId,
                                RoleID = found.RoleID
                            };
                 var _club = from c1 in club
-                                 from c2 in _context.Club
-                                 where c1.CID == c2.ClubId
-                                 select new
-                                 {
-                                     RID = c1.RID,
-                                     CID = c1.CID,
-                                     RoleID = c1.RoleID,
-                                     CName = c2.ClubName
-                                 };
+                            from c2 in _context.Club
+                            where c1.CID == c2.ClubId
+                            select new
+                            {
+                                RID = c1.RID,
+                                CID = c1.CID,
+                                RoleID = c1.RoleID,
+                                CName = c2.ClubName
+                            };
                 var exit_club = from prev in _context.ClubRoles
                                 from unite in club
                                 where prev.RoleID == unite.RoleID
@@ -88,7 +88,104 @@ namespace SeniorSolutionsWeb.Controllers
             }
             return View();
         }
-        
+
+        public IActionResult Settings()
+        {
+            ClaimsPrincipal _claim = User;
+            var ID = 0;
+            if (_claim != null)
+            {
+                foreach (Claim claim in _claim.Claims)
+                {
+                    Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
+                    if (claim.Type == "residentId")
+                    {
+                        ID = Int32.Parse(claim.Value);
+                        break;
+                    }
+                }
+                var resident = from res in _context.Resident
+                               where res.Id == ID
+                               select res;
+                //ViewData["Error"] = "LOL";
+                return View(resident);
+            }
+            return View();
+        }
+
+        [HttpPost, ActionName("Update_Email")]
+        public async Task<ActionResult> Settings(string re_email)
+        {
+            ClaimsPrincipal _claim = User;
+            var ID = 0;
+            if (_claim != null)
+            {
+                foreach (Claim claim in _claim.Claims)
+                {
+                    Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
+                    if (claim.Type == "residentId")
+                    {
+                        ID = Int32.Parse(claim.Value);
+                        break;
+                    }
+                }
+                Resident resident = await _context.Resident
+                .FirstOrDefaultAsync(m => m.Id == ID);
+
+                if (ModelState.IsValid)
+                {
+                    var look_email = from ai in _context.Resident
+                                     where ai.Email == re_email
+                                     select ai;
+                    if (look_email.Count() == 0)
+                    {
+                        resident.Email = re_email;
+                        _context.Resident.Update(resident);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Settings");
+                    }
+                }
+            }
+            return RedirectToAction("Secured");
+        }
+
+        [HttpPost, ActionName("Update_Password")]
+        public async Task<ActionResult> Settings(string re_c_password, string re_password)
+        {
+            ClaimsPrincipal _claim = User;
+            var ID = 0;
+            if (_claim != null)
+            {
+                foreach (Claim claim in _claim.Claims)
+                {
+                    Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
+                    if (claim.Type == "residentId")
+                    {
+                        ID = Int32.Parse(claim.Value);
+                        break;
+                    }
+                }
+                Resident resident = await _context.Resident
+                .FirstOrDefaultAsync(m => m.Id == ID);
+
+                if (ModelState.IsValid)
+                {
+                    if (resident.Password == HashPassword(re_c_password))
+                    {
+                        resident.Password = HashPassword(re_password);
+                        _context.Resident.Update(resident);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("Secured");
+                    }
+                }
+            }
+            return RedirectToAction("Settings");
+        }
+
+
 
         /// <summary>
         /// Pulls user login data from the database and allows the login form
@@ -114,7 +211,7 @@ namespace SeniorSolutionsWeb.Controllers
                 TempData["Error"] = "Username or password is invalid.";
                 return View("Login");
             }
-            if(resident != null) //Username does exist in resident DB
+            if (resident != null) //Username does exist in resident DB
             {
                 if (username == resident.Email && HashPassword(password) == resident.Password)
                 {
@@ -125,7 +222,7 @@ namespace SeniorSolutionsWeb.Controllers
                     claims.Add(new Claim(ClaimTypes.Name, resident.FirstName + " " + resident.LastName));
                     claims.Add(new Claim(ClaimTypes.Role, "Resident"));
                 }
-            } 
+            }
             else //Username exists in employee DB
             {
                 var mail = employee.Email;
@@ -158,10 +255,10 @@ namespace SeniorSolutionsWeb.Controllers
             {
                 return Redirect("/Home");
             }
-            
+
         }
 
-        [Authorize] 
+        [Authorize]
         public async Task<IActionResult> LogoutUser()
         {
             await HttpContext.SignOutAsync();

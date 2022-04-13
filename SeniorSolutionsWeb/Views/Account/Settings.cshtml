@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.Resident>
+@{
+    var resident = Model.FirstOrDefault();
+}
+<div class="row">
+    <div class="col-3">
+        <partial name="_ResidentSideBar.cshtml" />
+    </div>
+    <div class="col-9">
+        <div class="form-group row mb-3">
+            <div class="col">
+                <label for="re_f-name">First Name:</label>
+                <input type="text" id="re_f-name" class="form-control" readonly value=@resident.FirstName>
+            </div>                
+            <div class="col">
+                <label for="re_m-name">Middle Name:</label>
+                <input type="text" id="re_m-name" class="form-control" readonly value=@resident.MiddleName>
+            </div>                
+            <div class="col">
+                <label for="re_l-name">Last Name:</label>
+                <input type="text" id="re_l-name" class="form-control" readonly value=@resident.LastName>
+            </div>                
+        </div>
+        @using (Html.BeginForm("Update_Email", "Account", FormMethod.Post))
+        {
+            if(ViewData["Error"] != null)
+            {
+                <div class="form-group row mb-3 border-top">
+                    <small class="text-danger">@ViewData["Error"]</small>
+                </div>
+            }
+
+            <div class="form-group row mb-3 border-top">
+                <div class="col-8">
+                    <label for="re_email">Username / Email:</label>
+                    <input type="email" name="re_email" id="re_email" class="form-control" value=@resident.Email>
+                </div>                
+                <div class="col-4">
+                    <button id="submit-email" class="btn btn-primary mt-4 d-flex justify-content-center" type="submit">Update Your Email</button>
+                </div>
+            </div>
+        }
+        @using (Html.BeginForm("Update_Password", "Account", FormMethod.Post))
+        {
+            <div class="form-group row mb-3">
+                <div class="col-4">
+                    <label for="re_c_password">Current Password:</label>
+                    <input type="password" name="re_c_password" id="re_c_password" class="form-control">
+                </div>
+                <div class="col-4">
+                    <label for="email">New Password:</label>
+                    <input type="password" name="re_password" id="re_password" class="form-control">
+                </div>
+                <div class="col-4">
+                    <button id="submit-email" class="btn btn-primary mt-4 d-flex justify-content-center" type="submit">Update Your Password</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
