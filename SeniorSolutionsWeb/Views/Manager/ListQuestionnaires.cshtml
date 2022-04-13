@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Questionnaire>
+
+@{
+    ViewData["Title"] = "CreateResidents";
+}
+<div class="row">
+    <partial name="_ManagerSidebar.cshtml"></partial>
+    <div class="col-lg bg-light">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Questions)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var q in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => q.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => q.Questions.Count)
+                    </td>
+                    <td>
+                        <a asp-action="EditQuestionnaire" asp-route-id="@q.Id">Edit</a> |
+                        <a asp-action="DeleteQuestionnaire" asp-route-id="@q.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

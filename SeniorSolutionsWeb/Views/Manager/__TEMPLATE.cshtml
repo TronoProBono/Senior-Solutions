@@ -1,0 +1,19 @@
+﻿@model SeniorSolutionsWeb.Models.Event
+
+@{
+    ViewData["Title"] = "CreateResidents";
+}
+<div class="row">
+    <partial name="_ManagerSidebar.cshtml"></partial>
+    <div class="col-lg bg-light">
+        INSERT CONTENT HERE
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

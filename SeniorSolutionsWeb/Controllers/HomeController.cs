@@ -28,6 +28,7 @@ namespace SeniorSolutionsWeb.Controllers
             modelCollection.Votes = await _context.PollVote.ToListAsync();
             _context.Events.Include(ev => ev.Residents).ToList();
             modelCollection.Events = await _context.Events.ToListAsync();
+            modelCollection.Questionnaires = await _context.Questionnaire.Include(q => q.Questions).ThenInclude(q => q.Responses).ToListAsync();
             var orientations = _context.Orientations.ToList();
             if (orientations.Count > 0)
             {
@@ -110,6 +111,23 @@ namespace SeniorSolutionsWeb.Controllers
             eventToJoin.Residents.Add(residentToJoin);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AnswerQuestionnaire(string? questionnaireId, string? questionTotal, string? questionIdTotal)
+        {
+            if (questionnaireId == null || questionTotal == null || questionIdTotal == null) return NotFound();
+            string[] questionsSplit = questionTotal.Split("////", StringSplitOptions.RemoveEmptyEntries);
+            string[] questionIdArr = questionIdTotal.Split("////", StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < questionIdArr.Length; i++)
+            {
+                var response = new QuestionResponse();
+                response.ResidentId = int.Parse(User.Claims.Single(user => user.Type == "residentId").Value);
+                response.QuestionId = int.Parse(questionIdArr[i]);
+                response.Response = questionsSplit[i];
+                await _context.QuestionResponse.AddAsync(response);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,0 +1,60 @@
+﻿@{
+    int? numOfQuestions = ViewData["numOfQuestions"] as int?;
+}
+<div class="row">
+    <partial name="_ManagerSidebar"></partial>
+    <div class="col-lg bg-light">
+        @{
+            if (numOfQuestions == null){
+                <form asp-action="CreateQuestionnaire">
+                    <div class="alert alert-success">How many questions would you like to have?</div>
+                    <div class="form-group">
+                        <label class="control-label"></label>
+                        <input class="form-control" type="number" name="numOfQuestions" max="20" min="1" required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            } else {
+                <form asp-action="CreateQuestionnaireFinal">
+                    <input hidden class="btn btn-primary" type="text" name="questionTotal" id="questionTotal">
+                    <div class="alert alert-success">Please fill out each desired question to be listed on the questionnaire.</div>
+                    @for (int i = 0; i < numOfQuestions; i++)
+                        {
+                            <div class="form-group">
+                                <label class="control-label">Question @i</label>
+                                <input class="form-control" type="text" name="question" maxlength="200" required/>
+                            </div>
+                        }
+                
+                    <div class="form-group mt-3 mb-3">
+                        <button type="submit" class="btn-primary btn" onclick="concatenateQuestions()">Submit</button>
+                    </div>
+                    
+                </form>
+            }
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    function concatenateQuestions(){
+        var listOfQuestions = document.getElementsByName("question");
+        var questionTotal = document.getElementById("questionTotal");
+        var runningTotal = "";
+        for (j = 0; j < listOfQuestions.length; j++)
+        {
+            runningTotal += "////" + listOfQuestions[j].value;
+        }
+        questionTotal.setAttribute("value", runningTotal);
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

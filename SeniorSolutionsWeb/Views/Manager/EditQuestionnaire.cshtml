@@ -1,0 +1,69 @@
+﻿@model SeniorSolutionsWeb.Models.Questionnaire
+
+@{
+    ViewData["Title"] = "Edit Questionnaire";
+}
+<div class="row">
+    <partial name="_ManagerSidebar.cshtml"></partial>
+    <div class="col-lg bg-light">
+        <form asp-action="EditQuestionnaire">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" /> |
+                <a asp-action="ListResidents">Back to List</a>
+            </div>
+        </form>
+        <form asp-action="EditQuestion" id="qForm">
+            <input hidden name="questionnaireId" value="@Model.Id"/>
+            <input hidden name="questionTotal" id="questionTotal" type="text" value="////"/>
+            <input hidden name="questionIdTotal" id="questionIdTotal" type="text" value="////"/>
+            @{
+                int count = 0;
+                foreach(var q in Model.Questions)
+                {
+                    <input type="hidden" name="questionId" value="@q.Id"/>
+                    <div class="form-group">
+                        <label class="control-label">Question @(count):</label>
+                        <input class="form-control" name="question" value="@q.Text" type="text"/>
+                    </div>
+                    count++;
+                }
+            }
+            <button type="submit" class="btn-primary btn" onclick="concatenateQuestions()">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    function concatenateQuestions(){
+        
+        var listOfQuestions = document.getElementsByName("question");
+        var listOfId = document.getElementsByName("questionId");
+        var questionTotal = document.getElementById("questionTotal");
+        var questionIdTotal = document.getElementById("questionIdTotal");
+        var runningTotal = "";
+        var runningTotalId = "";
+        for (j = 0; j < listOfQuestions.length; j++)
+        {
+            runningTotal += "////" + listOfQuestions[j].value;
+            runningTotalId += "////" + listOfId[j].value;
+        }
+        //console.log(runningTotal);
+        questionTotal.setAttribute("value", runningTotal);
+        questionIdTotal.setAttribute("value", runningTotalId);
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

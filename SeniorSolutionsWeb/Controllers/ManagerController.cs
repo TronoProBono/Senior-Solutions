@@ -419,17 +419,81 @@ namespace SeniorSolutionsWeb.Controllers
         {
             return View();
         }
-        public IActionResult ListQuestionnaire()
+        [HttpPost]
+        public IActionResult CreateQuestionnaire(int? numOfQuestions)
         {
+            if (numOfQuestions == null || numOfQuestions <= 0)
+            {
+                return NotFound();
+            }
+            ViewData["numOfQuestions"] = numOfQuestions;
             return View();
         }
-        public IActionResult EditQuestionnaire()
+        [HttpPost]
+        public IActionResult CreateQuestionnaireFinal(string? questionTotal)
         {
-            return View();
+            if(questionTotal == null)
+            {
+                return NotFound();
+            }
+            string[] questionsSplit = questionTotal.Split("////", StringSplitOptions.RemoveEmptyEntries);
+            Questionnaire questionnaire = new Questionnaire();
+            List<Question> questionList = new List<Question>();
+
+            for (int i = 0; i < questionsSplit.Length; i++)
+            {
+                Question q = new Question();
+                q.Text = questionsSplit[i];
+                questionList.Add(q);
+            }
+            questionnaire.Questions = questionList;
+            _context.Questionnaire.Add(questionnaire);
+            _context.SaveChanges();
+            return View(nameof(ListQuestionnaires));
         }
-        public IActionResult DeleteQuestionnaire()
+        public async Task<IActionResult> ListQuestionnaires()
         {
-            return View();
+            return View(await _context.Questionnaire.Include(q => q.Questions).ToListAsync());
+        }
+        public async Task<IActionResult> EditQuestionnaire(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var questionnaire = await _context.Questionnaire.Where(q => q.Id == id).Include(q => q.Questions).FirstOrDefaultAsync();
+            return View(questionnaire);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditQuestion(string? questionnaireId, string? questionTotal, string? questionIdTotal)
+        {
+            if(questionnaireId == null || questionTotal == null)
+            {
+                return BadRequest();
+            }
+            string[] questionsSplit = questionTotal.Split("////", StringSplitOptions.RemoveEmptyEntries);
+            string[] questionIdArr = questionIdTotal.Split("////", StringSplitOptions.RemoveEmptyEntries);
+            for(int i = 0; i < questionIdArr.Length; i++)
+            {
+                var questionToCheck = await _context.Question.FindAsync(int.Parse(questionIdArr[i]));
+                if (questionToCheck.Text != questionsSplit[i])
+                {
+                    questionToCheck.Text = questionsSplit[i];
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("EditQuestionnaire", new { id = questionnaireId});
+        }
+        public async Task<IActionResult> DeleteQuestionnaireAsync(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var questionnaire = await _context.Questionnaire.FindAsync(id);
+            if (questionnaire != null) _context.Questionnaire.Remove(questionnaire);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ListQuestionnaires");
         }
     }
 }

@@ -32,5 +32,8 @@ namespace SeniorSolutionsWeb.Data
         public DbSet<SeniorSolutionsWeb.Models.PollVote> PollVote { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Employee> Employee { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Invite> Invite { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.Questionnaire> Questionnaire { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.Question> Question { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.QuestionResponse> QuestionResponse { get; set; }
     }
 }
