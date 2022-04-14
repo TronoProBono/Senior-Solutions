@@ -10,11 +10,11 @@
         orientationReminder = "No orientation is currently on the schedule.";
     }
     /*
-     * Setup home vars
-     * All enumerables are properties of HomeViewModel.
-     * Majority of this should be moved to HomeController to keep proper MVC standards intact.
-     * Computational costs of the LINQ statements should be analyzed before deployment.
-     */
+    * Setup home vars
+    * All enumerables are properties of HomeViewModel.
+    * Majority of this should be moved to HomeController to keep proper MVC standards intact.
+    * Computational costs of the LINQ statements should be analyzed before deployment.
+    */
     IEnumerable<CommunityIssue>? posts = null;
     IEnumerable<Event>? recentEvents = null;
     IEnumerable<PollVote>? hasVoted = null;
@@ -36,11 +36,25 @@
         questionnaire = Model.Questionnaires.OrderByDescending(q => q.CreatedAt).FirstOrDefault();
         hasSubmittedQuestionnaire = questionnaire.Questions.Find(q => q.Responses.Find(r => r.ResidentId.ToString() == residentId) != null);
     }
+    var deposit = 0;
+    var lease = 0;
+    var maintenance = 0;
     if (Model.Fees.Count() > 0)
     {
         depositDue = Model.Fees.Where(f => f.Type == "Deposit" && f.AmountOwed > f.AmountPaid).OrderByDescending(f => f.DateIncurred).FirstOrDefault();
+        deposit = Model.Fees.Where(f => f.Type == "Deposit").Sum(f => f.AmountOwed);
+        int deposit_paid = Model.Fees.Where(f => f.Type == "Deposit").Sum(f => f.AmountPaid);
+        deposit -= deposit_paid;
+        
         leaseDue = Model.Fees.Where(f => f.Type == "Lease" && f.AmountOwed > f.AmountPaid).OrderByDescending(f => f.DateIncurred).FirstOrDefault();
+        lease = Model.Fees.Where(f => f.Type == "Lease").Sum(f => f.AmountOwed);
+        int lease_paid = Model.Fees.Where(f => f.Type == "Lease").Sum(f => f.AmountPaid);
+        lease -= lease_paid;
+
         maintenanceDue = Model.Fees.Where(f => f.Type == "Maintenance" && f.AmountOwed > f.AmountPaid).OrderByDescending(f => f.DateIncurred).FirstOrDefault();
+        maintenance = Model.Fees.Where(f => f.Type == "Maintenance").Sum(f => f.AmountOwed);
+        int maintenance_paid = Model.Fees.Where(f => f.Type == "Maintenance").Sum(f => f.AmountPaid);
+        maintenance -= maintenance_paid;
     }
 
     if (residentId == "-1") isEmployee = true;
@@ -68,17 +82,17 @@
                 } else
                 {
                     Html.Raw("<ul class='list-group list-group-flush'>");
-                    @if (depositDue != null){
-                        <li class='list-group-item'>Deposit: @depositDue.AmountOwed </li>
-                        total += depositDue.AmountOwed;
+                    @if (deposit > 0){
+                        <li class='list-group-item'>LOL Deposit: @deposit </li>
+                        total += deposit;
                     }
-                    if (leaseDue != null){
-                        <li class='list-group-item'>Lease: @leaseDue.AmountOwed </li>
-                        total += leaseDue.AmountOwed;
+                    if (lease > 0){
+                        <li class='list-group-item'>Lease: @lease </li>
+                        total += lease;
                     }
-                    if (maintenanceDue != null){
-                        <li class='list-group-item'>Maintenance: @maintenanceDue.AmountOwed</li>
-                        total += maintenanceDue.AmountOwed;
+                    if (maintenance > 0){
+                        <li class='list-group-item'>Maintenance: @maintenance</li>
+                        total += maintenance;
                     }
                     <li class='list-group-item'>Total: @total </li>
                     Html.Raw("</ul>");

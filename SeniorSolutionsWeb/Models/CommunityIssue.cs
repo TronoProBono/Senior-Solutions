@@ -15,6 +15,6 @@ namespace SeniorSolutionsWeb.Models
         public int? ResidentId { get; set; }
         public Resident? Resident { get; set; }
         public List<CommunityIssueVote>? CommunityIssueVotes { get; set; }
-        public List<CommunityIssueReply> CommunityIssueReplies { get; set; }
+        public List<CommunityIssueReply>? CommunityIssueReplies { get; set; }
     }
 }
