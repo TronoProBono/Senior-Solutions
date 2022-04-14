@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220414000237_Fees")]
+    partial class Fees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentsId");
 
-                    b.ToTable("EventResident", (string)null);
+                    b.ToTable("EventResident");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Club", b =>
@@ -54,7 +56,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("Club", (string)null);
+                    b.ToTable("Club");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMeeting", b =>
@@ -83,7 +85,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("MeetId");
 
-                    b.ToTable("ClubMeeting", (string)null);
+                    b.ToTable("ClubMeeting");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMembership", b =>
@@ -105,7 +107,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ClubId");
 
-                    b.ToTable("ClubMembership", (string)null);
+                    b.ToTable("ClubMembership");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubRoles", b =>
@@ -131,7 +133,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("ClubRoles", (string)null);
+                    b.ToTable("ClubRoles");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssue", b =>
@@ -166,7 +168,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("CommunityIssue", (string)null);
+                    b.ToTable("CommunityIssue");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssueReply", b =>
@@ -199,7 +201,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentID");
 
-                    b.ToTable("CommunityIssueReplies", (string)null);
+                    b.ToTable("CommunityIssueReplies");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssueVote", b =>
@@ -222,7 +224,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("CommunityIssueVote", (string)null);
+                    b.ToTable("CommunityIssueVote");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Employee", b =>
@@ -263,7 +265,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employee", (string)null);
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Event", b =>
@@ -287,7 +289,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Fee", b =>
@@ -321,61 +323,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("Fees", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.EventMembership", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<bool?>("CheckedIN")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("EventID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResidentID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Score")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("EventMembership");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.EventRoles", b =>
-                {
-                    b.Property<int>("EventRoleID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventRoleID"), 1L, 1);
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleEval")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleRank")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventRoleID");
-
-                    b.ToTable("EventRoles");
+                    b.ToTable("Fees");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Invite", b =>
@@ -403,7 +351,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Invite", (string)null);
+                    b.ToTable("Invite");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Locations", b =>
@@ -420,7 +368,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Orientation", b =>
@@ -436,7 +384,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orientations", (string)null);
+                    b.ToTable("Orientations");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.OrientationAttendee", b =>
@@ -470,39 +418,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("OrientationAttendees", (string)null);
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"), 1L, 1);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Catagory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("InitialDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("PaidDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ResidentID")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("isPaid")
-                        .HasColumnType("bit");
-
-                    b.HasKey("PaymentId");
-
-                    b.ToTable("Payment");
+                    b.ToTable("OrientationAttendees");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Poll", b =>
@@ -553,7 +469,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Poll", (string)null);
+                    b.ToTable("Poll");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.PollVote", b =>
@@ -580,7 +496,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("PollVote", (string)null);
+                    b.ToTable("PollVote");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Question", b =>
@@ -602,7 +518,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("QuestionnaireId");
 
-                    b.ToTable("Question", (string)null);
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Questionnaire", b =>
@@ -621,7 +537,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questionnaire", (string)null);
+                    b.ToTable("Questionnaire");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.QuestionResponse", b =>
@@ -648,7 +564,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasIndex("ResidentId");
 
-                    b.ToTable("QuestionResponse", (string)null);
+                    b.ToTable("QuestionResponse");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
@@ -690,7 +606,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resident", (string)null);
+                    b.ToTable("Resident");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ServiceRequest", b =>
@@ -724,7 +640,7 @@ namespace SeniorSolutionsWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceRequest", (string)null);
+                    b.ToTable("ServiceRequest");
                 });
 
             modelBuilder.Entity("EventResident", b =>

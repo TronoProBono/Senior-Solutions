@@ -187,6 +187,12 @@ namespace SeniorSolutionsWeb.Controllers
             resident.Password = AccountController.HashPassword(resident.Password);
             if (ModelState.IsValid)
             {
+                Fee fee = new Fee();
+                fee.ResidentId = resident.Id;
+                fee.AmountOwed = 1000;
+                fee.Type = "Deposit";
+                resident.Fees = new List<Fee>();
+                resident.Fees.Add(fee);
                 _context.Add(resident);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

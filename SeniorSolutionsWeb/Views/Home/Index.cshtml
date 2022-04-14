@@ -19,6 +19,16 @@
     var questionnaire = Model.Questionnaires.OrderByDescending(q => q.CreatedAt).FirstOrDefault();
     var hasSubmittedQuestionnaire = questionnaire.Questions.Find(q => q.Responses.Find(r => r.ResidentId.ToString() == residentId) != null);
     bool isEmployee = false;
+    Fee? depositDue = null;
+    Fee? leaseDue = null;
+    Fee? maintenanceDue = null;
+    if (Model.Fees.Count() > 0)
+    {
+        depositDue = Model.Fees.Where(f => f.Type == "Deposit" && f.AmountOwed > f.AmountPaid).OrderByDescending(f => f.DateIncurred).FirstOrDefault();
+        leaseDue = Model.Fees.Where(f => f.Type == "Lease" && f.AmountOwed > f.AmountPaid).OrderByDescending(f => f.DateIncurred).FirstOrDefault();
+        maintenanceDue = Model.Fees.Where(f => f.Type == "Maintenance" && f.AmountOwed > f.AmountPaid).OrderByDescending(f => f.DateIncurred).FirstOrDefault();
+    }
+
     if (residentId == "-1") isEmployee = true;
     //var hasFilledQuestionnaire = from response in questionnaire.Questions where 
 }
@@ -36,13 +46,30 @@
             <div class="card-header">
                 Balance Due
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Deposit:</li>
-                <li class="list-group-item">Lease:</li>
-                <li class="list-group-item">Utilities:</li>
-                <li class="list-group-item">Total:</li>
-            </ul>
-
+            @{
+                int total = 0;
+                @if (Model.Fees.Count() <= 0)
+                {
+                    <div class='alert alert-success'>No bills due at this time.</div>
+                } else
+                {
+                    Html.Raw("<ul class='list-group list-group-flush'>");
+                    @if (depositDue != null){
+                        <li class='list-group-item'>Deposit: @depositDue.AmountOwed </li>
+                        total += depositDue.AmountOwed;
+                    }
+                    if (leaseDue != null){
+                        <li class='list-group-item'>Lease: @leaseDue.AmountOwed </li>
+                        total += leaseDue.AmountOwed;
+                    }
+                    if (maintenanceDue != null){
+                        <li class='list-group-item'>Maintenance: @maintenanceDue.AmountOwed</li>
+                        total += maintenanceDue.AmountOwed;
+                    }
+                    <li class='list-group-item'>Total: @total </li>
+                    Html.Raw("</ul>");
+                }
+            }
             <div class="card-footer d-flex justify-content-center">
                 @{
                     if (isEmployee)

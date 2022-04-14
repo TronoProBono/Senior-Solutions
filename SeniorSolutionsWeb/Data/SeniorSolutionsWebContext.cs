@@ -25,6 +25,7 @@ namespace SeniorSolutionsWeb.Data
         public DbSet<SeniorSolutionsWeb.Models.CommunityIssueReply> CommunityIssueReplies { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.CommunityIssueVote> CommunityIssueVote { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Event> Events { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.Fee> Fees { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Locations> Locations { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Orientation> Orientations { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.OrientationAttendee> OrientationAttendees { get; set; }

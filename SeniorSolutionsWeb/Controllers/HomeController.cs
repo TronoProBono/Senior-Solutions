@@ -22,6 +22,7 @@ namespace SeniorSolutionsWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
             HomeViewModel modelCollection = new HomeViewModel();
             modelCollection.CommunityIssues = await _context.CommunityIssue.ToListAsync();
             modelCollection.Polls = await _context.Poll.ToListAsync();
@@ -29,6 +30,7 @@ namespace SeniorSolutionsWeb.Controllers
             _context.Events.Include(ev => ev.Residents).ToList();
             modelCollection.Events = await _context.Events.ToListAsync();
             modelCollection.Questionnaires = await _context.Questionnaire.Include(q => q.Questions).ThenInclude(q => q.Responses).ToListAsync();
+            modelCollection.Fees = await _context.Fees.Where(p => p.ResidentId == int.Parse(residentId)).ToListAsync();
             var orientations = _context.Orientations.ToList();
             if (orientations.Count > 0)
             {

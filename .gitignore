@@ -369,3 +369,4 @@ FodyWeavers.xsd
 /.vs
 
 SeniorSolutionsWeb/bin/
+SeniorSolutionsWeb/appsettings.json
