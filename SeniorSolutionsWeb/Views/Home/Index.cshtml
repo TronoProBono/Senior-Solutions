@@ -17,7 +17,15 @@
     var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
     var hasVoted = from PollVote in Model.Votes where PollVote.ResidentId.ToString() == residentId select PollVote;
     var questionnaire = Model.Questionnaires.OrderByDescending(q => q.CreatedAt).FirstOrDefault();
-    var hasSubmittedQuestionnaire = questionnaire.Questions.Find(q => q.Responses.Find(r => r.ResidentId.ToString() == residentId) != null);
+    var hasSubmittedQuestionnaire = false;
+    if(questionnaire != null)
+    {
+        var _hasSubmittedQuestionnaire = questionnaire.Questions.Find(q => q.Responses.Find(r => r.ResidentId.ToString() == residentId) != null);
+        if (_hasSubmittedQuestionnaire != null)
+        {
+            hasSubmittedQuestionnaire = true;
+        }
+    }
     bool isEmployee = false;
     Fee? depositDue = null;
     Fee? leaseDue = null;
@@ -245,7 +253,7 @@
                         if (isEmployee){
                                 <button type="button" class="btn-primary btn" onclick="concatenateQuestions()" disabled>Unavailable to Staff</button>
                             } else {
-                                if (hasSubmittedQuestionnaire != null)
+                                if (hasSubmittedQuestionnaire == true)
                                 {
                                     <button type="submit" class="btn-primary btn" onclick="concatenateQuestions()" disabled>Already Submitted</button>
                                 } else
