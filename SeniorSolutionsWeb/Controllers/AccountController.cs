@@ -173,7 +173,8 @@ namespace SeniorSolutionsWeb.Controllers
                                    EventRoleName = c2.EventRoleName
                                };
 
-            var invite = left_invite.Concat(right_invite);
+            var new_invite = left_invite.Concat(right_invite);
+            var invite = new_invite.GroupBy(x => x.ID).Select(y => y.First());
 
             return View(invite);
         }
@@ -193,20 +194,22 @@ namespace SeniorSolutionsWeb.Controllers
                     refined.RoleID = (int)_get_invide.RoleID;
                     refined.ResidentID = (int)_get_invide.ResidentID;
                     _context.ClubMembership.Add(refined);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("YourClubs");
                 }
-                else if (_get_invide.ClubID != null && _get_invide.RoleID != null)
+                else if (_get_invide.EventID != null && _get_invide.EventRoleID != null)
                 {
                     EventMembership refined = new EventMembership();
-                    refined.ClubID = (int)_get_invide.ClubID;
-                    refined.RoleID = (int)_get_invide.RoleID;
+                    refined.EventID = (int)_get_invide.EventID;
+                    refined.RoleID = (int)_get_invide.EventRoleID;
                     refined.ResidentID = _get_invide.ResidentID;
                     _context.EventMembership.Add(refined);
-                }
-                await _context.SaveChangesAsync();
-                return RedirectToAction("YourClubs");
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("YourEvents");
 
+                }
             }
-            return Invites();
+            return RedirectToAction("Secured");
         }
         [HttpPost]
         public async Task<IActionResult> Decline(int ID)
@@ -217,9 +220,68 @@ namespace SeniorSolutionsWeb.Controllers
             {
                 _context.Invite.Remove(_get_invide);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("YourClubs");
+                return RedirectToAction("Invites");
             }
             return RedirectToAction("Secured");
+        }
+
+        public IActionResult YourEvents()
+        {
+            ClaimsPrincipal _claim = User;
+            var ID = 0;
+            if (_claim != null)
+            {
+                foreach (Claim claim in _claim.Claims)
+                {
+                    Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
+                    if (claim.Type == "residentId")
+                    {
+                        ID = Int32.Parse(claim.Value);
+                        break;
+                    }
+                }
+                var club = from found in _context.EventMembership
+                           where found.ResidentID == ID
+                           select new
+                           {
+                               RID = ID,
+                               EID = found.EventID,
+                               RoleID = found.RoleID
+                           };
+                var _club = from c1 in club
+                            from c2 in _context.Events
+                            where c1.EID == c2.Id && c2.Date > DateTime.Now
+                            select new
+                            {
+                                RID = c1.RID,
+                                EID = c1.EID,
+                                RoleID = c1.RoleID,
+                                EName = c2.Title
+                            };
+                var exit_club = from prev in _context.EventRoles
+                                from unite in club
+                                where prev.EventRoleID == unite.RoleID
+                                select new Models.EventRoles
+                                {
+                                    EventRoleID = unite.RoleID,
+                                    EventId = prev.EventId,
+                                    RoleRank = prev.RoleRank,
+                                    RoleEval = prev.RoleEval,
+                                    RoleName = prev.RoleName
+                                };
+                var view_model = from c1 in _club
+                                 from _exit in exit_club
+                                 where c1.RoleID == _exit.EventRoleID
+                                 select new Models.ClubRoleViewModel
+                                 {
+                                     ClubId = _exit.EventId,
+                                     ClubName = c1.EName,
+                                     RoleName = _exit.RoleName,
+                                     RolePerms = _exit.RoleEval
+                                 };
+                return View(view_model);
+            }
+            return View();
         }
 
 

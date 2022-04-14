@@ -14,8 +14,8 @@ namespace SeniorSolutionsWeb.Models
         [Display(Name = "Role Privileges")]
         public int RoleID { get; set; }
 
-        [Display(Name = "Club ID")]
-        public int ClubID { get; set; }
+        [Display(Name = "Event ID")]
+        public int EventID { get; set; }
 
         [Display(Name = "Checked In")]
         public bool? CheckedIN { get; set; }

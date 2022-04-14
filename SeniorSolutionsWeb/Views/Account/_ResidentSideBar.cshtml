@@ -1,5 +1,5 @@
 ﻿<div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+    <a asp-controller="Account" asp-action="Secured" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
         <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
         <span class="fs-5 fw-semibold">Welcome, <br> @User.Identity.Name</span>
     </a>
@@ -11,7 +11,7 @@
             <div class="collapse show" id="home-collapse" style="">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                 <li><a asp-controller="Account" asp-action="YourClubs" class="link-dark rounded">Your Clubs</a></li>
-                <li><a href="#" class="link-dark rounded">Your Events</a></li>
+                <li><a asp-controller="Account" asp-action="YourEvents" class="link-dark rounded">Your Events</a></li>
                 <li><a a asp-controller="Account" asp-action="Invites" class="link-dark rounded">Invites</a></li>
                 </ul>
             </div>
@@ -47,7 +47,7 @@
             </button>
             <div class="collapse show" id="payments-collapse" style="">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="#" class="link-dark rounded">Current Payments</a></li>
+                <li><a href="#" class="link-dark rounded">Current Dues</a></li>
                 <li><a href="#" class="link-dark rounded">Past Payments</a></li>
                 </ul>
             </div>
