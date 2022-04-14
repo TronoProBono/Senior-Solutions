@@ -17,39 +17,38 @@
         @if(Model.Count() == 0)
         {
             <tr>
-              <td scope="row" colspan="3" class="text-center">No Current Invites</td>
+              <td scope="row" colspan="5" class="text-center">No Current Invites</td>
             </tr>        
         }
         else
         {
             @foreach(var mod in Model)
             {
-                if (mod.ClubID != null && mod.RoleID != null)
+                <tr>
+                @if (mod.ClubID != null && mod.RoleID != null)
                 {
-                    <tr>
                         <th scope="row">@mod.ClubName</th>
                         <td>Club</td>
                         <td>@mod.RoleName</td>
-                        @using (Html.BeginForm("Accept", "Account", FormMethod.Post))
-                        {
-                            @Html.Hidden("ID", mod.ID)
-                            <td><button id="name" class="btn btn-primary mt-4 d-flex justify-content-center" type="submit">Accept</button></td>
-                        }
-                        <td>Accept</td>
-                        <td>Decline</td>
-                    </tr>
                 }
                 else if (mod.EventID != null && mod.EventRoleID != null)
                 {
-                    <tr>
                         <th scope="row">@mod.EventName</th>
                         <td>Event</td>
                         <td>@mod.EventRoleName</td>
-                        <td>Accept</td>
-                        <td>Decline</td>
-
-                    </tr>
                 }
+                @using (Html.BeginForm("Accept", "Account", FormMethod.Post))
+                {
+                    @Html.Hidden("ID", mod.ID)
+                    <td><button id="Accept" class="btn btn-primary d-flex justify-content-center" type="submit">Accept</button></td>
+                }
+                @using (Html.BeginForm("Decline", "Account", FormMethod.Post))
+                {
+                    @Html.Hidden("ID", mod.ID)
+                    <td><button id="Decline" class="btn btn-primary d-flex justify-content-center" type="submit">Decline</button></td>
+                }
+
+                </tr>
             }
         }
         </table>

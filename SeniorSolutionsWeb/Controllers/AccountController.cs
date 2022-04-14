@@ -203,11 +203,25 @@ namespace SeniorSolutionsWeb.Controllers
                     _context.EventMembership.Add(refined);
                 }
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Secured");
+                return RedirectToAction("YourClubs");
 
             }
             return Invites();
         }
+        [HttpPost]
+        public async Task<IActionResult> Decline(int ID)
+        {
+            var get_invide = _context.Invite.Where(m => m.ResidentID == GetUser());
+            var _get_invide = get_invide.FirstOrDefault(m => m.ID == ID);
+            if (_get_invide != null)
+            {
+                _context.Invite.Remove(_get_invide);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("YourClubs");
+            }
+            return RedirectToAction("Secured");
+        }
+
 
         public IActionResult Settings()
         {
