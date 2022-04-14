@@ -47,8 +47,8 @@
             </button>
             <div class="collapse show" id="payments-collapse" style="">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="#" class="link-dark rounded">Current Dues</a></li>
-                <li><a href="#" class="link-dark rounded">Past Payments</a></li>
+                <li><a asp-controller="Account" asp-action="CurrentDues" class="link-dark rounded">Current Dues</a></li>
+                <li><a asp-controller="Account" asp-action="PastPayments" class="link-dark rounded">Past Payments</a></li>
                 </ul>
             </div>
         </li>

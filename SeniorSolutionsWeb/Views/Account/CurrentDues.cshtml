@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.Fee>
+@{
+    var creditCount = 0;
+    bool validModel = false;
+    if(Model.Count() > 0)
+    {
+        validModel = true;
+        foreach(var mod in Model)
+        {
+            if(mod.Type == "Credit")
+            {
+                creditCount += mod.AmountOwed;
+            }
+        }
+    }
+}
+<div class="row">
+    <div class="col-3">
+        <partial name="_ResidentSideBar.cshtml" />
+    </div>
+    <div class="col-9">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Amount</th>
+                </tr>
+                <tr>
+                    <th scope="col">Total Credit:</th>
+                    <td scope="col">$@creditCount</td>
+                </tr>
+            </thead>
+        </table>
+        <br>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Catagory</th>
+                    <th scope="col">Issue Due</th>
+                    <th scope="col">Total Due</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            @if (validModel)
+            {
+                @foreach (var mod in Model)
+                {
+                    if (mod.Type != "Credit")
+                    {
+                        <tr>
+                            <th scope="col">@mod.Type</th>
+                            <td scope="col">@mod.DateIncurred</td>
+                            <td scope="col">$@mod.AmountOwed</td>
+                            @using (Html.BeginForm("PayAll", "Account", FormMethod.Post))
+                            {
+                                @Html.Hidden("ID",mod.Id)
+                                if (creditCount >= mod.AmountOwed)
+                                {
+                                    <td><button id="Accept" class="btn btn-primary d-flex justify-content-center" type="submit">Pay Full</button></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            }
+            else
+            {
+                <tr>
+                    <td scope="row" colspan="4" class="text-center">No Current Bills</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

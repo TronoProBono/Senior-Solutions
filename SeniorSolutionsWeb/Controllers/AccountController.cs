@@ -284,6 +284,61 @@ namespace SeniorSolutionsWeb.Controllers
             return View();
         }
 
+        public IActionResult CurrentDues()
+        {
+            var fees = from ai in _context.Fees
+                       where ai.ResidentId == GetUser()
+                       select ai;
+            var _fees = from ai in fees
+                        where (ai.DatePayed == null) || (ai.Type == "Credit")
+                        select ai;
+            return View(_fees);
+        }
+
+        public IActionResult PastPayments()
+        {
+            var fees = from ai in _context.Fees
+                       where ai.ResidentId == GetUser()
+                       select ai;
+            var _fees = from ai in fees
+                        where (ai.DatePayed != null) || (ai.Type == "Credit")
+                        select ai;
+            return View(_fees);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> PayAll(int ID)
+        {
+            if (ModelState.IsValid)
+            {
+                var fees = from ai in _context.Fees
+                           where ai.ResidentId == GetUser() && ai.Id == ID
+                           select ai;
+                var credit_total = from ai in _context.Fees
+                                   where ai.ResidentId == GetUser() && ai.Type == "Credit"
+                                   select ai.AmountOwed;
+                var credit_amount = credit_total.Sum();
+                if (credit_amount > 0 && fees != null)
+                {
+                    Fee found_fee = fees.FirstOrDefault();
+                    found_fee.AmountPaid = found_fee.AmountOwed;
+                    found_fee.DatePayed = DateTime.Now;
+                    var new_credit = new Fee();
+                    new_credit.Type = "Credit";
+                    new_credit.AmountOwed = 0 - found_fee.AmountOwed;
+                    new_credit.DatePayed = DateTime.Now;
+                    new_credit.ResidentId = (int)GetUser();
+                    _context.Fees.Update(found_fee);
+                    _context.Fees.Add(new_credit);
+                    await _context.SaveChangesAsync();
+                }
+
+
+            }
+            return RedirectToAction("CurrentDues");
+        }
+
 
         public IActionResult Settings()
         {
