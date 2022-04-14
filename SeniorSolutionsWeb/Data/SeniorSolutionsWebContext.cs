@@ -35,5 +35,9 @@ namespace SeniorSolutionsWeb.Data
         public DbSet<SeniorSolutionsWeb.Models.Questionnaire> Questionnaire { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.Question> Question { get; set; }
         public DbSet<SeniorSolutionsWeb.Models.QuestionResponse> QuestionResponse { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.EventRoles> EventRoles { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.EventMembership> EventMembership { get; set; }
+        public DbSet<SeniorSolutionsWeb.Models.Payment> Payment { get; set; }
+
     }
 }

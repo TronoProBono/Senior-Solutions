@@ -88,6 +88,126 @@ namespace SeniorSolutionsWeb.Controllers
             }
             return View();
         }
+        public IActionResult Invites()
+        {
+            var _invite = from inv in _context.Invite
+                         where inv.ResidentID == GetUser()
+                         select inv;
+            var club_name = from c1 in _invite
+                            join c2 in _context.Club on c1.ClubID equals c2.ClubId
+                            select new
+                            {
+                                ID = c1.ID,
+                                RID = c1.ResidentID,
+                                CID = c1.ClubID,
+                                RoleID = c1.RoleID,
+                                CName = c2.ClubName
+                            };
+            var club_role_name = from c1 in club_name
+                                 from c2 in _context.ClubRoles
+                                 where c1.RoleID == c2.RoleID
+                                 select new
+                                 {
+                                     ID = c1.ID,
+                                     RID = c1.RID,
+                                     CID = c1.CID,
+                                     RoleID = c1.RoleID,
+                                     CName = c1.CName,
+                                     RoleName = c2.RoleName
+                                 };
+
+            var event_name = from c1 in _invite
+                             from c2 in _context.Events
+                             where c1.EventID == c2.Id
+                             select new
+                             {
+                                 ID = c1.ID,
+                                 RID = c1.ResidentID,
+                                 EID = c1.EventID,
+                                 RoleID = c1.EventRoleID,
+                                 EName = c2.Title
+                             };
+            var evnt_role_name = from c1 in event_name
+                                 from c2 in _context.EventRoles
+                                 where c1.EID == c2.EventId
+                                 select new
+                                 {
+                                     ID = c1.ID,
+                                     RID = c1.RID,
+                                     EID = c1.EID,
+                                     RoleID = c1.RID,
+                                     EName = c1.EName,
+                                     EventRoleName = c2.RoleName
+                                 };
+            var left_invite = from c1 in evnt_role_name
+                              join c2 in club_role_name on c1.ID equals c2.ID into club_role
+                              from c2 in club_role.DefaultIfEmpty()
+                              select new InviteViewModel
+                              {
+                                  ID = c1.ID,
+                                  ResidentID = c1.RID,
+                                  ClubID = c2.CID,
+                                  ClubName = c2.CName,
+                                  RoleID = c2.RoleID,
+                                  RoleName = c2.RoleName,
+                                  EventID = c1.EID,
+                                  EventName = c1.EName,
+                                  EventRoleID = c1.RoleID,
+                                  EventRoleName = c1.EventRoleName
+                         };
+
+            var right_invite = from c1 in club_role_name
+                               join c2 in evnt_role_name on c1.ID equals c2.ID into club_role
+                               from c2 in club_role.DefaultIfEmpty()
+                               select new InviteViewModel
+                               {
+                                   ID = c1.ID,
+                                   ResidentID = c1.RID,
+                                   ClubID = c1.CID,
+                                   ClubName = c1.CName,
+                                   RoleID = c1.RoleID,
+                                   RoleName = c1.RoleName,
+                                   EventID = c2.EID,
+                                   EventName = c2.EName,
+                                   EventRoleID = c2.RoleID,
+                                   EventRoleName = c2.EventRoleName
+                               };
+
+            var invite = left_invite.Concat(right_invite);
+
+            return View(invite);
+        }
+
+        [HttpPost,ActionName("Accept")]
+        public async Task<IActionResult> Invites(int ID)
+        {
+            var get_invide =  _context.Invite.Where(m => m.ResidentID == GetUser());
+            var _get_invide = get_invide.FirstOrDefault(m => m.ID == ID);
+            if(_get_invide != null)
+            {
+                _context.Remove(_get_invide);
+                if(_get_invide.ClubID != null && _get_invide.RoleID != null)
+                {
+                    ClubMembership refined = new ClubMembership();
+                    refined.CID = (int)_get_invide.ClubID;
+                    refined.RoleID = (int)_get_invide.RoleID;
+                    refined.ResidentID = (int)_get_invide.ResidentID;
+                    _context.ClubMembership.Add(refined);
+                }
+                else if (_get_invide.ClubID != null && _get_invide.RoleID != null)
+                {
+                    EventMembership refined = new EventMembership();
+                    refined.ClubID = (int)_get_invide.ClubID;
+                    refined.RoleID = (int)_get_invide.RoleID;
+                    refined.ResidentID = _get_invide.ResidentID;
+                    _context.EventMembership.Add(refined);
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Secured");
+
+            }
+            return Invites();
+        }
 
         public IActionResult Settings()
         {
@@ -276,6 +396,24 @@ namespace SeniorSolutionsWeb.Controllers
             return View();
         }
 
+        public int? GetUser()
+        {
+            ClaimsPrincipal _claim = User;
+            var ID = 0;
+            if (_claim != null)
+            {
+                foreach (Claim claim in _claim.Claims)
+                {
+                    Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
+                    if (claim.Type == "residentId")
+                    {
+                        ID = Int32.Parse(claim.Value);
+                        return ID;
+                    }
+                }
+            }
+            return null;
+        }
         public static string HashPassword(string password)
         {
             byte[] salt = new byte[128 / 8];

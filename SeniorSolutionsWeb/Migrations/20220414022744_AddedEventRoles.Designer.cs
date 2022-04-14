@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220414022744_AddedEventRoles")]
+    partial class AddedEventRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -290,34 +292,6 @@ namespace SeniorSolutionsWeb.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.EventMembership", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<bool?>("CheckedIN")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ClubID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResidentID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Score")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("EventMembership");
-                });
-
             modelBuilder.Entity("SeniorSolutionsWeb.Models.EventRoles", b =>
                 {
                     b.Property<int>("EventRoleID")
@@ -437,38 +411,6 @@ namespace SeniorSolutionsWeb.Migrations
                     b.HasIndex("ResidentId");
 
                     b.ToTable("OrientationAttendees");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.Payment", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"), 1L, 1);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Catagory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("InitialDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("PaidDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ResidentID")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("isPaid")
-                        .HasColumnType("bit");
-
-                    b.HasKey("PaymentId");
-
-                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Poll", b =>
