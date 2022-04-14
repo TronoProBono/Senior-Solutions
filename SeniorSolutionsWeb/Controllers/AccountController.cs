@@ -400,7 +400,7 @@ namespace SeniorSolutionsWeb.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             Resident? resident = await _context.Resident.FirstOrDefaultAsync(m => m.Email == username);
             Employee? employee = await _context.Employee.FirstOrDefaultAsync(m => m.Email == username);
-            var claims = new List<Claim>();
+              var claims = new List<Claim>();
 
             if (resident == null && employee == null) // Username entered doesn't exist in any database
             {
