@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeniorSolutionsWeb.Data;
 
@@ -11,9 +12,10 @@ using SeniorSolutionsWeb.Data;
 namespace SeniorSolutionsWeb.Migrations
 {
     [DbContext(typeof(SeniorSolutionsWebContext))]
-    partial class SeniorSolutionsWebContextModelSnapshot : ModelSnapshot
+    [Migration("20220414223432_Invite_FK")]
+    partial class Invite_FK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,16 +112,7 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
 
-                    b.Property<int>("RolesRoleID")
-                        .HasColumnType("int");
-
                     b.HasKey("ClubId");
-
-                    b.HasIndex("CID");
-
-                    b.HasIndex("ResidentID");
-
-                    b.HasIndex("RolesRoleID");
 
                     b.ToTable("ClubMembership");
                 });
@@ -326,19 +319,10 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
 
-                    b.Property<int>("RolesEventRoleID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("Score")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("EventID");
-
-                    b.HasIndex("ResidentID");
-
-                    b.HasIndex("RolesEventRoleID");
 
                     b.ToTable("EventMembership");
                 });
@@ -773,33 +757,6 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubMembership", b =>
-                {
-                    b.HasOne("SeniorSolutionsWeb.Models.Club", "Club")
-                        .WithMany("Memberships")
-                        .HasForeignKey("CID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
-                        .WithMany("ClubMemberships")
-                        .HasForeignKey("ResidentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorSolutionsWeb.Models.ClubRoles", "Roles")
-                        .WithMany("ClubMembership")
-                        .HasForeignKey("RolesRoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-
-                    b.Navigation("Resident");
-
-                    b.Navigation("Roles");
-                });
-
             modelBuilder.Entity("SeniorSolutionsWeb.Models.CommunityIssue", b =>
                 {
                     b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
@@ -845,33 +802,6 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Navigation("CommunityIssue");
 
                     b.Navigation("Resident");
-                });
-
-            modelBuilder.Entity("SeniorSolutionsWeb.Models.EventMembership", b =>
-                {
-                    b.HasOne("SeniorSolutionsWeb.Models.Event", "Event")
-                        .WithMany("Memberships")
-                        .HasForeignKey("EventID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorSolutionsWeb.Models.Resident", "Resident")
-                        .WithMany("EventMembershipList")
-                        .HasForeignKey("ResidentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SeniorSolutionsWeb.Models.EventRoles", "Roles")
-                        .WithMany("EventMemberships")
-                        .HasForeignKey("RolesEventRoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Resident");
-
-                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.EventRoles", b =>
@@ -1025,14 +955,10 @@ namespace SeniorSolutionsWeb.Migrations
                     b.Navigation("ClubMeetings");
 
                     b.Navigation("Invites");
-
-                    b.Navigation("Memberships");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.ClubRoles", b =>
                 {
-                    b.Navigation("ClubMembership");
-
                     b.Navigation("Invites");
                 });
 
@@ -1052,15 +978,11 @@ namespace SeniorSolutionsWeb.Migrations
                 {
                     b.Navigation("Invites");
 
-                    b.Navigation("Memberships");
-
                     b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.EventRoles", b =>
                 {
-                    b.Navigation("EventMemberships");
-
                     b.Navigation("Invites");
                 });
 
@@ -1091,15 +1013,11 @@ namespace SeniorSolutionsWeb.Migrations
 
             modelBuilder.Entity("SeniorSolutionsWeb.Models.Resident", b =>
                 {
-                    b.Navigation("ClubMemberships");
-
                     b.Navigation("CommunityIssueList");
 
                     b.Navigation("CommunityIssueReplies");
 
                     b.Navigation("CommunityIssueVotes");
-
-                    b.Navigation("EventMembershipList");
 
                     b.Navigation("Fees");
 

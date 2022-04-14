@@ -7,5 +7,6 @@ namespace SeniorSolutionsWeb.Models
         [Display(Name = "Date Hired")]
         public DateTime DateHired { get; set; } = DateTime.Now;
         public string? Position { get; set; }
+        public List<ServiceRequest>? ServiceRequests { get; set; }
     }
 }

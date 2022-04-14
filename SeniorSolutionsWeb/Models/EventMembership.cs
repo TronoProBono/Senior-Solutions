@@ -10,12 +10,15 @@ namespace SeniorSolutionsWeb.Models
 
         [Display(Name = "Resident Name")]
         public int ResidentID { get; set; }
+        public Resident Resident { get; set; }
 
         [Display(Name = "Role Privileges")]
         public int RoleID { get; set; }
+        public EventRoles Roles { get; set; }
 
         [Display(Name = "Event ID")]
         public int EventID { get; set; }
+        public Event Event { get; set; }
 
         [Display(Name = "Checked In")]
         public bool? CheckedIN { get; set; }
