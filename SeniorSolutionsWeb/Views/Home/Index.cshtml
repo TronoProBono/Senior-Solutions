@@ -9,27 +9,33 @@
     {
         orientationReminder = "No orientation is currently on the schedule.";
     }
-
-    var posts = from CommunityIssue in Model.CommunityIssues orderby CommunityIssue.CreatedDate descending select CommunityIssue;
-    var recentPosts = posts.Take(3);
-    var recentEvents = (from communityEvent in Model.Events orderby communityEvent.Date select communityEvent).Take(10);
-    var mostRecentPoll = (from Poll in Model.Polls orderby Poll.DateCreated descending select Poll).First();
-    var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
-    var hasVoted = from PollVote in Model.Votes where PollVote.ResidentId.ToString() == residentId select PollVote;
-    var questionnaire = Model.Questionnaires.OrderByDescending(q => q.CreatedAt).FirstOrDefault();
-    var hasSubmittedQuestionnaire = false;
-    if(questionnaire != null)
-    {
-        var _hasSubmittedQuestionnaire = questionnaire.Questions.Find(q => q.Responses.Find(r => r.ResidentId.ToString() == residentId) != null);
-        if (_hasSubmittedQuestionnaire != null)
-        {
-            hasSubmittedQuestionnaire = true;
-        }
-    }
+    /*
+     * Setup home vars
+     * All enumerables are properties of HomeViewModel.
+     * Majority of this should be moved to HomeController to keep proper MVC standards intact.
+     * Computational costs of the LINQ statements should be analyzed before deployment.
+     */
+    IEnumerable<CommunityIssue>? posts = null;
+    IEnumerable<Event>? recentEvents = null;
+    IEnumerable<PollVote>? hasVoted = null;
+    Poll? mostRecentPoll = null;
+    Question? hasSubmittedQuestionnaire = null;
+    Questionnaire? questionnaire = null;
     bool isEmployee = false;
     Fee? depositDue = null;
     Fee? leaseDue = null;
     Fee? maintenanceDue = null;
+
+    var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
+    if (Model.CommunityIssues.Count() > 0) posts = (from CommunityIssue in Model.CommunityIssues orderby CommunityIssue.CreatedDate descending select CommunityIssue).Take(3);
+    if (Model.Events.Count() > 0) recentEvents = (from communityEvent in Model.Events orderby communityEvent.Date select communityEvent).Take(10);
+    if (Model.Polls.Count() > 0) mostRecentPoll = (from Poll in Model.Polls orderby Poll.DateCreated descending select Poll).First();
+    if (Model.Votes.Count() > 0) hasVoted = from PollVote in Model.Votes where PollVote.ResidentId.ToString() == residentId select PollVote;
+    if (Model.Questionnaires.Count() > 0) 
+    {
+        questionnaire = Model.Questionnaires.OrderByDescending(q => q.CreatedAt).FirstOrDefault();
+        hasSubmittedQuestionnaire = questionnaire.Questions.Find(q => q.Responses.Find(r => r.ResidentId.ToString() == residentId) != null);
+    }
     if (Model.Fees.Count() > 0)
     {
         depositDue = Model.Fees.Where(f => f.Type == "Deposit" && f.AmountOwed > f.AmountPaid).OrderByDescending(f => f.DateIncurred).FirstOrDefault();
@@ -58,7 +64,7 @@
                 int total = 0;
                 @if (Model.Fees.Count() <= 0)
                 {
-                    <div class='alert alert-success'>No bills due at this time.</div>
+                    <div class='alert alert-warning'>No bills due at this time.</div>
                 } else
                 {
                     Html.Raw("<ul class='list-group list-group-flush'>");
@@ -97,45 +103,52 @@
             <h2>Events</h2>
         </div>
         <div class="accordion" id="accordion">
-        @foreach(var r in recentEvents)
-        {
-                Resident? residentRegistered = new Resident();
-                if (r.Residents != null)
+            @{
+                if (recentEvents != null)
                 {
-                    residentRegistered = (from res in r.Residents where res.Id == int.Parse(residentId) select res).FirstOrDefault();
-                }
-                
-                
-                <div class="accordion-item">
-                <h2 class="accordion-header" id="@("Heading" + r.Id)">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@("Accordion" + r.Id)" aria-expanded="false" aria-controls="@("Accordion" + r.Id)">
-                        @(r.Title + " " + r.Date)
-                    </button>
-                </h2>
-                <div id="@("Accordion" + r.Id)" class="accordion-collapse collapse" aria-labelledby="@("Heading" + r.Id)" data-bs-parent="#accordion">
-                    <div class="accordion-body">
-                        <b>Description:</b>
-                        @r.Description
-                        <br>
-                            @{
-                                if (!isEmployee)
-                                {
-                                    if (residentRegistered == null)
-                                    {
-                                        <a asp-controller="Home" asp-action="EventSignup" asp-route-residentId="@residentId" asp-route-eventId="@r.Id" class="btn-primary btn">Register for Event</a>
-                                    }
+                    @foreach(var r in recentEvents)
+                    {
+                            Resident? residentRegistered = new Resident();
+                            if (r.Residents != null)
+                            {
+                                residentRegistered = (from res in r.Residents where res.Id == int.Parse(residentId) select res).FirstOrDefault();
+                            }
+
+                            <div class="accordion-item">
+                            <h2 class="accordion-header" id="@("Heading" + r.Id)">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@("Accordion" + r.Id)" aria-expanded="false" aria-controls="@("Accordion" + r.Id)">
+                                    @(r.Title + " " + r.Date)
+                                </button>
+                            </h2>
+                            <div id="@("Accordion" + r.Id)" class="accordion-collapse collapse" aria-labelledby="@("Heading" + r.Id)" data-bs-parent="#accordion">
+                                <div class="accordion-body">
+                                    <b>Description:</b>
+                                    @r.Description
+                                    <br>
+                                        @{
+                                            if (!isEmployee)
+                                            {
+                                                if (residentRegistered == null)
+                                                {
+                                                    <a asp-controller="Home" asp-action="EventSignup" asp-route-residentId="@residentId" asp-route-eventId="@r.Id" class="btn-primary btn">Register for Event</a>
+                                                }
                                     
 
-                                }else
-                                {
-                                    <button class="btn-primary btn" disabled>Unavailable to Staff</button>
-                                }
-                            }
-                        
-                    </div>
-                </div>
-            </div>
-        }
+                                            }else
+                                            {
+                                                <button class="btn-primary btn" disabled>Unavailable to Staff</button>
+                                            }
+                                        }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                } else
+                {
+                    <div class="alert alert-warning">No recent events.</div>
+                }
+            }
+        
         </div>
     </div>
     <div class="col-md-3">
@@ -145,9 +158,13 @@
                 Community Poll
             </div>
             <div class="card-body">
-                <p>@mostRecentPoll.Question</p>
-                    @{
-                        
+                @{
+                    if (mostRecentPoll == null)
+                    {
+                        <div class="alert alert-warning">No active polls.</div>
+                    } else
+                    {
+                        <p>@mostRecentPoll.Question</p>
                         <div class="form-check">
                                 <input type="hidden" name="Id" asp-for="@mostRecentPoll.Id">
                                 <input type="hidden" name="residentId" value="@residentId">
@@ -181,19 +198,20 @@
                             </div>
                         }
                     }
+                }
             </div>
             <div class="card-footer justify-content-center d-flex justify-content-center">
                 @{
                     if (residentId != "-1" && hasVoted == null) {
-                            <button type="submit" class="btn btn-primary">Submit Vote</button>
-                        } else {
-                            var buttonMessage = "Unavailable for Staff";
-                            //if user is a resident and already voted then disable the button
-                            if (hasVoted != null) {
-                                buttonMessage = "Already Voted";
-                            }
-                        <button type="submit" class="btn btn-primary" disabled>@buttonMessage</button>
+                        <button type="submit" class="btn btn-primary">Submit Vote</button>
+                    } else {
+                        var buttonMessage = "Unavailable for Staff";
+                        //if user is a resident and already voted then disable the button
+                        if (hasVoted != null) {
+                            buttonMessage = "Already Voted";
                         }
+                    <button type="submit" class="btn btn-primary" disabled>@buttonMessage</button>
+                    }
                 }
             </div>
             </form>
@@ -205,23 +223,32 @@
                 <h2>Community Issues</h2>
             </div>
             <div class="card-group">
-                @foreach (var post in recentPosts)
-                {
-                    <div class="card">
-                        <div class="p-2">
-                            <i class="fa-solid fa-arrow-up"></i>
-                            <i class="fa-solid fa-arrow-down"><span class="ps-2">@((int)(post.UpVotes - post.DownVotes))</span></i>
-                        </div>
+                @{
+                    if (posts == null)
+                    {
+
+                    } else
+                    {
+                        @foreach (var post in posts)
+                        {
+                            <div class="card">
+                                <div class="p-2">
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                    <i class="fa-solid fa-arrow-down"><span class="ps-2">@((int)(post.UpVotes - post.DownVotes))</span></i>
+                                </div>
                         
-                        <div class="card-body">
-                            <a asp-controller="CommunityIssues" asp-action="Details" asp-route-id="@post.Id"><h5 class="card-title">@Html.DisplayFor(modelItem => post.Title)</h5></a>
-                            <p class="card-text">@post.Description.Substring(0,24)...</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Last updated @Html.DisplayFor(modelItem => post.CreatedDate)</small>
-                        </div>
-                    </div>
-                }
+                                <div class="card-body">
+                                    <a asp-controller="CommunityIssues" asp-action="Details" asp-route-id="@post.Id"><h5 class="card-title">@Html.DisplayFor(modelItem => post.Title)</h5></a>
+                                    <p class="card-text">@post.Description.Substring(0,24)...</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">Last updated @Html.DisplayFor(modelItem => post.CreatedDate)</small>
+                                </div>
+                            </div>
+                        }
+                    }
+            }
+                
             </div>
         </div>
     </div>
@@ -253,7 +280,7 @@
                         if (isEmployee){
                                 <button type="button" class="btn-primary btn" onclick="concatenateQuestions()" disabled>Unavailable to Staff</button>
                             } else {
-                                if (hasSubmittedQuestionnaire == true)
+                                if (hasSubmittedQuestionnaire != null)
                                 {
                                     <button type="submit" class="btn-primary btn" onclick="concatenateQuestions()" disabled>Already Submitted</button>
                                 } else
