@@ -16,7 +16,7 @@ namespace SeniorSolutionsWeb.Models
         public string Status { get; set; } = "New";
         [Display(Name = "Employee Assigned Id")]
         [ForeignKey("Employee")]
-        public int EmployeeAssignedId { get; set; }
+        public int? EmployeeAssignedId { get; set; }
         public Employee? Employee { get; set; }
         [Display(Name = "Creation Date")]
         public DateTime CreationDate { get; set; } = DateTime.Now;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -58,15 +59,38 @@ namespace SeniorSolutionsWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RequestorName,RequestorId,Description,Status,EmployeeAssignedId,CreationDate")] ServiceRequest serviceRequest)
+        public async Task<IActionResult> Create(/*[Bind("Id,Description")] ServiceRequest serviceRequest*/int ID, string Description)
         {
+            ClaimsPrincipal _claim = User;
+            var Id = 0;
+
+            if (_claim != null)
+            {
+                foreach (Claim claim in _claim.Claims)
+                {
+                    Console.Write("CLAIM TYPE: {0} || CLAIM VALUE:{1}\n", claim.Type, claim.Value);
+                    if (claim.Type == "residentId")
+                    {
+                        Id = Int32.Parse(claim.Value);
+                    }
+                }
+            }
+
+            var _request = new ServiceRequest();
+            _request.Id = ID;
+            _request.Description = Description;
+            _request.RequestorId = Id;
+            _request.EmployeeAssignedId = null;
+            _request.CreationDate = DateTime.Now;
+            _request.RequestorName = User.Identity.Name;
+            _request.Status = "Waiting To Be Assigned";
             if (ModelState.IsValid)
             {
-                _context.Add(serviceRequest);
+                _context.Add(_request);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(serviceRequest);
+            return View(_request);
         }
 
         // GET: ServiceRequests/Edit/5
