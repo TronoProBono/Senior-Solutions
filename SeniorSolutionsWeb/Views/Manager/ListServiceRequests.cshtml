@@ -1,0 +1,16 @@
+﻿@model IEnumerable<SeniorSolutionsWeb.Models.ServiceRequest>
+@{
+ 
+    ViewData["Title"] = "Service Form";
+}
+
+<div id="page" class="container-fluid">
+    <div class="row">
+        <partial name="_ManagerSidebar.cshtml"></partial>
+        <div id="content" class="bg-light col-lg">
+            <partial name="/Views/ServiceRequests/Index.cshtml" model="Model"></partial>
+        </div>
+    </div>
+                 
+</div>
+

@@ -6,11 +6,7 @@
             </li>
             <li class="border-top my-3"></li>
             <li class="nav-item">
-                <a class="nav-link" asp-controller="Manager" asp-action="Schedule">Wages & Scheduling</a>
-            </li>
-            <li class="border-top my-3"></li>
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Manager" asp-action="Service">See Service Request</a>
+                <a class="nav-link" asp-controller="Manager" asp-action="ListServiceRequests">See Service Request</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Manager" asp-action="ListResidents">Manage Resident Accounts</a>
@@ -29,7 +25,7 @@
                 <a class="nav-link" asp-controller="Manager" asp-action="CreateOrientation">Create Orientation</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-controller="Manager" asp-action="post">Community Issues</a>
+                <a class="nav-link" asp-controller="CommunityIssues">Community Issues</a>
             </li>
             <li class="nav-item">
                 <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#event-collapse" aria-expanded="true">Events</a>
@@ -44,15 +40,18 @@
                     </ul>      
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#club-collapse" aria-expanded="true">Clubs</a>
-                <div class="collapse show" id="club-collapse" style="">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a class="nav-link rounded" asp-controller="Manager" asp-action="clubs">Review & Approve Clubs</a></li>
-                        <li><a class="nav-link rounded" asp-controller="Manager" asp-action="create_clubs">Create Clubs</a></li>
-                    </ul>      
-                </div>
-            </li>                       
+            @{
+            //<li class="nav-item">
+            //    <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#club-collapse" aria-expanded="true">Clubs</a>
+            //    <div class="collapse show" id="club-collapse" style="">
+            //        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            //            <li><a class="nav-link rounded" asp-controller="Manager" asp-action="clubs">Review & Approve Clubs</a></li>
+            //            <li><a class="nav-link rounded" asp-controller="Manager" asp-action="create_clubs">Create Clubs</a></li>
+            //        </ul>      
+            //    </div>
+            //</li>    
+            }
+                               
         </ul>
     </div>
 </nav>

@@ -23,9 +23,9 @@ namespace SeniorSolutionsWeb.Controllers
         {
             return View();
         }
-        public IActionResult Service()
+        public async Task<IActionResult> ListServiceRequests()
         {
-            return View();
+            return View(await _context.ServiceRequest.ToListAsync());
         }
         public IActionResult Schedule()
         {
