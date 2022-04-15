@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<SeniorSolutionsWeb.Models.ServiceRequest>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Your Request";
     var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
 }
 
-<h1>Index</h1>
+<h1>Your Request</h1>
 
 <p>
     @{
         if (residentId != "-1")
         {
-            <a asp-controller="ServiceRequests" asp-action="Create">Create New</a>
+            <a asp-controller="ServiceRequests" asp-action="Create" class="btn btn-primary">Create New</a>
         } else
         {
             <div class="alert alert-warning">Employees are not allowed to create new service requests.</div>
