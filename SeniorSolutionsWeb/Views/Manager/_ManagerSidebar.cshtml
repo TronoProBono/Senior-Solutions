@@ -6,7 +6,7 @@
             </li>
             <li class="border-top my-3"></li>
             <li class="nav-item">
-                <a class="nav-link" asp-controller="Manager" asp-action="ListServiceRequests">See Service Request</a>
+                <a class="nav-link" asp-controller="Manager" asp-action="ListServiceRequests">Manage Service Requests</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Manager" asp-action="ListResidents">Manage Resident Accounts</a>
@@ -15,17 +15,25 @@
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Manager" asp-action="Poll">Create Poll</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Manager" asp-action="CreateQuestionnaire">Create Questionnaire</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Manager" asp-action="ListQuestionnaires">List Questionnaires</a>
-            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" asp-controller="Manager" asp-action="CreateOrientation">Create Orientation</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-controller="CommunityIssues">Community Issues</a>
+                <a class="nav-link" asp-controller="CommunityIssues" asp-action="Index">Community Issues</a>
+            </li>
+            <li class="nav-item">
+                <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#Questionnaire-collapse" aria-expanded="true">Questionnaires</a>
+                <div class="collapse show" id="Questionnaire-collapse" style="">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Manager" asp-action="CreateQuestionnaire">Create Questionnaire</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Manager" asp-action="ListQuestionnaires">List Questionnaires</a>
+                        </li>
+                    </ul>      
+                </div>
             </li>
             <li class="nav-item">
                 <a class="link-dark" data-bs-toggle="collapse" data-bs-target="#event-collapse" aria-expanded="true">Events</a>
