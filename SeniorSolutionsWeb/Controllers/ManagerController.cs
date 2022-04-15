@@ -23,9 +23,9 @@ namespace SeniorSolutionsWeb.Controllers
         {
             return View();
         }
-        public IActionResult Service()
+        public async Task<IActionResult> ListServiceRequests()
         {
-            return View();
+            return View(await _context.ServiceRequest.ToListAsync());
         }
         public IActionResult Schedule()
         {
@@ -343,7 +343,7 @@ namespace SeniorSolutionsWeb.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateEvent([Bind("Id, Title, Description, Date, Residents")] Event newEvent)
+        public async Task<IActionResult> CreateEvent([Bind("Id, Title, Roles, Description, Date, Residents")] Event newEvent)
         {
             if (ModelState.IsValid)
             {

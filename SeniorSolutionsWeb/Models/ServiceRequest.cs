@@ -11,13 +11,13 @@ namespace SeniorSolutionsWeb.Models
         [Display(Name = "Requestor Id")]
         [ForeignKey("Resident")]
         public int RequestorId { get; set; }
-        public Resident Resident { get; set; }
+        public Resident? Resident { get; set; }
         public string Description { get; set; }
         public string Status { get; set; } = "New";
         [Display(Name = "Employee Assigned Id")]
         [ForeignKey("Employee")]
         public int EmployeeAssignedId { get; set; }
-        public Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
         [Display(Name = "Creation Date")]
         public DateTime CreationDate { get; set; } = DateTime.Now;
         
