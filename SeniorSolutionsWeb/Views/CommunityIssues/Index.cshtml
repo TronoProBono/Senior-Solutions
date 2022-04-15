@@ -7,7 +7,13 @@
 <h1>Community Issues</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @{
+        if (residentId == "-1"){
+            <div class="alert alert-warning">Employees are not allowed to create new community issues!</div>
+        } else {
+            <a asp-action="Create">Create New</a>
+        }
+    }
 </p>
 @{
     foreach (var post in Model)

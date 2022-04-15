@@ -47,10 +47,17 @@
         <input asp-for="Id" name="IssueID" hidden/>
         <input name="residentID" value="@residentId" hidden/>
         <input name="residentName" value="@User.Identity.Name" hidden/>
-        <div class="input-group mt-3">
-          <textarea name="response" id="response" class="form-control"></textarea>
-        </div>
-        <button type="submit" asp-action="ResidentResponse" class="btn btn-primary mt-2">Reply</button>
+        
+        @{
+            if (residentId != "-1")
+            {
+                <div class="input-group mt-3">
+                    <textarea name="response" id="response" class="form-control"></textarea>
+                </div>
+                <button type="submit" asp-action="ResidentResponse" class="btn btn-primary mt-2">Reply</button>
+            }
+        }
+        
     </form>
     @{
         if(listOfReplies != null)

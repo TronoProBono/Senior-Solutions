@@ -2,12 +2,22 @@
 
 @{
     ViewData["Title"] = "Index";
+    var residentId = User.Claims.Single(user => user.Type == "residentId").Value;
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-controller="ServiceRequests" asp-action="Create">Create New</a>
+    @{
+        if (residentId != "-1")
+        {
+            <a asp-controller="ServiceRequests" asp-action="Create">Create New</a>
+        } else
+        {
+            <div class="alert alert-warning">Employees are not allowed to create new service requests.</div>
+        }
+    }
+    
 </p>
 <table class="table">
     <thead>
