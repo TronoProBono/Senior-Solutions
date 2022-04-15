@@ -11,6 +11,6 @@ namespace SeniorSolutionsWeb.Models
         [Display(Name = "Location Name")]
         public string LocationName { get; set; }
 
-        public List<ClubMeeting>? Meetings { get; set; }
+        //public List<ClubMeeting>? Meetings { get; set; }
     }
 }

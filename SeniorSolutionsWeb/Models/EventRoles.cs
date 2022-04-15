@@ -21,6 +21,6 @@ namespace SeniorSolutionsWeb.Models
         [Display(Name = "Role Permissions")]
         public int RoleEval { get; set; }
         public List<Invite>? Invites { get; set; }
-        public List<EventMembership>? EventMemberships { get; set; }
+        //public List<EventMembership>? EventMemberships { get; set; }
     }
 }

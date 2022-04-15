@@ -14,11 +14,11 @@ namespace SeniorSolutionsWeb.Models
 
         [Display(Name = "Role Privileges")]
         public int RoleID { get; set; }
-        public EventRoles Roles { get; set; }
+        //public EventRoles Roles { get; set; }
 
         [Display(Name = "Event ID")]
         public int EventID { get; set; }
-        public Event Event { get; set; }
+        //public Event Event { get; set; }
 
         [Display(Name = "Checked In")]
         public bool? CheckedIN { get; set; }

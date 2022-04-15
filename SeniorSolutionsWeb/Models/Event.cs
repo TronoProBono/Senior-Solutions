@@ -7,8 +7,8 @@
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public List<Resident>? Residents { get; set; }
-        public List<EventRoles> Roles { get; set; }
+        //public List<EventRoles> Roles { get; set; }
         public List<Invite>? Invites { get; set; }
-        public List<EventMembership>? Memberships { get; set; }
+        //public List<EventMembership>? Memberships { get; set; }
     }
 }

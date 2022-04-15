@@ -12,12 +12,12 @@ namespace SeniorSolutionsWeb.Models
 
         [Display(Name = "Resident Name")]
         public int ResidentID { get; set; }
-        public Resident Resident { get; set; }
+        //public Resident Resident { get; set; }
 
         [Display(Name = "Role Privileges")]
         [ForeignKey("ClubRoles")]
         public int RoleID { get; set; }
-        public ClubRoles Roles { get; set; }
+        //public ClubRoles Roles { get; set; }
 
         [Display(Name = "Club ID")]
         [ForeignKey("Club")]

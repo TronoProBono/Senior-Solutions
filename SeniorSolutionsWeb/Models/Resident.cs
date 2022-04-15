@@ -16,7 +16,7 @@ namespace SeniorSolutionsWeb.Models
         public List<Fee>? Fees { get; set; }
         public List<ServiceRequest>? ServiceRequests { get; set; }
         public List<Invite>? Invites { get; set; }
-        public List<EventMembership>? EventMembershipList { get; set; }
-        public List<ClubMembership>? ClubMemberships { get; set; }
+        //public List<EventMembership>? EventMembershipList { get; set; }
+        //public List<ClubMembership>? ClubMemberships { get; set; }
     }
 }

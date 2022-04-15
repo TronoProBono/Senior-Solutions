@@ -13,8 +13,8 @@ namespace SeniorSolutionsWeb.Models
 
         [Display(Name = "Date Account Created")]
         public DateTime DateClubCreated { get; set; } = DateTime.Now;
-        public List<ClubMeeting>? ClubMeetings { get; set; }
+        //public List<ClubMeeting>? ClubMeetings { get; set; }
         public List<Invite>? Invites { get; set; }
-        public List<ClubMembership>? Memberships { get; set; }
+        //public List<ClubMembership>? Memberships { get; set; }
     }
 }
