@@ -65,14 +65,27 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                             </li>  
-                        } else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="LogoutUser">Logout</a>
-                            </li>
                         }
                     </ul>
+                    
                 </div>
+                @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="dropdown">
+                                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-user"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser1" style="">
+                                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="LogoutUser">Logout</a></li>
+                                </ul>
+                            </div>
+                        }
+                    }
             </div>
         </nav>
     </header>
