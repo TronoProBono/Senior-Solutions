@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using SeniorSolutionsWeb.Models;
 
 namespace SeniorSolutionsWeb.Controllers
 {
+    [Authorize]
     public class ServiceRequestsController : Controller
     {
         private readonly SeniorSolutionsWebContext _context;
