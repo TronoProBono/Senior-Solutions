@@ -436,7 +436,7 @@ namespace SeniorSolutionsWeb.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CreateQuestionnaireFinal(string? questionTotal)
+        public IActionResult CreateQuestionnaireFinal(string? title, string? questionTotal)
         {
             if(questionTotal == null)
             {
@@ -453,9 +453,10 @@ namespace SeniorSolutionsWeb.Controllers
                 questionList.Add(q);
             }
             questionnaire.Questions = questionList;
+            questionnaire.Title = title;
             _context.Questionnaire.Add(questionnaire);
             _context.SaveChanges();
-            return View(nameof(ListQuestionnaires));
+            return RedirectToAction("ListQuestionnaires");
         }
         public async Task<IActionResult> ListQuestionnaires()
         {

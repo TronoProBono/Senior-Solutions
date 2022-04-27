@@ -20,6 +20,10 @@
                 <form asp-action="CreateQuestionnaireFinal">
                     <input hidden class="btn btn-primary" type="text" name="questionTotal" id="questionTotal">
                     <div class="alert alert-success">Please fill out each desired question to be listed on the questionnaire.</div>
+                    <div class="form-group">
+                        <label class="control-label">Title</label>
+                        <input class="form-control" type="text" name="title" max="150" min="1" required/>
+                    </div>
                     @for (int i = 0; i < numOfQuestions; i++)
                         {
                             <div class="form-group">
