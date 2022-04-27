@@ -50,12 +50,6 @@
                                     <a class="nav-link" asp-controller="Manager" asp-action="Index">Manager's Page</a>
                                 </li>
                             }
-                            else if (ID != "-2")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Account" asp-action="Secured">Your Account</a>
-                                </li>
-                            }
                         }       
                         }
                     </ul>
@@ -83,9 +77,15 @@
                                 <i class="fa-solid fa-user"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end text-small" aria-labelledby="dropdownUser1" style="">
+                                @if (ID != "-1" && ID != "-2")
+                                {
                                     <li><a class="dropdown-item" asp-controller="Account" asp-action="CurrentDues">Payments</a></li>
                                     <li><a class="dropdown-item" asp-controller="Account" asp-action="Settings">Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                } else
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Manager" asp-action="Index">Control Panel</a></li>
+                                }
+                                <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" asp-controller="Account" asp-action="LogoutUser">Logout</a></li>
                                 </ul>
                             </div>
