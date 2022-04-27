@@ -30,7 +30,17 @@
     if (Model.CommunityIssues.Count() > 0) posts = (from CommunityIssue in Model.CommunityIssues orderby CommunityIssue.CreatedDate descending select CommunityIssue).Take(3);
     if (Model.Events.Count() > 0) recentEvents = (from communityEvent in Model.Events orderby communityEvent.Date select communityEvent).Take(10);
     if (Model.Polls.Count() > 0) mostRecentPoll = (from Poll in Model.Polls orderby Poll.DateCreated descending select Poll).First();
-    if (Model.Votes.Count() > 0) hasVoted = from PollVote in Model.Votes where PollVote.ResidentId.ToString() == residentId select PollVote;
+    if (mostRecentPoll != null)
+    {
+        int tempId = int.Parse(residentId);
+        if (Model.Votes.Count() > 0)
+        {
+
+            hasVoted = (from PollVote in Model.Votes where PollVote.PollId == mostRecentPoll.Id select PollVote).ToList();
+            hasVoted = (from v in hasVoted where v.ResidentId == int.Parse(residentId) select v).ToList();
+        }
+    }
+    
     if (Model.Questionnaires.Count() > 0) 
     {
         questionnaire = Model.Questionnaires.OrderByDescending(q => q.CreatedAt).FirstOrDefault();
