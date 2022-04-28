@@ -3,6 +3,21 @@
 });*/
 
 $(document).ready(function () {
+    let sliderOne = document.getElementById("slider-1");
+    let sliderTwo = document.getElementById("slider-2");
+    let sliderThree = document.getElementById("slider-3");
+    let sliderFour = document.getElementById("slider-4");
+
+    let _displayValOne = document.getElementById("start_top");
+    let _displayValTwo = document.getElementById("start_bottom");
+    let _displayValThree = document.getElementById("end_top");
+    let _displayValFour = document.getElementById("end_bottom");
+
+    let minGap = 4;
+    let sliderTrackA = document.querySelector("#track-A");
+    let sliderTrackB = document.querySelector("#track-B");
+    let sliderMaxValue = document.getElementById("slider-1").max;
+
     $('#PopulateLocals').select2({
         selectOnClose: true
     });
@@ -27,24 +42,8 @@ $(document).ready(function () {
         slider(sliderFour, _displayValFour, sliderThree, 4);
     });
 
-
     //slideOne();
     //slideTwo();
-
-    let sliderOne = document.getElementById("slider-1");
-    let sliderTwo = document.getElementById("slider-2");
-    let sliderThree = document.getElementById("slider-3");
-    let sliderFour = document.getElementById("slider-4");
-
-    let _displayValOne = document.getElementById("start_top");
-    let _displayValTwo = document.getElementById("start_bottom");
-    let _displayValThree = document.getElementById("end_top");
-    let _displayValFour = document.getElementById("end_bottom");
-
-    let minGap = 4;
-    let sliderTrackA = document.querySelector("#track-A");
-    let sliderTrackB = document.querySelector("#track-B");
-    let sliderMaxValue = document.getElementById("slider-1").max;
 
     function slider(control, control_assist, depend, core) {
         //Core Should be set to 1 when refering (currently control) to the range on the left side
