@@ -52,12 +52,12 @@ namespace SeniorSolutionsWeb.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //[HttpPost("Poll")]
+        [HttpPost("Poll")]
         public async Task<IActionResult> Poll(string id, string vote, int residentId)
         {
             int ID = int.Parse(id);
             Poll? poll = await _context.Poll.FindAsync(ID);
-            PollVote? pollVote = await _context.PollVote.SingleOrDefaultAsync(p => p.ResidentId == residentId);
+            PollVote? pollVote = await _context.PollVote.Where(p => p.Id == ID).SingleOrDefaultAsync(p => p.ResidentId == residentId);
 
             if(pollVote == null)
             {
