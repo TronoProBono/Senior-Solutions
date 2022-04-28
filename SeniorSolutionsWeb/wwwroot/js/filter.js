@@ -6,33 +6,27 @@ $(document).ready(function () {
     $('#PopulateLocals').select2({
         selectOnClose: true
     });
-
-    window.onload = function () {
-        /*slideOne();
-        console.log("Fired S1 | IN\n");
-        slideTwo();
-        console.log("Fired S2 | IN\n");*/
+    slider(sliderOne, _displayValOne, sliderTwo, 1);
+    slider(sliderTwo, _displayValTwo, sliderOne, 2);
+    slider(sliderThree, _displayValThree, sliderFour, 3);
+    slider(sliderFour, _displayValFour, sliderThree, 4);
+    $('#slider-1').on('input', function () {
+        console.log("Fired S1\n");
         slider(sliderOne, _displayValOne, sliderTwo, 1);
+    });
+    $('#slider-2').on('input', function () {
+        console.log("Fired S2\n");
         slider(sliderTwo, _displayValTwo, sliderOne, 2);
+    });
+    $('#slider-3').on('input', function () {
+        console.log("Fired S3\n");
         slider(sliderThree, _displayValThree, sliderFour, 3);
+    });
+    $('#slider-4').on('input', function () {
+        console.log("Fired S4\n");
         slider(sliderFour, _displayValFour, sliderThree, 4);
-        $('#slider-1').on('input', function () {
-            console.log("Fired S1\n");
-            slider(sliderOne, _displayValOne, sliderTwo, 1);
-        });
-        $('#slider-2').on('input', function () {
-            console.log("Fired S2\n");
-            slider(sliderTwo, _displayValTwo, sliderOne, 2);
-        });
-        $('#slider-3').on('input', function () {
-            console.log("Fired S3\n");
-            slider(sliderThree, _displayValThree, sliderFour, 3);
-        });
-        $('#slider-4').on('input', function () {
-            console.log("Fired S4\n");
-            slider(sliderFour, _displayValFour, sliderThree,4);
-        });
-    }
+    });
+
 
     //slideOne();
     //slideTwo();
