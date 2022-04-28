@@ -17,7 +17,7 @@
     */
     IEnumerable<CommunityIssue>? posts = null;
     IEnumerable<Event>? recentEvents = null;
-    IEnumerable<PollVote>? hasVoted = null;
+    PollVote? hasVoted = null;
     Poll? mostRecentPoll = null;
     Question? hasSubmittedQuestionnaire = null;
     Questionnaire? questionnaire = null;
@@ -36,8 +36,7 @@
         if (Model.Votes.Count() > 0)
         {
 
-            hasVoted = (from PollVote in Model.Votes where PollVote.PollId == mostRecentPoll.Id select PollVote).ToList();
-            hasVoted = (from v in hasVoted where v.ResidentId == int.Parse(residentId) select v).ToList();
+            hasVoted = (from PollVote in Model.Votes where PollVote.PollId == mostRecentPoll.Id select PollVote).FirstOrDefault();
         }
     }
     
@@ -296,7 +295,7 @@
                         {
                             <input type="hidden" name="questionId" value="@q.Id"/>
                             <div class="form-group">
-                                <label class="control-label">Question @(count): @q.Text</label>
+                                <label class="control-label">Question @(count + 1): @q.Text</label>
                                 <input class="form-control" name="question" value="" type="text" required/>
                             </div>
                             count++;
