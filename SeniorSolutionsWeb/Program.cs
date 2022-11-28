@@ -30,9 +30,11 @@ options.Events = new CookieAuthenticationEvents()
          }
    };
 });
+//Retrieve env db connection info
+String connectionString = builder.Configuration.GetConnectionString(builder.Environment.EnvironmentName + "Connection");
 
 builder.Services.AddDbContext<SeniorSolutionsWebContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SeniorSolutionsWebContext")));
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
