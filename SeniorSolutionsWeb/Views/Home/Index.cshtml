@@ -83,6 +83,7 @@
             <div class="card-header">
                 Balance Due
             </div>
+            <div class="card-body">
             @{
                 int total = 0;
                 @if (Model.Fees.Count() <= 0)
@@ -92,21 +93,22 @@
                 {
                     Html.Raw("<ul class='list-group list-group-flush'>");
                     @if (deposit > 0){
-                        <li class='list-group-item'>Deposit: @deposit </li>
+                        <li class='list-group-item'>Deposit: $@deposit </li>
                         total += deposit;
                     }
                     if (lease > 0){
-                        <li class='list-group-item'>Lease: @lease </li>
+                        <li class='list-group-item'>Lease: $@lease </li>
                         total += lease;
                     }
                     if (maintenance > 0){
-                        <li class='list-group-item'>Maintenance: @maintenance</li>
+                        <li class='list-group-item'>Maintenance: $@maintenance</li>
                         total += maintenance;
                     }
-                    <li class='list-group-item'>Total: @total </li>
+                    <li class='list-group-item'>Total: $@total </li>
                     Html.Raw("</ul>");
                 }
             }
+            </div>
             <div class="card-footer d-flex justify-content-center">
                 @{
                     if (isEmployee)
@@ -240,7 +242,7 @@
             </form>
         </div>
     </div>
-    <div class="row">
+
         <div class="col-12">
             <div class="text-center">
                 <h2>Community Issues</h2>
@@ -274,7 +276,6 @@
                 
             </div>
         </div>
-    </div>
     @{
         if(questionnaire != null)
         {
