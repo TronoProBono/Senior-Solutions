@@ -36,9 +36,6 @@
                         @{
                         if (User.Identity.IsAuthenticated){
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Clubs" asp-action="Index">Find Clubs</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="CommunityIssues" asp-action="Index">Community Issues</a>
                             </li>
                             <li class="nav-item">
@@ -63,7 +60,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="Index">@User.Identity.Name</a>
+                                <span>@User.Identity.Name &nbsp;</span>
                             </li>
                         }
                     </ul>
