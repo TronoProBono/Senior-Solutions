@@ -34,8 +34,9 @@
                 <label for="licensekey" class="form-label fw-bold">License Key</label>
                 <input type="text" class="form-control" id="licensekey" name="licensekey">
             </div>
-            <button type="submit" class="btn btn-primary">Create!</button>
+            @*<button type="submit" class="btn btn-primary">Create!</button>*@
             <a href="/Account/Register?returnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" class="btn btn-primary">Register</a>
+            <a href="/Account/Login" class="btn btn-primary">Go Back</a>
         </form>
     </div> 
 </div>
